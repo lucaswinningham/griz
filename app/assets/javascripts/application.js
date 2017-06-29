@@ -19,6 +19,8 @@
 //= require components
 //= require_tree .
 
+/* global $ */
+
 $( document ).on('turbolinks:load', function() {
-  console.log("It works on each visit!")
+  
 });
