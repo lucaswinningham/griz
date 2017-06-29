@@ -1,0 +1,45 @@
+@mixin transition($property, $duration, $timing, $delay) {
+  @if $property == 'transform' {
+    -webkit-transition: -webkit-transform $duration $timing $delay;
+    -moz-transition: -moz-transform $duration $timing $delay;
+    -o-transition: -o-transform $duration $timing $delay;
+    transition: transform $duration $timing $delay;
+  } @else {
+    -webkit-transition: $property $duration $timing $delay;
+    -moz-transition: $property $duration $timing $delay;
+    -o-transition: $property $duration $timing $delay;
+    transition: $property $duration $timing $delay;
+  }
+}
+
+@mixin transform($functions) {
+  -webkit-transform: $functions;
+  -moz-transform: $functions;
+  -o-transform: $functions;
+  transform: $functions;
+}
+
+@mixin display-flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+@mixin align-items($item-alignment) {
+  -webkit-align-items: $item-alignment;
+  align-items: $item-alignment;
+}
+
+@mixin border-radius($radii) {
+  -webkit-border-radius: $radii;
+  -moz-border-radius: $radii;
+  border-radius: $radii;
+}
+
+@mixin user-select($user-select-option) {
+  -webkit-user-select: $user-select-option;
+  -moz-user-select: $user-select-option;
+  -ms-user-select: $user-select-option;
+  user-select: $user-select-option;
+}
