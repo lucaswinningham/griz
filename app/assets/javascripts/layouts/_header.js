@@ -55,8 +55,9 @@ $( document ).on('turbolinks:load', function() {
       }
 
       if ($(this).is(navlink)) {
-        $navtext.removeClass('active');
-        $(this).children('span').addClass('active');
+        $navlink.removeClass('active');
+        // $(this).children('span').addClass('active');
+        $(this).addClass('active');
       }
     }
   };

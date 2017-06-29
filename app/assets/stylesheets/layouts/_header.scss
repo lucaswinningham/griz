@@ -50,6 +50,12 @@ header#navigation {
         }
       }
       
+      &.active {
+        span {
+          color: white;
+        }
+      }
+      
       span {
         display: block;
         width: 100%;
@@ -57,9 +63,9 @@ header#navigation {
         position: relative;
         z-index: 3;
         
-        &.active {
-          color: white;
-        }
+        // &.active {
+        //   color: white;
+        // }
       }
     }
   }
@@ -73,7 +79,7 @@ header#navigation {
       }
       
       a:nth-child(even) {
-        @include transform(translateX(100%));
+        @include transform(translateX(+100%));
       }
     }
   }
@@ -133,23 +139,23 @@ header#navigation {
       }
 
       i:nth-child(3) {
-        @include transform(translateY($i-lines-offset));
+        @include transform(translateY(+$i-lines-offset));
       }
     }
 
     &.lines.mousedown {
       i:nth-child(1) {
-        @include transform(translateY(- 2 * $i-lines-offset));
+        @include transform(translateY(-2 * $i-lines-offset));
       }
 
       i:nth-child(3) {
-        @include transform(translateY(2 * $i-lines-offset));
+        @include transform(translateY(+2 * $i-lines-offset));
       }
     }
 
     &.cross {
       i:nth-child(1) {
-        @include transform(translateY($i-midpoint) rotate(45deg));
+        @include transform(translateY(+$i-midpoint) rotate(+45deg));
       }
       i:nth-child(2) {
         opacity: 0;
@@ -161,7 +167,7 @@ header#navigation {
 
     &.cross.hover  {
       i:nth-child(1) {
-        @include transform(translateY($i-midpoint) rotate(45 - $i-cross-offset));
+        @include transform(translateY(+$i-midpoint) rotate(+45 - $i-cross-offset));
       }
       i:nth-child(3) {
         @include transform(translateY(-$i-midpoint) rotate(-45 + $i-cross-offset));
@@ -170,7 +176,7 @@ header#navigation {
 
     &.cross.mousedown  {
       i:nth-child(1) {
-        @include transform(translateY($i-midpoint) rotate(45 - 2 * $i-cross-offset));
+        @include transform(translateY(+$i-midpoint) rotate(+45 - 2 * $i-cross-offset));
       }
       i:nth-child(3) {
         @include transform(translateY(-$i-midpoint) rotate(-45 + 2 * $i-cross-offset));
@@ -179,7 +185,7 @@ header#navigation {
 
     &.lines.opening, &.cross.closing {
       i:nth-child(1) {
-        @include transform(translateY($i-midpoint));
+        @include transform(translateY(+$i-midpoint));
       }
       i:nth-child(3) {
         @include transform(translateY(-$i-midpoint));

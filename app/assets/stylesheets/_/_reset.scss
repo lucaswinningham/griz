@@ -1,5 +1,5 @@
 $sans-serif: 'Covered By Your Grace', cursive;
-$serif: Arial;
+$serif: 'Poiret One', cursive;
 
 * {
   padding: 0;
@@ -20,7 +20,8 @@ html {
 
 body {
   -webkit-tap-highlight-color: rgba(0,0,0,0);
-  width: 100%;
-  height: 100%;
-  font-family: $sans-serif;
+  // width: 100%;
+  // height: 100%;
+  // font-family: $sans-serif;
+  font-family: $serif;
 }
