@@ -57,3 +57,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Use React for UX
 gem "react-rails"
+
+# Use JQuery for javascript
+gem 'jquery-rails'
