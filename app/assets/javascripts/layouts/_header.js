@@ -56,7 +56,6 @@ $( document ).on('turbolinks:load', function() {
 
       if ($(this).is(navlink)) {
         $navlink.removeClass('active');
-        // $(this).children('span').addClass('active');
         $(this).addClass('active');
       }
     }

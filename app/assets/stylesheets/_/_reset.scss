@@ -1,21 +1,12 @@
 $sans-serif: 'Covered By Your Grace', cursive;
 $serif: 'Poiret One', cursive;
 
-* {
+*, *:before, *:after {
   padding: 0;
   margin: 0;
-}
-
-html {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-}
-
-*, *:before, *:after {
-  -webkit-box-sizing: inherit;
-  -moz-box-sizing: inherit;
-  box-sizing: inherit;
 }
 
 body {
