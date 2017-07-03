@@ -26,10 +26,11 @@ header#navigation {
       height: 25%;
       position: relative;
       overflow: hidden;
+      z-index: 3;
       
-      @include respond-to(phone) { font-size: 1.4em; }
-      @include respond-to(tablet) { font-size: 1.6em; }
-      @include respond-to(desktop) { font-size: 2em; }
+      @include respond-to(phone) { font-size: 1.9em; }
+      @include respond-to(tablet) { font-size: 2.2em; }
+      @include respond-to(desktop) { font-size: 2.5em; }
       
       @include transition(transform, 1s, cubic-bezier(.25,1,.5,1), 0s);
       
@@ -60,7 +61,6 @@ header#navigation {
         width: 100%;
         text-align: center;
         position: relative;
-        z-index: 3;
       }
     }
   }
@@ -81,35 +81,38 @@ header#navigation {
   
   div#burger {
     position: fixed;
-    z-index: 2;
     right: 40px;
-    top: 40px;
     cursor: pointer;
     background-color: transparent;
+    z-index: 2;
     
     @include respond-to(phone) {
       height: 100px;
       width: 100px;
+      top: 15px;
     }
     
     @include respond-to(tablet) {
       height: 125px;
       width: 125px;
+      top: 8.5px;
     }
     
     @include respond-to(desktop) {
       height: 150px;
       width: 150px;
+      top: 2.5px;
     }
     
     @include user-select(none);
-    @include transition(transform, 0.8s, cubic-bezier(.25,1.5,.5,1), 0s);
+    @include transition(all, 0.8s, cubic-bezier(.25,1.5,.5,1), 0s);
     
     i {
       display: block;
       height: 10%;
       width: 100%;
-      background-color: #818181;
+      background-color: white;
+      // background-color: #818181;
       @include border-radius(5%/#{50%});
       @include transition(transform, 0.4s, cubic-bezier(.25,1.5,.5,1), 0s);
       
@@ -128,6 +131,7 @@ header#navigation {
     }
     
     &.cross {
+      top: 40px;
       @include transform(rotate(90deg));
     }
     
