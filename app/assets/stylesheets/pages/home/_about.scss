@@ -2,26 +2,44 @@ section#about {
   background: map-get($mex, blue);
   
   div#hero {
-    display: block;
+    @include display-flex;
+    @include align-items(center);
+    position: relative;
+    height: 50%;
     width: 100%;
     max-width: 960px;
     margin: 0px auto;
     color: white;
-    text-align: center;
     
-    h1 {
+    @include transition(height, 1s, cubic-bezier(.25,1,.5,1), 1s);
+    
+    span#hero-large {
       font-weight: normal;
-      font-size: 5rem;
+      font-size: 4rem;
+      display: block;
+      width: 100%;
+      text-align: center;
+      position: relative;
     }
     
-    p {
+    span#hero-small {
       font-size: 3rem;
+      display: block;
+      height: 50%;
+      width: 100%;
+      text-align: center;
+      position: relative;
+    }
+    
+    &.shrink {
+      @include transition(height, 1s, cubic-bezier(.25,1,.5,1), 0s);
+      height: 33%;
     }
   }
   
   div#about-pull {
     position: absolute;
-    height: 50%;
+    height: 67%;
     width: 100%;
     bottom: 0px;
     right: 100%;
@@ -40,7 +58,6 @@ section#about {
       bottom: 0;
       background: transparent;
       color: white;
-      z-index: inherit;
       cursor: pointer;
       font-size: 5rem;
       

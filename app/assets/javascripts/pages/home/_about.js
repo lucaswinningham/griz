@@ -2,10 +2,12 @@
 
 $( document ).on('turbolinks:load', function() {
   var about = 'section#about';
+    var hero = about + ' div#hero';
     var pull = about + ' div#about-pull';
       var pullhandle = pull + ' div#about-pull-handle';
   
   var $about = $(about);
+    var $hero = $(hero);
     var $pull = $(pull);
       var $pullhandle = $(pullhandle);
   
@@ -14,7 +16,6 @@ $( document ).on('turbolinks:load', function() {
   var heroFill = function() {
     $about.css({
       'height': $( window ).height(),
-      'padding-top': $( window ).height() / 12,
     });
   };
   
@@ -29,9 +30,11 @@ $( document ).on('turbolinks:load', function() {
       if ($pull.hasClass('show')) {
         $pull.removeClass('show');
         $pullhandle.html('<span>></span>');
+        $hero.removeClass('shrink');
       } else {
         $pull.addClass('show');
         $pullhandle.html('<span><</span>');
+        $hero.addClass('shrink');
       }
     }
   };
