@@ -1,8 +1,11 @@
 // https://color.adobe.com/Mexican-Scheme-color-theme-9359348/
 $mex: (
-  pink: #e41670,
   blue: #0144b4,
   green: #468f26,
   orange: #da9208,
+  pink: #e41670,
+  purple: #9100ff,
   red: #c20305,
 );
+
+$wobble-bezier: cubic-bezier(.1,3,.75,0.5);
