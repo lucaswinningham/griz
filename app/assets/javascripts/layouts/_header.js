@@ -1,11 +1,11 @@
 /* global $ */
 
 $( document ).on('turbolinks:load', function() {
-  var header = "header#navigation";
-    var navbar = header + " nav#menu";
-      var navlink = navbar + " a";
-      var navtext = navbar + " span";
-    var burger = header + " div#burger";
+  var header = 'header#navigation';
+    var navbar = header + ' nav#menu';
+      var navlink = navbar + ' a';
+      var navtext = navbar + ' span';
+    var burger = header + ' div#burger';
   
   var $header = $(header);
     var $navbar = $(navbar);
@@ -13,7 +13,7 @@ $( document ).on('turbolinks:load', function() {
       var $navtext = $(navtext);
     var $burger = $(burger);
   
-  var $responsive = $(burger + ", " + navlink);
+  var $responsive = $([burger, navlink].join(', '));
   
   var toggleMenu = function() {
     if ($(this).hasClass('mousedown')) {
@@ -51,7 +51,7 @@ $( document ).on('turbolinks:load', function() {
       } else if ($burger.hasClass('cross')) {
         close();
       } else {
-        alert("awry");
+        alert('awry');
       }
       
       if ($(this).is(navlink)) {

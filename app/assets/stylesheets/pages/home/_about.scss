@@ -105,9 +105,9 @@ section#about {
     color: white;
     background: map-get($mex, pink);
       
-    @include respond-to(phone) { font-size: 2.5rem; }
-    @include respond-to(tablet) { font-size: 2.75rem; }
-    @include respond-to(desktop) { font-size: 3rem; }
+    @include respond-to(phone) { width: calc(100% - 60px); }
+    @include respond-to(tablet) { width: calc(100% - 60px); }
+    @include respond-to(desktop) { }
     
     @include border-radius(4px);
       
@@ -116,6 +116,14 @@ section#about {
       width: 100%;
       text-align: center;
       position: relative;
+    }
+    
+    &.hover {
+      background: saturate(map-get($mex, pink), 10%);
+    }
+    
+    &.mousedown {
+      background: saturate(map-get($mex, pink), 20%);
     }
   }
 }
