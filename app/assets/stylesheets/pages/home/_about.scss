@@ -96,6 +96,15 @@ section#about {
       background: white;
     
       @include border-radius(64px);
+      
+      @include transition(all, 1s, cubic-bezier(.25,1,.5,1), 0s);
+      
+      &.focus {
+        height: 512px;
+        width: 512px;
+        
+        @include border-radius(4px);
+      }
     }
     
     &.show {
