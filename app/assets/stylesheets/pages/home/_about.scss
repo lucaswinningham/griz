@@ -13,22 +13,27 @@ section#about {
     
     @include transition(height, 1s, cubic-bezier(.25,1,.5,1), 1s);
     
-    span#hero-large {
-      font-weight: normal;
-      font-size: 4rem;
+    div {
       display: block;
       width: 100%;
-      text-align: center;
-      position: relative;
-    }
-    
-    span#hero-small {
-      font-size: 3rem;
-      display: block;
-      height: 50%;
-      width: 100%;
-      text-align: center;
-      position: relative;
+      
+      span#hero-large {
+        font-weight: normal;
+        font-size: 4rem;
+        display: block;
+        width: 100%;
+        text-align: center;
+        position: relative;
+      }
+      
+      span#hero-small {
+        font-size: 3rem;
+        display: block;
+        height: 50%;
+        width: 100%;
+        text-align: center;
+        position: relative;
+      }
     }
     
     &.shrink {
@@ -62,7 +67,7 @@ section#about {
       font-size: 5rem;
       
       @include transition(font-size, 0.2s, cubic-bezier(.25,1,.5,1), 0s);
-      @include transition(right, 1s, cubic-bezier(.25,1,.5,1), 1s);
+      @include transition(right, 1s, cubic-bezier(.25,1,.5,1), 0s);
       
       span {
         display: block;
@@ -82,9 +87,19 @@ section#about {
       }
     }
     
+    div#about-pull-tondo {
+      position: absolute;
+      height: 128px;
+      width: 128px;
+      top: -64px;
+      left: calc(12.5% - 64px);
+      background: white;
+    
+      @include border-radius(64px);
+    }
+    
     &.show {
       right: 0;
-      overflow-x: hidden;
       
       div#about-pull-handle {
         right: 0;
@@ -106,7 +121,7 @@ section#about {
     background: map-get($mex, pink);
       
     @include respond-to(phone) { width: calc(100% - 60px); }
-    @include respond-to(tablet) { width: calc(100% - 60px); }
+    @include respond-to(tablet) { }
     @include respond-to(desktop) { }
     
     @include border-radius(4px);
