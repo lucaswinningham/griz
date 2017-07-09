@@ -31,10 +31,24 @@ $( document ).on('turbolinks:load', function() {
   };
   
   var tondoPosition = function() {
-    $pulltondo.css({
-      top: $( window ).height() / 2 - 256 - $pull.offset().top,
-      left: $( window ).width() / 2 - 256,
-    });
+    var windowHeight = $( window ).height();
+    var windowWidth =  $( window ).width();
+    
+    if (windowHeight > windowWidth) {
+      $pulltondo.css({
+        height: windowWidth - 30,
+        width: windowWidth - 30,
+        top: $( window ).height() / 2 - windowWidth / 2 - $pull.offset().top + 15,
+        left: $( window ).width() / 2 - windowWidth / 2 + 15,
+      });
+    } else {
+      $pulltondo.css({
+        height: windowHeight - 30,
+        width: windowHeight - 30,
+        top: $( window ).height() / 2 - windowHeight / 2 - $pull.offset().top + 15,
+        left: $( window ).width() / 2 - windowHeight / 2 + 15,
+      });
+    }
   };
   
   heroFill();
@@ -71,6 +85,8 @@ $( document ).on('turbolinks:load', function() {
       if ($pulltondo.hasClass('focus')) {
         $pulltondo.removeClass('focus');
         $pulltondo.css({
+          height: '',
+          width: '',
           top: '',
           left: '',
         });
