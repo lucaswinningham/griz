@@ -69,6 +69,10 @@ section#about {
       @include transition(font-size, 0.2s, cubic-bezier(.25,1,.5,1), 0s);
       @include transition(right, 1s, cubic-bezier(.25,1,.5,1), 0s);
       
+      
+      
+      @include respond-to(phone) { height: 70%; }
+      
       span {
         display: block;
         width: 100%;
@@ -92,7 +96,7 @@ section#about {
       height: 128px;
       width: 128px;
       top: -64px;
-      left: calc(12.5% - 64px);
+      right: calc(12.5% - 64px);
       background: white;
     
       @include border-radius(64px);
@@ -100,11 +104,55 @@ section#about {
       @include transition(all, 1s, cubic-bezier(.25,1,.5,1), 0s);
       
       &.focus {
-        height: 512px;
-        width: 512px;
-        
         @include border-radius(4px);
       }
+    }
+    
+    div#about-pull-tease, div#about-pull-info, div#about-pull-summary {
+      @include display-flex;
+      position: absolute;
+      height: 100%;
+      width: 33%;
+      padding: 4px;
+      color: white;
+      z-index: -1;
+      
+      @include respond-to(phone) {
+        height: 33%;
+        width: 100%;
+      }
+      
+      span {
+        display: block;
+        width: 100%;
+        text-align: center;
+        position: relative;
+      }
+    }
+    
+    div#about-pull-tease {
+      font-size: 3rem;
+      
+      @include align-items(flex-start);
+    }
+    
+    div#about-pull-info {
+      left: 33%;
+      font-size: 2.5rem;
+      
+      @include align-items(center);
+      
+      @include respond-to(phone) { top: 33%; left: 0; }
+    }
+    
+    div#about-pull-summary {
+      left: 67%;
+      font-size: 2rem;
+      padding-bottom: 32px;
+      
+      @include align-items(flex-end);
+      
+      @include respond-to(phone) { top: 66%; left: 0; }
     }
     
     &.show {
@@ -125,13 +173,10 @@ section#about {
     bottom: 30px;
     right: 30px;
     text-decoration: none;
-    text-align: center;
     color: white;
     background: map-get($mex, pink);
       
     @include respond-to(phone) { width: calc(100% - 60px); }
-    @include respond-to(tablet) { }
-    @include respond-to(desktop) { }
     
     @include border-radius(4px);
       

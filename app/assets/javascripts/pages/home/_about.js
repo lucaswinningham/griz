@@ -6,6 +6,9 @@ $( document ).on('turbolinks:load', function() {
     var pull = about + ' div#about-pull';
       var pullhandle = pull + ' div#about-pull-handle';
       var pulltondo = pull + ' div#about-pull-tondo';
+      var pulltease = pull + ' div#about-pull-tease';
+      var pullinfo = pull + ' div#about-pull-info';
+      var pullsummary = pull + ' div#about-pull-summary';
     var contact = about + ' a#about-contact';
   
   var $about = $(about);
@@ -13,9 +16,41 @@ $( document ).on('turbolinks:load', function() {
     var $pull = $(pull);
       var $pullhandle = $(pullhandle);
       var $pulltondo = $(pulltondo);
+      var $pulltease = $(pulltease);
+      var $pullinfo = $(pullinfo);
+      var $pullsummary = $(pullsummary);
     var $contact = $(contact);
   
   var $responsive = $([pullhandle, contact, pulltondo].join(', '));
+  
+  var aboutContent = {
+    griz: {
+      tondo: '#',
+      // tease: 'I AM GRIZ',
+      tease: '_ __ ____',
+      info: 'I enjoy creating beautifully designed experiences.',
+      summary: 'Contact me for your next website or job',
+    },
+    
+    millie: {
+      tondo: '#',
+      tease: 'FEAR THE PUP MILLIE',
+      info: 'Rescued and sassy. She loves playing with bones and howling at strangers.',
+      summary: 'Will demand play before cuddles',
+    },
+    
+    learn: {
+      tondo: '#',
+      tease: 'LEARNING AND LISTENING',
+      info: 'I have a passion for learning new tech and methods. I often have to apply new concepts before completely learning them.',
+      summary: 'I am always up for a challenge.',
+    },
+  };
+  
+  // $pulltease.html('<span>I AM GRIZ</span>');
+  $pulltease.html('<span>' + aboutContent.griz.tease + '</span>');
+  $pullinfo.html('<span>' + aboutContent.griz.info + '</span>');
+  $pullsummary.html('<span>' + aboutContent.griz.summary + '</span>');
   
   var heroFill = function() {
     $about.css({
@@ -39,14 +74,14 @@ $( document ).on('turbolinks:load', function() {
         height: windowWidth - 30,
         width: windowWidth - 30,
         top: $( window ).height() / 2 - windowWidth / 2 - $pull.offset().top + 15,
-        left: $( window ).width() / 2 - windowWidth / 2 + 15,
+        right: 15,
       });
     } else {
       $pulltondo.css({
         height: windowHeight - 30,
         width: windowHeight - 30,
-        top: $( window ).height() / 2 - windowHeight / 2 - $pull.offset().top + 15,
-        left: $( window ).width() / 2 - windowHeight / 2 + 15,
+        top: 15 - $pull.offset().top,
+        right: $( window ).width() / 2 - windowHeight / 2 + 15,
       });
     }
   };
@@ -88,7 +123,7 @@ $( document ).on('turbolinks:load', function() {
           height: '',
           width: '',
           top: '',
-          left: '',
+          right: '',
         });
       } else {
         $pulltondo.addClass('focus');
