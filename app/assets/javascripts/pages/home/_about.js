@@ -4,53 +4,33 @@ $( document ).on('turbolinks:load', function() {
   var about = 'section#about';
     var hero = about + ' div#hero';
     var pull = about + ' div#about-pull';
-      var pullhandle = pull + ' div#about-pull-handle';
-      var pulltondo = pull + ' div#about-pull-tondo';
-      var pulltease = pull + ' div#about-pull-tease';
-      var pullinfo = pull + ' div#about-pull-info';
-      var pullsummary = pull + ' div#about-pull-summary';
+      var pullHandle = pull + ' div#about-pull-handle';
+      var pullTondo = pull + ' div#about-pull-tondo';
+      var pullAboutMe = pull + ' div#about-me';
+      var pullAboutMillie = pull + ' div#about-millie';
+      var pullAboutLearning = pull + ' div#about-learning';
+        var pullTease = pull + ' div div.about-pull-tease';
+        var pullInfo = pull + ' div div.about-pull-info';
+        var pullSummary = pull + ' div div.about-pull-summary';
     var contact = about + ' a#about-contact';
   
   var $about = $(about);
     var $hero = $(hero);
     var $pull = $(pull);
-      var $pullhandle = $(pullhandle);
-      var $pulltondo = $(pulltondo);
-      var $pulltease = $(pulltease);
-      var $pullinfo = $(pullinfo);
-      var $pullsummary = $(pullsummary);
+      var $pullHandle = $(pullHandle);
+      var $pullTondo = $(pullTondo);
+      
+      var $pullAboutMe = $(pullAboutMe);
+      var $pullAboutMillie = $(pullAboutMillie);
+      var $pullAboutLearning = $(pullAboutLearning);
+      
+        var $pullTease = $(pullTease);
+        var $pullInfo = $(pullInfo);
+        var $pullSummary = $(pullSummary);
+        
     var $contact = $(contact);
   
-  var $responsive = $([pullhandle, contact, pulltondo].join(', '));
-  
-  var aboutContent = {
-    griz: {
-      tondo: '#',
-      // tease: 'I AM GRIZ',
-      tease: '_ __ ____',
-      info: 'I enjoy creating beautifully designed experiences.',
-      summary: 'Contact me for your next website or job',
-    },
-    
-    millie: {
-      tondo: '#',
-      tease: 'FEAR THE PUP MILLIE',
-      info: 'Rescued and sassy. She loves playing with bones and howling at strangers.',
-      summary: 'Will demand play before cuddles',
-    },
-    
-    learn: {
-      tondo: '#',
-      tease: 'LEARNING AND LISTENING',
-      info: 'I have a passion for learning new tech and methods. I often have to apply new concepts before completely learning them.',
-      summary: 'I am always up for a challenge.',
-    },
-  };
-  
-  // $pulltease.html('<span>I AM GRIZ</span>');
-  $pulltease.html('<span>' + aboutContent.griz.tease + '</span>');
-  $pullinfo.html('<span>' + aboutContent.griz.info + '</span>');
-  $pullsummary.html('<span>' + aboutContent.griz.summary + '</span>');
+  var $responsive = $([pullHandle, contact, pullTondo].join(', '));
   
   var heroFill = function() {
     $about.css({
@@ -70,14 +50,14 @@ $( document ).on('turbolinks:load', function() {
     var windowWidth =  $( window ).width();
     
     if (windowHeight > windowWidth) {
-      $pulltondo.css({
+      $pullTondo.css({
         height: windowWidth - 30,
         width: windowWidth - 30,
         top: $( window ).height() / 2 - windowWidth / 2 - $pull.offset().top + 15,
         right: 15,
       });
     } else {
-      $pulltondo.css({
+      $pullTondo.css({
         height: windowHeight - 30,
         width: windowHeight - 30,
         top: 15 - $pull.offset().top,
@@ -92,41 +72,43 @@ $( document ).on('turbolinks:load', function() {
   $( window ).resize(function() {
     heroFill();
     contactSize();
-    if ($pulltondo.hasClass('focus')) {
+    if ($pullTondo.hasClass('focus')) {
       tondoPosition();
     }
   })
   
   var togglePull = function() {
     if ($(this).hasClass('mousedown')) {
-      $pullhandle.removeClass('mousedown hover');
+      $pullHandle.removeClass('mousedown hover');
       
       if ($pull.hasClass('show')) {
         $pull.removeClass('show');
-        $pullhandle.html('<span>></span>');
+        $pullHandle.html('<span>></span>');
         $hero.removeClass('shrink');
       } else {
         $pull.addClass('show');
-        $pullhandle.html('<span><</span>');
+        $pullHandle.html('<span><</span>');
         $hero.addClass('shrink');
+        
+        $pullAboutMillie.addClass('show');
       }
     }
   };
   
   var toggleTondo = function() {
-    if ($pulltondo.hasClass('mousedown')) {
-      $pulltondo.removeClass('mousedown hover');
+    if ($pullTondo.hasClass('mousedown')) {
+      $pullTondo.removeClass('mousedown hover');
       
-      if ($pulltondo.hasClass('focus')) {
-        $pulltondo.removeClass('focus');
-        $pulltondo.css({
+      if ($pullTondo.hasClass('focus')) {
+        $pullTondo.removeClass('focus');
+        $pullTondo.css({
           height: '',
           width: '',
           top: '',
           right: '',
         });
       } else {
-        $pulltondo.addClass('focus');
+        $pullTondo.addClass('focus');
         tondoPosition();
       }
     }
@@ -136,13 +118,13 @@ $( document ).on('turbolinks:load', function() {
     $(this).addClass('mousedown');
   });
   
-  $pullhandle.on('mouseup touchend touchcancel', togglePull);
+  $pullHandle.on('mouseup touchend touchcancel', togglePull);
   
   $contact.on('mouseup touchend touchcancel', function() {
     $contact.removeClass('mousedown hover');
   });
   
-  $pulltondo.on('mouseup touchend touchcancel', toggleTondo);
+  $pullTondo.on('mouseup touchend touchcancel', toggleTondo);
   
   $responsive.on('mouseenter', function() {
     $(this).addClass('hover');
