@@ -58,8 +58,8 @@ section#about {
       @include align-items(center);
       position: absolute;
       height: 100%;
-      width: 128px;
-      right: -128px;
+      width: 10%;
+      right: -10%;
       bottom: 0;
       background: transparent;
       color: white;
@@ -67,10 +67,7 @@ section#about {
       font-size: 5rem;
       z-index: 2;
       
-      @include transition(font-size, 0.2s, cubic-bezier(.25,1,.5,1), 0s);
       @include transition(right, 1s, cubic-bezier(.25,1,.5,1), 0s);
-      
-      @include respond-to(phone) { padding-top: 30%; }
       
       span {
         display: block;
@@ -81,12 +78,12 @@ section#about {
       
       &.hover {
         background: rgba(0,0,0,0.1);
-        font-size: 7.5rem;
+        font-size: 6.5rem;
       }
       
       &.mousedown {
         background: rgba(0,0,0,0.2);
-        font-size: 10rem;
+        font-size: 8rem;
       }
     }
     
@@ -95,13 +92,12 @@ section#about {
       height: 128px;
       width: 128px;
       top: -64px;
-      right: calc(12.5% - 64px);
+      right: 100%;
       background: white;
       cursor: pointer;
       z-index: 2;
     
       @include border-radius(64px);
-      
       @include transition(all, 1s, cubic-bezier(.25,1,.5,1), 0s);
       
       &.focus {
@@ -129,8 +125,8 @@ section#about {
         @include transition(opacity, 1s, cubic-bezier(.25,1,.5,1), 0s);
         
         @include respond-to(phone) {
-          height: 33%;
-          width: 100%;
+          height: 25%;
+          width: 90%;
         }
         
         span {
@@ -145,6 +141,8 @@ section#about {
         font-size: 3rem;
         
         @include align-items(flex-start);
+        
+        @include respond-to(phone) { top: 25%; }
       }
       
       div.about-pull-info {
@@ -153,7 +151,7 @@ section#about {
         
         @include align-items(center);
         
-        @include respond-to(phone) { top: 33%; left: 0; }
+        @include respond-to(phone) { top: 50%; left: 0; }
       }
       
       div.about-pull-summary {
@@ -163,7 +161,7 @@ section#about {
         
         @include align-items(flex-end);
         
-        @include respond-to(phone) { top: 66%; left: 0; }
+        @include respond-to(phone) { top: 75%; left: 0; }
       }
     }
     
@@ -172,6 +170,10 @@ section#about {
       
       div#about-pull-handle {
         right: 0;
+      }
+      
+      div#about-pull-tondo {
+        right: calc(12.5% - 64px);
       }
     }
   }
