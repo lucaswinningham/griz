@@ -31,20 +31,24 @@ $( document ).on('turbolinks:load', function() {
       tease: 'I AM GRIZ',
       info: 'I enjoy creating beautifully designed experiences',
       summary: 'Contact me for your next website or job',
+      tondo: '<%= asset_path "bear.jpg" %>',
     },
     {
       tease: 'FEAR THE PUP MILLIE',
       info: 'Rescued and sassy, she loves playing with bones and howling at strangers',
       summary: 'Will demand play before cuddles',
+      tondo: '<%= asset_path "millie.jpg" %>',
     },
     {
       tease: 'LEARNING AND LISTENING',
       info: 'I am a tinkerer by nature and love solving problems with new tools',
       summary: 'I am always up for a challenge',
+      tondo: '<%= asset_path "learning.jpg" %>',
     },
   ];
     
   $pullBreadCrumbs.html('<span class="active"></span>');
+  
   content.forEach(function(val, i) {
     if (i > 0) {
       $pullBreadCrumbs.append('<span></span>');
@@ -141,6 +145,10 @@ $( document ).on('turbolinks:load', function() {
     $pullTease.html('<span>' + newContent.tease + '</span>');
     $pullInfo.html('<span>' + newContent.info + '</span>');
     $pullSummary.html('<span>' + newContent.summary + '</span>');
+  
+    $pullTondo.css({
+      backgroundImage: 'url(' + newContent.tondo + ')',
+    });
   };
   
   setContent(0);

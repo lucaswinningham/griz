@@ -98,6 +98,12 @@ section#about {
       background: white;
       cursor: pointer;
       z-index: 2;
+      
+      // background-image: image-url("me.jpg");
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-color: #ccc;
+      background-size: cover;
     
       @include border-radius(64px);
       @include transition(all, 1s, $normal-bezier, 0s);
