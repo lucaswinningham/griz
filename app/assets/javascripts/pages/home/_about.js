@@ -6,9 +6,10 @@ $( document ).on('turbolinks:load', function() {
     var pull = about + ' div#about-pull';
       var pullHandle = pull + ' div#about-pull-handle';
       var pullTondo = pull + ' div#about-pull-tondo';
-      var pullAboutMe = pull + ' div#about-me';
-      var pullAboutMillie = pull + ' div#about-millie';
-      var pullAboutLearning = pull + ' div#about-learning';
+      var pullContent = pull + ' div#about-pull-content';
+      // var pullAboutMe = pull + ' div#about-me';
+      // var pullAboutMillie = pull + ' div#about-millie';
+      // var pullAboutLearning = pull + ' div#about-learning';
         var pullTease = pull + ' div div.about-pull-tease';
         var pullInfo = pull + ' div div.about-pull-info';
         var pullSummary = pull + ' div div.about-pull-summary';
@@ -19,10 +20,11 @@ $( document ).on('turbolinks:load', function() {
     var $pull = $(pull);
       var $pullHandle = $(pullHandle);
       var $pullTondo = $(pullTondo);
+      var $pullContent = $(pullContent);
       
-      var $pullAboutMe = $(pullAboutMe);
-      var $pullAboutMillie = $(pullAboutMillie);
-      var $pullAboutLearning = $(pullAboutLearning);
+      // var $pullAboutMe = $(pullAboutMe);
+      // var $pullAboutMillie = $(pullAboutMillie);
+      // var $pullAboutLearning = $(pullAboutLearning);
       
         var $pullTease = $(pullTease);
         var $pullInfo = $(pullInfo);
@@ -38,12 +40,16 @@ $( document ).on('turbolinks:load', function() {
     });
   };
   
+  heroFill();
+  
   var contactSize = function() {
     $contact.css({
       'height': $( window ).height() / 12,
       'font-size': $( window ).height() / 24,
     });
   };
+  
+  contactSize();
   
   var tondoPosition = function() {
     var windowHeight = $( window ).height();
@@ -66,16 +72,69 @@ $( document ).on('turbolinks:load', function() {
     }
   };
   
-  heroFill();
-  contactSize();
-  
   $( window ).resize(function() {
     heroFill();
     contactSize();
     if ($pullTondo.hasClass('focus')) {
       tondoPosition();
     }
-  })
+  });
+  
+  var newContent = function(tease, info, summary) {
+    return {
+      tease: tease,
+      info: info,
+      summary: summary,
+    };
+  };
+  
+  var content = [
+    newContent(
+      'I AM GRIZ',
+      'I enjoy creating beautifully designed experiences',
+      'Contact me for your next website or job'
+    ),
+    newContent(
+      'FEAR THE PUP MILLIE',
+      'Rescued and sassy, she loves playing with bones and howling at strangers',
+      'Will demand play before cuddles'
+    ),
+    newContent(
+      'LEARNING AND LISTENING',
+      'I am a tinkerer by nature and love solving problems with new tools',
+      'I am always up for a challenge'
+    ),
+  ];
+  
+  var contentPointer = 2;
+  
+  var setContent = function(content) {
+    $pullTease.html('<span>' + content.tease + '</span>');
+    $pullInfo.html('<span>' + content.info + '</span>');
+    $pullSummary.html('<span>' + content.summary + '</span>');
+  };
+  
+  setContent(content[contentPointer]);
+  
+  var nextContent = function() {
+    contentPointer += 1;
+    
+    if (contentPointer >= content.length) {
+      contentPointer = 0;
+    }
+    
+    setContent(content[contentPointer]);
+  };
+  
+  var prevContent = function() {
+    if (contentPointer <= 0) {
+      contentPointer = content.length;
+    }
+    
+    contentPointer -= 1;
+    
+    setContent(content[contentPointer]);
+  };
   
   var togglePull = function() {
     if ($(this).hasClass('mousedown')) {
@@ -89,8 +148,6 @@ $( document ).on('turbolinks:load', function() {
         $pull.addClass('show');
         $pullHandle.html('<span><</span>');
         $hero.addClass('shrink');
-        
-        $pullAboutMillie.addClass('show');
       }
     }
   };

@@ -108,13 +108,9 @@ section#about {
       }
     }
     
-    div#about-me, div#about-millie, div#about-learning {
-      opacity: 0;
+    // div#about-me, div#about-millie, div#about-learning {
+    div#about-pull-content {
       z-index: -1;
-      
-      &.show {
-        opacity: 1;
-      }
       
       div.about-pull-tease, div.about-pull-info, div.about-pull-summary {
         @include display-flex;
@@ -190,6 +186,7 @@ section#about {
         // 10% for pull, 30% / 2 to center, 128px / 2 to center
         right: calc(25% - 64px);
         
+        // 10% for pull, 90% / 2 to center, 128px / 2 to center
         @include respond-to(phone) { right: calc(55% - 64px); }
       }
     }
