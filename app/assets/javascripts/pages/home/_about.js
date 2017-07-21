@@ -7,12 +7,11 @@ $( document ).on('turbolinks:load', function() {
       var pullHandle = pull + ' div#about-pull-handle';
       var pullTondo = pull + ' div#about-pull-tondo';
       var pullContent = pull + ' div#about-pull-content';
-      // var pullAboutMe = pull + ' div#about-me';
-      // var pullAboutMillie = pull + ' div#about-millie';
-      // var pullAboutLearning = pull + ' div#about-learning';
-        var pullTease = pull + ' div div.about-pull-tease';
-        var pullInfo = pull + ' div div.about-pull-info';
-        var pullSummary = pull + ' div div.about-pull-summary';
+        var pullTease = pullContent + ' div.about-pull-tease';
+        var pullInfo = pullContent + ' div.about-pull-info';
+        var pullSummary = pullContent + ' div.about-pull-summary';
+      var pullBreadcrumbs = pull + ' div#about-pull-breadcrumbs';
+        var pullBreadcrumb = pullBreadcrumbs + ' span';
     var contact = about + ' a#about-contact';
   
   var $about = $(about);
@@ -21,18 +20,40 @@ $( document ).on('turbolinks:load', function() {
       var $pullHandle = $(pullHandle);
       var $pullTondo = $(pullTondo);
       var $pullContent = $(pullContent);
-      
-      // var $pullAboutMe = $(pullAboutMe);
-      // var $pullAboutMillie = $(pullAboutMillie);
-      // var $pullAboutLearning = $(pullAboutLearning);
-      
         var $pullTease = $(pullTease);
         var $pullInfo = $(pullInfo);
         var $pullSummary = $(pullSummary);
-        
+      var $pullBreadCrumbs = $(pullBreadcrumbs);
     var $contact = $(contact);
   
-  var $responsive = $([pullHandle, contact, pullTondo].join(', '));
+  var content = [
+    {
+      tease: 'I AM GRIZ',
+      info: 'I enjoy creating beautifully designed experiences',
+      summary: 'Contact me for your next website or job',
+    },
+    {
+      tease: 'FEAR THE PUP MILLIE',
+      info: 'Rescued and sassy, she loves playing with bones and howling at strangers',
+      summary: 'Will demand play before cuddles',
+    },
+    {
+      tease: 'LEARNING AND LISTENING',
+      info: 'I am a tinkerer by nature and love solving problems with new tools',
+      summary: 'I am always up for a challenge',
+    },
+  ];
+    
+  $pullBreadCrumbs.html('<span class="active"></span>');
+  content.forEach(function(val, i) {
+    if (i > 0) {
+      $pullBreadCrumbs.append('<span></span>');
+    }
+  });
+  
+  var $pullBreadcrumb = $(pullBreadcrumb);
+  
+  var $responsive = $([pullHandle, contact, pullTondo, pullBreadcrumb].join(', '));
   
   var heroFill = function() {
     $about.css({
@@ -80,62 +101,6 @@ $( document ).on('turbolinks:load', function() {
     }
   });
   
-  var newContent = function(tease, info, summary) {
-    return {
-      tease: tease,
-      info: info,
-      summary: summary,
-    };
-  };
-  
-  var content = [
-    newContent(
-      'I AM GRIZ',
-      'I enjoy creating beautifully designed experiences',
-      'Contact me for your next website or job'
-    ),
-    newContent(
-      'FEAR THE PUP MILLIE',
-      'Rescued and sassy, she loves playing with bones and howling at strangers',
-      'Will demand play before cuddles'
-    ),
-    newContent(
-      'LEARNING AND LISTENING',
-      'I am a tinkerer by nature and love solving problems with new tools',
-      'I am always up for a challenge'
-    ),
-  ];
-  
-  var contentPointer = 2;
-  
-  var setContent = function(content) {
-    $pullTease.html('<span>' + content.tease + '</span>');
-    $pullInfo.html('<span>' + content.info + '</span>');
-    $pullSummary.html('<span>' + content.summary + '</span>');
-  };
-  
-  setContent(content[contentPointer]);
-  
-  var nextContent = function() {
-    contentPointer += 1;
-    
-    if (contentPointer >= content.length) {
-      contentPointer = 0;
-    }
-    
-    setContent(content[contentPointer]);
-  };
-  
-  var prevContent = function() {
-    if (contentPointer <= 0) {
-      contentPointer = content.length;
-    }
-    
-    contentPointer -= 1;
-    
-    setContent(content[contentPointer]);
-  };
-  
   var togglePull = function() {
     if ($(this).hasClass('mousedown')) {
       $pullHandle.removeClass('mousedown hover');
@@ -171,6 +136,27 @@ $( document ).on('turbolinks:load', function() {
     }
   };
   
+  var setContent = function(index) {
+    var newContent = content[index];
+    $pullTease.html('<span>' + newContent.tease + '</span>');
+    $pullInfo.html('<span>' + newContent.info + '</span>');
+    $pullSummary.html('<span>' + newContent.summary + '</span>');
+  };
+  
+  setContent(0);
+  
+  var updateContent = function() {
+    if ($(this).hasClass('mousedown')) {
+      $(this).removeClass('mousedown hover');
+      
+      if (!$(this).hasClass('active')) {
+        setContent($(this).index());
+        $pullBreadcrumb.removeClass('active');
+        $(this).addClass('active');
+      }
+    }
+  };
+  
   $responsive.on('mousedown', function() {
     $(this).addClass('mousedown');
   });
@@ -182,6 +168,8 @@ $( document ).on('turbolinks:load', function() {
   });
   
   $pullTondo.on('mouseup touchend touchcancel', toggleTondo);
+  
+  $pullBreadcrumb.on('mouseup touchend touchcancel', updateContent);
   
   $responsive.on('mouseenter', function() {
     $(this).addClass('hover');

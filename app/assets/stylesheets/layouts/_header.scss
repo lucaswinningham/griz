@@ -11,7 +11,7 @@ header#navigation {
     display: block;
     z-index: 3;
     
-    @include transition(transform, 1s, cubic-bezier(.25,1,.5,1), 0s);
+    @include transition(transform, 1s, $normal-bezier, 0s);
     
     a {
       @include display-flex;
@@ -30,7 +30,7 @@ header#navigation {
       @include respond-to(tablet) { font-size: 2.75rem; }
       @include respond-to(desktop) { font-size: 3rem; }
       
-      @include transition(transform, 1s, cubic-bezier(.25,1,.5,1), 0s);
+      @include transition(transform, 1s, $normal-bezier, 0s);
       
       &.hover {
         background-color: rgba(255,255,255,0.1);
