@@ -38,9 +38,10 @@ section#about {
     
     &.shrink {
       @include transition(all, 1s, $normal-bezier, 0s);
-      height: 33%;
       
       @include respond-to(phone) { opacity: 0; }
+      @include respond-to(tablet) { height: 33%; padding-right: 10%; }
+      @include respond-to(desktop) { height: 33%; padding-right: 10%; }
     }
   }
   
@@ -91,25 +92,22 @@ section#about {
     
     div#about-pull-tondo {
       position: absolute;
-      height: 128px;
-      width: 128px;
-      top: -64px;
+      width: 20%;
       right: 100%;
       background: white;
       cursor: pointer;
       z-index: 2;
       
-      // background-image: image-url("me.jpg");
       background-repeat: no-repeat;
       background-position: center center;
       background-color: #ccc;
       background-size: cover;
     
-      @include border-radius(64px);
+      @include border-radius(50%);
       @include transition(all, 1s, $normal-bezier, 0s);
       
       &.focus {
-        @include border-radius(4px);
+        @include border-radius(16px);
       }
     }
     
@@ -211,11 +209,11 @@ section#about {
       }
       
       div#about-pull-tondo {
-        // 10% for pull, 30% / 2 to center, 128px / 2 to center
-        right: calc(25% - 64px);
+        // 10% for pull, 30% / 2 to center, 20% / 2 to center
+        right: 15%;
         
-        // 10% for pull, 90% / 2 to center, 128px / 2 to center
-        @include respond-to(phone) { right: calc(55% - 64px); }
+        // 10% for pull, 90% / 2 to center, 20% / 2 to center
+        @include respond-to(phone) { right: 45%; }
       }
     }
   }

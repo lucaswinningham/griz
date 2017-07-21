@@ -97,12 +97,25 @@ $( document ).on('turbolinks:load', function() {
     }
   };
   
+  var tondoSize = function() {
+    var width = $pullTondo.width();
+    $pullTondo.originalHeight = width + 'px';
+    $pullTondo.originalTop = (-width / 2) + 'px';
+    $pullTondo.css({
+      height: $pullTondo.originalHeight,
+      top: $pullTondo.originalTop,
+    });
+  };
+  
+  tondoSize();
+  
   $( window ).resize(function() {
     heroFill();
     contactSize();
     if ($pullTondo.hasClass('focus')) {
       tondoPosition();
     }
+    tondoSize();
   });
   
   var togglePull = function() {
@@ -128,9 +141,9 @@ $( document ).on('turbolinks:load', function() {
       if ($pullTondo.hasClass('focus')) {
         $pullTondo.removeClass('focus');
         $pullTondo.css({
-          height: '',
+          height: $pullTondo.originalHeight,
           width: '',
-          top: '',
+          top: $pullTondo.originalTop,
           right: '',
         });
       } else {
