@@ -79,27 +79,29 @@ header#navigation {
   
   div#burger {
     position: fixed;
-    right: 40px;
     cursor: pointer;
     background-color: transparent;
     z-index: 4;
     
     @include respond-to(phone) {
-      height: 100px;
-      width: 100px;
-      top: 15px;
+      height: 50px;
+      width: 50px;
+      top: -2.5px;
+      right: 10px;
     }
     
     @include respond-to(tablet) {
-      height: 125px;
-      width: 125px;
-      top: 8.5px;
+      height: 100px;
+      width: 100px;
+      top: -5px;
+      right: 20px;
     }
     
     @include respond-to(desktop) {
       height: 150px;
       width: 150px;
-      top: 2.5px;
+      top: -7.5px;
+      right: 30px;
     }
     
     @include user-select(none);
@@ -128,8 +130,11 @@ header#navigation {
     }
     
     &.cross {
-      top: 40px;
       @include transform(rotate(90deg));
+    
+      @include respond-to(phone) { top: 10px; }
+      @include respond-to(tablet) { top: 20px; }
+      @include respond-to(desktop) { top: 30px; }
     }
     
     &.cross.closing, &.lines {
