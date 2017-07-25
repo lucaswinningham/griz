@@ -42,10 +42,8 @@ section#about {
     
     &.shrink {
       @include transition(all, 1s, $normal-bezier, 0s);
-      
-      @include respond-to(phone) { opacity: 0; }
-      @include respond-to(tablet) { height: 33%; padding-right: 10%; }
-      @include respond-to(desktop) { height: 33%; padding-right: 10%; }
+      height: 33%;
+      padding-right: 10%;
     }
   }
   
@@ -151,11 +149,7 @@ section#about {
         
         @include align-items(flex-start);
         
-        @include respond-to(phone) {
-          // top: 10%;
-          font-size: 30px;
-          // @include align-items(center);
-        }
+        @include respond-to(phone) { font-size: 30px; }
       }
       
       div.about-pull-info {
@@ -193,7 +187,6 @@ section#about {
     
     div#about-pull-breadcrumbs {
       position: absolute;
-      // height: 10%;
       bottom: 0;
       
       span {
