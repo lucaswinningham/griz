@@ -1,9 +1,9 @@
 section#about {
   background: map-get($mex, blue);
   box-sizing: content-box;
-  border-bottom: 100px solid map-get($mex, blue);
-  
-  @include respond-to(phone) { border-bottom: 100px solid map-get($mex, blue); }
+  border-bottom-width: 100px;
+  border-bottom-style: solid;
+  border-image: linear-gradient(to bottom, map-get($mex, blue) 0%, map-get($mex, purple) 100%) 0 0 100% 0/0 0 100px 0 stretch;
   
   div#about-hero {
     @include display-flex;
@@ -56,11 +56,13 @@ section#about {
     height: 67%;
     width: 100%;
     bottom: 0px;
+    border: 4px solid white;
     right: 100%;
-    background: map-get($mex, green);
+    background: map-get($mex, blue);
     z-index: 1;
     
     @include transition(all, 1s, $normal-bezier, 0s);
+    @include border-radius(8px 8px 0 0);
     
     div#about-pull-handle {
       @include display-flex;
@@ -76,6 +78,7 @@ section#about {
       z-index: 2;
       
       @include transition(right, 1s, $normal-bezier, 0s);
+      @include border-radius(0 5px 5px 0);
       
       @include respond-to(phone) { font-size: 55px; }
       @include respond-to(tablet) { font-size: 85px; }
@@ -217,6 +220,8 @@ section#about {
       
       div#about-pull-handle {
         right: 0;
+        
+        @include border-radius(5px 5px 0 5px);
       }
       
       div#about-pull-tondo {
