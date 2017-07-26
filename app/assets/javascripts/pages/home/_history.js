@@ -37,7 +37,7 @@ $( document ).on('turbolinks:load', function() {
   content.forEach(function(val, i) {
     $detents.append('<span></span>');
     
-    var cardHead = '<div class="history-card-head">' + val.head + '</div>';
+    var cardHead = '<div class="history-card-head"><span>' + val.head + '</span></div>';
     var cardBody = '<div class="history-card-body">' + val.body + '</div>';
     var card = '<div class="history-card">' + cardHead + cardBody + '</div>';
     $cards.append(card);
@@ -62,6 +62,14 @@ $( document ).on('turbolinks:load', function() {
   
   sectionFill();
   
+  var repositionSlider = function() {
+    var trackOffset = Math.floor($track.position().top);
+    var sliderRatio = (parseInt($slider.css('top')) - trackOffset) / (trackBot - trackTop);
+    var newSliderPosition = $track.outerHeight() * sliderRatio + trackOffset;
+    console.log(sliderRatio)
+    $slider.css({top: newSliderPosition + 'px'});
+  };
+  
   var trackExtents = function() {
     trackTop = $track.offset().top;
     trackBot = $track.offset().top + $track.outerHeight();
@@ -83,6 +91,7 @@ $( document ).on('turbolinks:load', function() {
   
   $( window ).resize(function() {
     sectionFill();
+    repositionSlider();
     trackExtents();
     positionDetents();
   });
@@ -99,15 +108,15 @@ $( document ).on('turbolinks:load', function() {
       
       if (userPosition > trackTop && userPosition < trackBot) {
         if ((mid + diff > trackTop) && (mid + diff < trackBot)) {
-          var newSliderPosition = userPosition - mousedown + cssTop;
+          var newSliderPosition = diff + cssTop;
           
         	$slider.css({top: newSliderPosition + 'px'});
         	
-        	var relativeSliderPostion = newSliderPosition - $track.position().top;
+        	var relativeSliderPosition = newSliderPosition - $track.position().top;
           
           $card.each(function(i) {
-            if (relativeSliderPostion > detentInflections[i]) {
-              if (relativeSliderPostion < detentInflections[i + 1]) {
+            if (relativeSliderPosition > detentInflections[i]) {
+              if (relativeSliderPosition < detentInflections[i + 1]) {
                 $(this).removeClass('away').addClass('focus');
               } else {
                 $(this).removeClass('focus').addClass('away');

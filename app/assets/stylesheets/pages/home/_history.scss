@@ -63,29 +63,46 @@ section#history {
     
     div.history-card {
       position: absolute;
-      // 100% - ((track left - track width / 2) + track width + (track left - track width / 2) * 2 + burger width + burger right)
-      @include respond-to(phone) { width: calc(100% - 140px); }
-      @include respond-to(tablet) { width: calc(100% - 200px); }
-      @include respond-to(desktop) { width: calc(100% - 260px); }
+      // 100% - track left * 3
+      width: calc(100% - 90px);
       height: calc(100% - 60px);
       left: 110%;
       top: 110%;
-      border: 4px solid white;
+      // border: 4px solid white;
       padding: 10px;
       
       @include transition(all, 1s, $normal-bezier, 0s);
       @include border-radius(8px);
       
       div.history-card-head {
+        @include display-flex;
+        @include align-items(center);
         position: relative;
         height: 15%;
         width: 100%;
+        font-size: 60px;
+        border-bottom: 4px solid white;
+        
+        @include respond-to(phone) { font-size: 30px; }
+        
+        span {
+          display: block;
+          width: 100%;
+          text-align: center;
+          position: relative;
+        }
       }
       
       div.history-card-body {
+        @include display-flex;
+        @include align-items(flex-start);
         position: relative;
         height: 85%;
         width: 100%;
+        padding: 10px;
+        font-size: 30px;
+        
+        @include respond-to(phone) { font-size: 15px; }
       }
       
       &.focus {
