@@ -11,6 +11,14 @@ $( document ).on('turbolinks:load', function() {
   
   var $responsive = $([slider].join(', '));
   
+  var sectionFill = function() {
+    $history.css({
+      'height': $( window ).height(),
+    });
+  };
+  
+  sectionFill();
+  
   var mousedown;
   var trackTop;
   var trackBot;
@@ -23,6 +31,7 @@ $( document ).on('turbolinks:load', function() {
   trackExtents();
   
   $( window ).resize(function() {
+    sectionFill();
     trackExtents();
   });
   

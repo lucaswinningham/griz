@@ -57,6 +57,7 @@ $( document ).on('turbolinks:load', function() {
       if ($(this).is(navlink)) {
         $navlink.removeClass('active');
         $(this).addClass('active');
+        $('html,body').animate({scrollTop: $($(this).attr('href')).offset().top},0);
       }
     }
   };

@@ -59,22 +59,13 @@ $( document ).on('turbolinks:load', function() {
   
   var $responsive = $([pullHandle, contact, pullTondo, pullBreadcrumb].join(', '));
   
-  var heroFill = function() {
+  var sectionFill = function() {
     $about.css({
       'height': $( window ).height(),
     });
   };
   
-  heroFill();
-  
-  var contactSize = function() {
-    $contact.css({
-      'height': $( window ).height() / 12,
-      'font-size': $( window ).height() / 24,
-    });
-  };
-  
-  contactSize();
+  sectionFill();
   
   var tondoPosition = function() {
     var windowHeight = $( window ).height();
@@ -110,8 +101,7 @@ $( document ).on('turbolinks:load', function() {
   tondoSize();
   
   $( window ).resize(function() {
-    heroFill();
-    contactSize();
+    sectionFill();
     if ($pullTondo.hasClass('focus')) {
       tondoPosition();
     }
@@ -184,8 +174,22 @@ $( document ).on('turbolinks:load', function() {
   
   $pullHandle.on('mouseup touchend touchcancel', togglePull);
   
-  $contact.on('mouseup touchend touchcancel', function() {
+  // Screen actually follows link when mouseup event used instead of click
+  $contact.on('click touchend touchcancel', function(e) {
+    e.preventDefault();
+    
     $contact.removeClass('mousedown hover');
+    
+    $('html, body').on('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove', function() {
+      $('html, body').stop();
+      $('html, body').off('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove');
+    });
+    
+    $('html, body').animate({scrollTop: $('#contact').offset().top}, 3000, function() {
+      $('html, body').off('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove');
+    });
+    
+    return false;
   });
   
   $pullTondo.on('mouseup touchend touchcancel', toggleTondo);
