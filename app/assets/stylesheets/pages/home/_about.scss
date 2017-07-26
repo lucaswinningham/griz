@@ -1,5 +1,9 @@
 section#about {
   background: map-get($mex, blue);
+  box-sizing: content-box;
+  border-bottom: 100px solid map-get($mex, blue);
+  
+  @include respond-to(phone) { border-bottom: 100px solid map-get($mex, blue); }
   
   div#about-hero {
     @include display-flex;
