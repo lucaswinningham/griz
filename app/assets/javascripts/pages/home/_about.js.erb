@@ -67,7 +67,7 @@ $( document ).on('turbolinks:load', function() {
   
   sectionFill();
   
-  var tondoPosition = function() {
+  var tondoFocus = function() {
     var windowHeight = $( window ).height();
     var windowWidth =  $( window ).width();
     
@@ -75,37 +75,39 @@ $( document ).on('turbolinks:load', function() {
       $pullTondo.css({
         height: windowWidth - 30,
         width: windowWidth - 30,
-        top: $( window ).height() / 2 - windowWidth / 2 - $pull.offset().top + 15,
-        right: 15,
+        top: $( window ).height() / 2 - windowWidth / 2 - $pull.offset().top + 15 - 4,
+        right: 15 - 4,
       });
     } else {
       $pullTondo.css({
         height: windowHeight - 30,
         width: windowHeight - 30,
-        top: 15 - $pull.offset().top,
-        right: $( window ).width() / 2 - windowHeight / 2 + 15,
+        top: 15 - 4 - $pull.offset().top,
+        right: $( window ).width() / 2 - windowHeight / 2 + 15 - 4,
       });
     }
   };
   
-  var tondoSize = function() {
-    var width = $pullTondo.width();
-    $pullTondo.originalHeight = width + 'px';
-    $pullTondo.originalTop = (-width / 2) + 'px';
+  var tondoUnfocus = function() {
+    var windowWidth =  $( window ).width();
+    
     $pullTondo.css({
-      height: $pullTondo.originalHeight,
-      top: $pullTondo.originalTop,
+      height: windowWidth / 5,
+      width: '',
+      top: (-windowWidth / 10),
+      right: '',
     });
   };
   
-  tondoSize();
+  tondoUnfocus();
   
   $( window ).resize(function() {
     sectionFill();
     if ($pullTondo.hasClass('focus')) {
-      tondoPosition();
+      tondoFocus();
+    } else {
+      tondoUnfocus();
     }
-    tondoSize();
   });
   
   var togglePull = function() {
@@ -130,15 +132,10 @@ $( document ).on('turbolinks:load', function() {
       
       if ($pullTondo.hasClass('focus')) {
         $pullTondo.removeClass('focus');
-        $pullTondo.css({
-          height: $pullTondo.originalHeight,
-          width: '',
-          top: $pullTondo.originalTop,
-          right: '',
-        });
+        tondoUnfocus();
       } else {
         $pullTondo.addClass('focus');
-        tondoPosition();
+        tondoFocus();
       }
     }
   };
@@ -185,7 +182,8 @@ $( document ).on('turbolinks:load', function() {
       $('html, body').off('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove');
     });
     
-    $('html, body').animate({scrollTop: $('#contact').offset().top}, 3000, function() {
+    // + 50 for border
+    $('html, body').animate({scrollTop: $('#contact').offset().top + 50}, 3000, function() {
       $('html, body').off('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove');
     });
     

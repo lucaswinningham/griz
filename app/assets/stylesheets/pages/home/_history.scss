@@ -1,9 +1,8 @@
 section#history {
   background: map-get($mex, purple);
   box-sizing: content-box;
-  border-bottom-width: 100px;
-  border-bottom-style: solid;
-  border-image: linear-gradient(to bottom, map-get($mex, purple) 0%, map-get($mex, green) 100%) 0 0 100% 0/0 0 100px 0 stretch;
+  border-top: 50px solid map-get($mex, purple);
+  border-bottom: 50px solid map-get($mex, purple);
   position: relative;
   overflow-x: hidden;
   overflow-y: hidden;

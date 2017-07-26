@@ -1,9 +1,7 @@
 section#about {
   background: map-get($mex, blue);
   box-sizing: content-box;
-  border-bottom-width: 100px;
-  border-bottom-style: solid;
-  border-image: linear-gradient(to bottom, map-get($mex, blue) 0%, map-get($mex, purple) 100%) 0 0 100% 0/0 0 100px 0 stretch;
+  border-bottom: 50px solid map-get($mex, blue);
   
   div#about-hero {
     @include display-flex;
@@ -23,7 +21,8 @@ section#about {
       
       span#about-hero-large {
         font-weight: normal;
-        font-size: 60px;
+        // font-size: 60px;
+        font-size: 3.75em;
         display: block;
         width: 100%;
         text-align: center;
@@ -33,7 +32,7 @@ section#about {
       }
       
       span#about-hero-small {
-        font-size: 45px;
+        font-size: 2.8em;
         display: block;
         height: 50%;
         width: 100%;
