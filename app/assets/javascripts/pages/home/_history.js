@@ -8,12 +8,18 @@ $( document ).on('turbolinks:load', function() {
     var slider = history + ' div#history-slider';
     var cards = history + ' div#history-cards';
       var card = cards + ' div.history-card';
+      var heroCard = cards + ' div#history-card-hero';
+      var contactCard = cards + ' div#history-card-contact';
+            var contact = contactCard + ' div div.history-card-body a#history-contact';
   
   var $history = $(history);
     var $track = $(track);
     var $slider = $(slider);
     var $detents = $(detents);
     var $cards = $(cards);
+      var $heroCard = $(heroCard);
+      var $contactCard = $(contactCard);
+            var $contact = $(contact);
   
   var content = [
     {
@@ -46,7 +52,7 @@ $( document ).on('turbolinks:load', function() {
   var $detent = $(detent);
   var $card = $(card);
   
-  var $responsive = $([slider].join(', '));
+  var $responsive = $([slider, contact].join(', '));
   
   var mousedown;
   var trackTop;
@@ -131,6 +137,8 @@ $( document ).on('turbolinks:load', function() {
             if (relativeSliderPosition > detentInflections[i]) {
               if (relativeSliderPosition < detentInflections[i + 1]) {
                 $(this).removeClass('away').addClass('focus');
+                $heroCard.removeClass('focus').addClass('away');
+                $contactCard.removeClass('focus');
               } else {
                 $(this).removeClass('focus').addClass('away');
               }
@@ -138,6 +146,14 @@ $( document ).on('turbolinks:load', function() {
               $(this).removeClass('focus away');
             }
           });
+          
+          if (relativeSliderPosition < detentInflections[0]) {
+            $heroCard.removeClass('away').addClass('focus');
+          }
+          
+          if (relativeSliderPosition > detentInflections[detentInflections.length - 1]) {
+            $contactCard.addClass('focus');
+          }
         }
       }
       
@@ -159,6 +175,24 @@ $( document ).on('turbolinks:load', function() {
     detentSlider();
   });
   
+  // Screen actually follows link when mouseup event used instead of click
+  $contact.on('click touchend touchcancel', function(e) {
+    e.preventDefault();
+    
+    $contact.removeClass('mousedown hover');
+    
+    $('html, body').on('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove', function() {
+      $('html, body').stop();
+      $('html, body').off('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove');
+    });
+    
+    $('html, body').animate({scrollTop: $('#contact').offset().top}, 2000, function() {
+      $('html, body').off('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove');
+    });
+    
+    return false;
+  });
+  
   $( window ).on('mousemove', function(e) {
     e.preventDefault();
     trackSlider(e.pageY);
@@ -177,10 +211,19 @@ $( document ).on('turbolinks:load', function() {
     detentSlider();
   });
   
-  $responsive.on('touchstart', function(e) {
+  $contact.on('mouseleave', function() {
+    $(this).removeClass('hover mousedown');
+  });
+  
+  $slider.on('touchstart', function(e) {
     e.preventDefault();
     $slider.stop();
     $(this).addClass('mousedown');
   	mousedown = e.originalEvent.touches[0].pageY;
+  });
+  
+  $contact.on('touchstart', function(e) {
+    e.preventDefault();
+    $(this).addClass('mousedown');
   });
 });
