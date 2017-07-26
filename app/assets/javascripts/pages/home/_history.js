@@ -66,7 +66,7 @@ $( document ).on('turbolinks:load', function() {
     var trackOffset = Math.floor($track.position().top);
     var sliderRatio = (parseInt($slider.css('top')) - trackOffset) / (trackBot - trackTop);
     var newSliderPosition = $track.outerHeight() * sliderRatio + trackOffset;
-    console.log(sliderRatio)
+    
     $slider.css({top: newSliderPosition + 'px'});
   };
   
@@ -96,10 +96,23 @@ $( document ).on('turbolinks:load', function() {
     positionDetents();
   });
   
+  var detentSlider = function() {
+    var trackOffset = Math.floor($track.position().top);
+  	var relativeSliderPosition = parseInt($slider.css('top')) - $track.position().top;
+  	// + 4 for border spacing
+    var newSliderPosition = trackOffset + 4;
+          
+    detentInflections.forEach(function(val, i) {
+      if (relativeSliderPosition > val) {
+        newSliderPosition += pxDetentIncrement;
+      }
+    });
+    
+    $slider.animate({top: newSliderPosition + 'px'}, 500);
+  };
+  
   var trackSlider = function(userPosition) {
   	if ($slider.hasClass('mousedown')) {
-  	  $slider.addClass('moving');
-  	  
       var cssTop = parseInt($slider.css('top'));
       var diff = userPosition - mousedown;
       var top = $slider.offset().top;
@@ -137,13 +150,13 @@ $( document ).on('turbolinks:load', function() {
   });
   
   $slider.on('mousedown', function(e) {
+    $slider.stop();
   	mousedown = e.pageY;
   });
   
   $slider.on('touchend touchcancel', function() {
-    if (!$slider.hasClass('moving')) {
-      $slider.removeClass('mousedown hover');
-    }
+    $slider.removeClass('mousedown hover');
+    detentSlider();
   });
   
   $( window ).on('mousemove', function(e) {
@@ -160,12 +173,14 @@ $( document ).on('turbolinks:load', function() {
   });
   
   $( window ).on('mouseup', function() {
-    $slider.removeClass('mousedown hover moving');
+    $slider.removeClass('mousedown hover');
+    detentSlider();
   });
   
   $responsive.on('touchstart', function(e) {
     e.preventDefault();
-    $(this).removeClass('moving').addClass('mousedown');
+    $slider.stop();
+    $(this).addClass('mousedown');
   	mousedown = e.originalEvent.touches[0].pageY;
   });
 });
