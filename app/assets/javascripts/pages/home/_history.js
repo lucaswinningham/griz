@@ -39,7 +39,7 @@ $( document ).on('turbolinks:load', function() {
     
     var cardHead = '<div class="history-card-head"><span>' + val.head + '</span></div>';
     var cardBody = '<div class="history-card-body">' + val.body + '</div>';
-    var card = '<div class="history-card">' + cardHead + cardBody + '</div>';
+    var card = '<div class="history-card"><div>' + cardHead + cardBody + '</div></div>';
     $cards.append(card);
   });
   

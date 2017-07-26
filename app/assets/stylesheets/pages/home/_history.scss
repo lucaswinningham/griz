@@ -64,6 +64,8 @@ section#history {
     color: white;
     
     div.history-card {
+      @include display-flex;
+      @include align-items(center);
       position: absolute;
       // 100% - track left * 3
       width: calc(100% - 90px);
@@ -74,37 +76,43 @@ section#history {
       padding: 10px;
       
       @include transition(all, 1s, $normal-bezier, 0s);
-      @include border-radius(8px);
       
-      div.history-card-head {
-        @include display-flex;
-        @include align-items(center);
-        position: relative;
-        height: 15%;
+      div {
+        display: block;
         width: 100%;
-        font-size: 60px;
-        border-bottom: 4px solid white;
-        
-        @include respond-to(phone) { font-size: 30px; }
-        
-        span {
-          display: block;
-          width: 100%;
-          text-align: center;
+      
+        div.history-card-head {
+            display: block;
+          @include display-flex;
+          @include align-items(center);
           position: relative;
+          height: 15%;
+          width: 100%;
+          font-size: 60px;
+          border-bottom: 4px solid white;
+          
+          @include respond-to(phone) { font-size: 30px; }
+          
+          span {
+            display: block;
+            width: 100%;
+            text-align: center;
+            position: relative;
+          }
         }
-      }
-      
-      div.history-card-body {
-        @include display-flex;
-        @include align-items(flex-start);
-        position: relative;
-        height: 85%;
-        width: 100%;
-        padding: 10px;
-        font-size: 30px;
         
-        @include respond-to(phone) { font-size: 15px; }
+        div.history-card-body {
+            display: block;
+          @include display-flex;
+          @include align-items(flex-start);
+          position: relative;
+          height: 85%;
+          width: 100%;
+          padding: 10px;
+          font-size: 30px;
+          
+          @include respond-to(phone) { font-size: 15px; }
+        }
       }
       
       &.focus {
