@@ -21,14 +21,13 @@ section#about {
       
       span#about-hero-large {
         font-weight: normal;
-        // font-size: 60px;
         font-size: 3.75em;
         display: block;
         width: 100%;
         text-align: center;
         position: relative;
         
-        @include respond-to(phone) { font-size: 30px; }
+        @include respond-to(phone) { font-size: 2em; }
       }
       
       span#about-hero-small {
@@ -39,7 +38,7 @@ section#about {
         text-align: center;
         position: relative;
         
-        @include respond-to(phone) { font-size: 20px; }
+        @include respond-to(phone) { font-size: 1.25em; }
       }
     }
     
@@ -71,6 +70,7 @@ section#about {
       width: 10%;
       right: -10%;
       bottom: 0;
+      font-size: 6em;
       background: transparent;
       color: white;
       cursor: pointer;
@@ -79,9 +79,7 @@ section#about {
       @include transition(right, 1s, $normal-bezier, 0s);
       @include border-radius(0 5px 5px 0);
       
-      @include respond-to(phone) { font-size: 55px; }
-      @include respond-to(tablet) { font-size: 85px; }
-      @include respond-to(desktop) { font-size: 100px; }
+      @include respond-to(phone) { font-size: 3em; }
       
       span {
         display: block;
@@ -92,18 +90,16 @@ section#about {
       
       &.hover {
         background: rgba(0,0,0,0.1);
+        font-size: 7.5em;
       
-        @include respond-to(phone) { font-size: 66px; }
-        @include respond-to(tablet) { font-size: 102px; }
-        @include respond-to(desktop) { font-size: 120px; }
+        @include respond-to(phone) { font-size: 3.5em; }
       }
       
       &.mousedown {
         background: rgba(0,0,0,0.2);
+        font-size: 9em;
       
-        @include respond-to(phone) { font-size: 77px; }
-        @include respond-to(tablet) { font-size: 119px; }
-        @include respond-to(desktop) { font-size: 140px; }
+        @include respond-to(phone) { font-size: 4em; }
       }
     }
     
@@ -145,37 +141,43 @@ section#about {
         span {
           display: block;
           width: 100%;
-          text-align: center;
           position: relative;
         }
       }
       
       div#about-pull-tease {
-        font-size: 60px;
+        font-size: 3.75em;
         
         @include align-items(flex-start);
         
-        @include respond-to(phone) { font-size: 30px; }
+        @include respond-to(phone) {
+          font-size: 1.75em;
+          width: 50%;
+        }
       }
       
       div#about-pull-info {
         left: 30%;
-        font-size: 50px;
+        font-size: 3.25em;
         
         @include align-items(center);
         
         @include respond-to(phone) {
           top: 30%;
           left: 0;
-          font-size: 25px;
+          font-size: 1.5em;
           height: 25%;
           width: 90%;
+        }
+        
+        span {
+          text-align: center;
         }
       }
       
       div#about-pull-summary {
         left: 60%;
-        font-size: 40px;
+        font-size: 2.5em;
         padding-bottom: 32px;
         
         @include align-items(flex-end);
@@ -183,10 +185,14 @@ section#about {
         @include respond-to(phone) {
           top: 60%;
           left: 0;
-          font-size: 20px;
+          font-size: 1.25em;
           height: 25%;
           width: 90%;
           @include align-items(center);
+        }
+        
+        span {
+          text-align: center;
         }
       }
     }
@@ -239,14 +245,14 @@ section#about {
     bottom: 30px;
     right: 30px;
     text-decoration: none;
-    font-size: 32px;
+    font-size: 2em;
     color: map-get($mex, blue);
     background: white;
       
     @include respond-to(phone) {
       width: calc(100% - 60px);
       height: 48px;
-      font-size: 24px;
+      font-size: 1.5em;
     }
     
     @include border-radius(8px);

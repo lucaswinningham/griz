@@ -16,50 +16,59 @@ $( document ).on('turbolinks:load', function() {
   var $responsive = $([burger, navlink].join(', '));
   
   var toggleMenu = function() {
+    window.clearTimeout(window.menuTimeout);
+    $responsive.removeClass('mousedown');
+    
+    var open = function() {
+      $burger.addClass('opening');
+      $header.removeClass('closed');
+      $header.addClass('opened');
+      window.menuTimeout = window.setTimeout(function() {
+        $burger.removeClass('opening closing lines');
+        $burger.addClass('cross');
+      }, 150);
+    };
+    
+    var close = function() {
+      $burger.addClass('closing');
+      $header.removeClass('opened');
+      $header.addClass('closed');
+      window.menuTimeout = window.setTimeout(function() {
+        $burger.removeClass('opening closing cross');
+        $burger.addClass('lines');
+      }, 300);
+    };
+    
+    if ($burger.hasClass('opening')) {
+      $burger.removeClass('opening');
+      close();
+    } else if ($burger.hasClass('closing')) {
+      $burger.removeClass('closing');
+      open();
+    } else if ($burger.hasClass('lines')) {
+      open();
+    } else if ($burger.hasClass('cross')) {
+      close();
+    } else {
+      alert('awry');
+    }
+  };
+  
+  var handleAnchor = function(e) {
     if ($(this).hasClass('mousedown')) {
-      window.clearTimeout(window.menuTimeout);
-      $responsive.removeClass('mousedown');
+      e.preventDefault();
       
-      var open = function() {
-        $burger.addClass('opening');
-        $header.removeClass('closed');
-        $header.addClass('opened');
-        window.menuTimeout = window.setTimeout(function() {
-          $burger.removeClass('opening closing lines');
-          $burger.addClass('cross');
-        }, 150);
-      };
+      $navlink.removeClass('active');
+      $(this).addClass('active');
       
-      var close = function() {
-        $burger.addClass('closing');
-        $header.removeClass('opened');
-        $header.addClass('closed');
-        window.menuTimeout = window.setTimeout(function() {
-          $burger.removeClass('opening closing cross');
-          $burger.addClass('lines');
-        }, 300);
-      };
+      var $anchor = $($(this).attr('href'));
+      var top = $anchor.offset().top;
+      var border = parseInt($anchor.css("border-top-width"));
+      $('html,body').animate({scrollTop: top + border},0);
       
-      if ($burger.hasClass('opening')) {
-        $burger.removeClass('opening');
-        close();
-      } else if ($burger.hasClass('closing')) {
-        $burger.removeClass('closing');
-        open();
-      } else if ($burger.hasClass('lines')) {
-        open();
-      } else if ($burger.hasClass('cross')) {
-        close();
-      } else {
-        alert('awry');
-      }
+      toggleMenu();
       
-      if ($(this).is(navlink)) {
-        $navlink.removeClass('active');
-        $(this).addClass('active');
-        // + 50 for border
-        $('html,body').animate({scrollTop: $($(this).attr('href')).offset().top + 50},0);
-      }
+      return false;
     }
   };
   
@@ -67,7 +76,14 @@ $( document ).on('turbolinks:load', function() {
     $(this).addClass('mousedown');
   });
   
-  $responsive.on('mouseup touchend touchcancel', toggleMenu);
+  $burger.on('mouseup touchend touchcancel', function() {
+    if ($(this).hasClass('mousedown')) {
+      toggleMenu();
+    }
+  });
+  
+  // Screen actually follows link when mouseup event used instead of click
+  $navlink.on('click touchend touchcancel', handleAnchor);
   
   $responsive.on('mouseenter', function() {
     $(this).addClass('hover');

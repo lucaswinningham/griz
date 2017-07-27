@@ -82,11 +82,11 @@ section#history {
           position: relative;
           height: 15%;
           width: 100%;
-          font-size: 60px;
+          font-size: 3.75em;
           border-bottom: 4px solid white;
           padding-bottom: 8px;
           
-          @include respond-to(phone) { font-size: 30px; }
+          @include respond-to(phone) { font-size: 2em; }
           
           span {
             display: block;
@@ -104,9 +104,9 @@ section#history {
           height: 85%;
           width: 100%;
           padding: 10px;
-          font-size: 30px;
+          font-size: 2em;
           
-          @include respond-to(phone) { font-size: 15px; }
+          @include respond-to(phone) { font-size: 1em; }
         }
       }
       
@@ -125,9 +125,9 @@ section#history {
     div#history-card-hero {
       div {
         div.history-card-body {
-          font-size: 30px;
+          font-size: 2em;
           
-          @include respond-to(phone) { font-size: 20px; }
+          @include respond-to(phone) { font-size: 1.5em; }
           
           span {
             display: block;
@@ -151,7 +151,7 @@ section#history {
             height: 64px;
             width: 40%;
             text-decoration: none;
-            font-size: 32px;
+            font-size: 1em;
             text-align: center;
             color: map-get($mex, purple);
             background: white;
@@ -159,7 +159,7 @@ section#history {
             @include respond-to(phone) {
               width: calc(100% - 60px);
               height: 48px;
-              font-size: 24px;
+              font-size: 1.5em;
             }
             
             @include border-radius(8px);

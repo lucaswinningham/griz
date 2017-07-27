@@ -186,8 +186,9 @@ $( document ).on('turbolinks:load', function() {
       $('html, body').off('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove');
     });
     
-    // + 50 for border
-    $('html, body').animate({scrollTop: $('#contact').offset().top + 50}, 2000, function() {
+    var top = $('#contact').offset().top;
+    var border = parseInt($('#contact').css("border-top-width"));
+    $('html, body').animate({scrollTop: top + border}, 2000, function() {
       $('html, body').off('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove');
     });
     
