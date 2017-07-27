@@ -56,7 +56,7 @@ section#about {
     bottom: 0px;
     border: 4px solid white;
     right: 100%;
-    background: map-get($mex, blue);
+    background: darken(map-get($mex, blue), 20%);
     z-index: 1;
     
     @include transition(all, 1s, $normal-bezier, 0s);
@@ -246,7 +246,7 @@ section#about {
     right: 30px;
     text-decoration: none;
     font-size: 2em;
-    color: map-get($mex, blue);
+    color: darken(map-get($mex, blue), 20%);
     background: white;
       
     @include respond-to(phone) {
@@ -265,7 +265,7 @@ section#about {
     }
     
     &.hover {
-      border: 4px solid map-get($mex, blue);
+      border: 4px solid darken(map-get($mex, blue), 20%);
     }
     
     &.mousedown {

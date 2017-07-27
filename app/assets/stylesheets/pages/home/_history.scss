@@ -62,12 +62,13 @@ section#history {
       @include display-flex;
       @include align-items(center);
       position: absolute;
-      // 100% - track left * 3
-      width: calc(100% - 90px);
+      // 100% - (track left * 3 - track width / 2)
+      width: calc(100% - 80px);
       height: calc(100% - 60px);
       left: 110%;
       top: 110%;
       padding: 10px;
+      background: darken(map-get($mex, purple), 10%);
       
       @include transition(all, 1s, $normal-bezier, 0s);
       
@@ -153,7 +154,7 @@ section#history {
             text-decoration: none;
             font-size: 1em;
             text-align: center;
-            color: map-get($mex, purple);
+            color: darken(map-get($mex, purple), 10%);
             background: white;
               
             @include respond-to(phone) {
