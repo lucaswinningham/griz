@@ -27,7 +27,7 @@ section#about {
         text-align: center;
         position: relative;
         
-        @include respond-to(phone) { font-size: 2em; }
+        @include respond-to(phone) { font-size: 1.5em; }
       }
       
       span#about-hero-small {
@@ -141,6 +141,7 @@ section#about {
         span {
           display: block;
           width: 100%;
+          text-align: center;
           position: relative;
         }
       }
@@ -153,6 +154,10 @@ section#about {
         @include respond-to(phone) {
           font-size: 1.75em;
           width: 50%;
+        
+          span {
+            text-align: left;
+          }
         }
       }
       
@@ -165,13 +170,9 @@ section#about {
         @include respond-to(phone) {
           top: 30%;
           left: 0;
-          font-size: 1.5em;
+          font-size: 1.25em;
           height: 25%;
           width: 90%;
-        }
-        
-        span {
-          text-align: center;
         }
       }
       
@@ -185,14 +186,13 @@ section#about {
         @include respond-to(phone) {
           top: 60%;
           left: 0;
-          font-size: 1.25em;
+          font-size: 1em;
           height: 25%;
           width: 90%;
-          @include align-items(center);
-        }
         
-        span {
-          text-align: center;
+          span {
+            text-align: right;
+          }
         }
       }
     }

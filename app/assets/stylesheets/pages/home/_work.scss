@@ -1,0 +1,6 @@
+section#work {
+  background: map-get($mex, red);
+  box-sizing: content-box;
+  border-top: 50px solid map-get($mex, red);
+  border-bottom: 50px solid map-get($mex, red);
+}
