@@ -71,6 +71,7 @@ section#history {
       background: darken(map-get($mex, purple), 10%);
       
       @include transition(all, 1s, $normal-bezier, 0s);
+      @include border-radius(8px);
       
       div {
         display: block;
@@ -173,7 +174,7 @@ section#history {
             }
             
             &.hover {
-              border: 4px solid map-get($mex, purple);
+              border: 4px solid darken(map-get($mex, purple), 10%);
             }
             
             &.mousedown {

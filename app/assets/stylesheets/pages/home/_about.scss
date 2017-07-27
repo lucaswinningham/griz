@@ -67,10 +67,10 @@ section#about {
       @include align-items(center);
       position: absolute;
       height: 100%;
-      width: 10%;
-      right: -10%;
+      width: 30%;
+      right: -30%;
       bottom: 0;
-      font-size: 6em;
+      font-size: 12em;
       background: transparent;
       color: white;
       cursor: pointer;
@@ -79,7 +79,7 @@ section#about {
       @include transition(right, 1s, $normal-bezier, 0s);
       @include border-radius(0 5px 5px 0);
       
-      @include respond-to(phone) { font-size: 3em; }
+      @include respond-to(phone) { font-size: 6em; }
       
       span {
         display: block;
@@ -90,16 +90,16 @@ section#about {
       
       &.hover {
         background: rgba(0,0,0,0.1);
-        font-size: 7.5em;
+        font-size: 13em;
       
-        @include respond-to(phone) { font-size: 3.5em; }
+        @include respond-to(phone) { font-size: 6.5em; }
       }
       
       &.mousedown {
         background: rgba(0,0,0,0.2);
-        font-size: 9em;
+        font-size: 14em;
       
-        @include respond-to(phone) { font-size: 4em; }
+        @include respond-to(phone) { font-size: 7em; }
       }
     }
     
@@ -224,9 +224,27 @@ section#about {
       right: 0;
       
       div#about-pull-handle {
+        font-size: 6em;
+        width: 10%;
         right: 0;
         
         @include border-radius(5px 5px 0 5px);
+        
+        @include respond-to(phone) { font-size: 3em; }
+      
+        &.hover {
+          background: rgba(0,0,0,0.1);
+          font-size: 6.5em;
+        
+          @include respond-to(phone) { font-size: 3.25em; }
+        }
+        
+        &.mousedown {
+          background: rgba(0,0,0,0.2);
+          font-size: 7em;
+        
+          @include respond-to(phone) { font-size: 3.5em; }
+        }
       }
       
       div#about-pull-tondo {
@@ -265,7 +283,7 @@ section#about {
     }
     
     &.hover {
-      border: 4px solid darken(map-get($mex, blue), 20%);
+      border: 4px solid map-get($mex, blue);
     }
     
     &.mousedown {
