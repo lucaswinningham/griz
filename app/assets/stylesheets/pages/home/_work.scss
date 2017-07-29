@@ -3,4 +3,23 @@ section#work {
   box-sizing: content-box;
   border-top: 50px solid map-get($mex, red);
   border-bottom: 50px solid map-get($mex, red);
+  position: relative;
+  
+  div#work-menu {
+    position: absolute;
+    background: rgba(0,0,0,0.3);
+    
+    div#work-menu-center, div.work-menu-petal {
+      position: absolute;
+      background: white;
+      
+      @include transform(translate(-50%,-50%));
+      @include border-radius(50%);
+      
+      @include respond-to(phone) {
+        height: 48px;
+        width: 48px;
+      }
+    }
+  }
 }

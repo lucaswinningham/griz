@@ -75,7 +75,7 @@ $( document ).on('turbolinks:load', function() {
       $pullTondo.css({
         height: windowWidth - 30,
         width: windowWidth - 30,
-        top: $( window ).height() / 2 - windowWidth / 2 - $pull.offset().top + 15 - 4,
+        top: windowHeight / 2 - windowWidth / 2 - $pull.offset().top + 15 - 4,
         right: 15 - 4,
       });
     } else {
@@ -83,7 +83,7 @@ $( document ).on('turbolinks:load', function() {
         height: windowHeight - 30,
         width: windowHeight - 30,
         top: 15 - 4 - $pull.offset().top,
-        right: $( window ).width() / 2 - windowHeight / 2 + 15 - 4,
+        right: windowWidth / 2 - windowHeight / 2 + 15 - 4,
       });
     }
   };
