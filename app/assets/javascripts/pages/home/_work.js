@@ -1,16 +1,43 @@
 /* global $ */
 
+$.fn.animateRotate = function(angle, duration, easing, complete) {
+  var args = $.speed(duration, easing, complete);
+  var step = args.step;
+  return this.each(function(i, e) {
+    args.step = function(now) {
+      $.style(e, 'transform', 'rotate(' + now + 'deg)');
+      if (step) return step.apply(this, arguments);
+    };
+    
+    $({deg: 0}).animate({deg: angle}, args);
+  });
+};
+
 $( document ).on('turbolinks:load', function() {
   var work = 'section#work';
     var menu = work + ' div#work-menu';
       var center = menu + ' div#work-menu-center';
-      var petal = menu + ' div.work-menu-petal';
+      var petalContainer = menu + ' div#work-menu-petal-container';
+        var petal = petalContainer + ' div.work-menu-petal';
   
   var $work = $(work);
     var $menu = $(menu);
       var $center = $(center);
+      var $petalContainer = $(petalContainer);
   
   var content = [
+    {
+      head: '',
+      body: '',
+    },
+    {
+      head: '',
+      body: '',
+    },
+    {
+      head: '',
+      body: '',
+    },
     {
       head: '',
       body: '',
@@ -34,10 +61,14 @@ $( document ).on('turbolinks:load', function() {
   ];
   
   content.forEach(function(val, i) {
-    $menu.append('<div class="work-menu-petal"></div>');
+    $petalContainer.append('<div class="work-menu-petal"></div>');
   });
   
   var $petal = $(petal);
+  
+  var $responsive = $([center, petal].join(', '));
+  
+  var petalContainerDeg = 0;
   
   var sectionFill = function() {
     $work.css({
@@ -106,5 +137,62 @@ $( document ).on('turbolinks:load', function() {
   $( window ).resize(function() {
     sectionFill();
     positionMenu();
+  });
+  
+  var focusPetal = function() {
+    var degTarget = $(this).index() * 360 / $petal.length;
+    var degDelta = degTarget - (petalContainerDeg % 360);
+    
+    console.log('last')
+    console.log(petalContainerDeg)
+    
+    if (degDelta > 180) {
+      degDelta -= 360;
+    } else if (degDelta < -180) {
+      degDelta += 360;
+    }
+    
+    console.log('degTarget')
+    console.log(degTarget)
+    console.log('degDelta')
+    console.log(degDelta)
+    
+    var deg = petalContainerDeg + degDelta;
+    petalContainerDeg = deg;
+    
+    $petalContainer.css({
+      '-webkit-transform': 'rotate(' + deg + 'deg)',
+      '-moz-transform': 'rotate(' + deg + 'deg)',
+      '-o-transform': 'rotate(' + deg + 'deg)',
+      'transform': 'rotate(' + deg + 'deg)',
+    });
+    
+    $petal.css({
+      '-webkit-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
+      '-moz-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
+      '-o-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
+      'transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
+    });
+  }
+  
+  $responsive.on('mousedown', function() {
+    $(this).addClass('mousedown');
+  });
+  
+  // $center.on('mouseup touchend touchcancel', doSomething);
+  
+  $petal.on('mouseup touchend touchcancel', focusPetal);
+  
+  $responsive.on('mouseenter', function() {
+    $(this).addClass('hover');
+  });
+  
+  $responsive.on('mouseleave', function() {
+    $(this).removeClass('hover mousedown');
+  });
+  
+  $responsive.on('touchstart', function(e) {
+    e.preventDefault();
+    $(this).addClass('mousedown');
   });
 });
