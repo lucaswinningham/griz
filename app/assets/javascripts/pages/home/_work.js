@@ -140,40 +140,16 @@ $( document ).on('turbolinks:load', function() {
   });
   
   var focusPetal = function() {
-    // console.log('last')
-    // console.log(petalContainerDeg)
-    
     var degTarget = $(this).index() * (360 / $petal.length);
     // Damn js and its quirks
     // https://stackoverflow.com/questions/4467539/javascript-modulo-not-behaving
     var degDelta = degTarget - (((petalContainerDeg % 360) + 360) % 360);
-    
-    // if (petalContainerDeg < 0) {
-    //   degDelta = degTarget - (petalContainerDeg % 360);
-    // } else {
-    //   degDelta = degTarget + (petalContainerDeg % -360);
-    // }
     
     if (degDelta > 180) {
       degDelta -= 360;
     } else if (degDelta < -180) {
       degDelta += 360;
     }
-    
-    console.log({
-    last: petalContainerDeg,
-    index: $(this).index(),
-    target: degTarget,
-    mod: petalContainerDeg % 360,
-    delt: $(this).index() * (360 / $petal.length) - petalContainerDeg % 360,
-    clamp: degDelta,
-    deg: petalContainerDeg + degDelta,
-    })
-    
-    // console.log('degTarget')
-    // console.log(degTarget)
-    // console.log('degDelta')
-    // console.log(degDelta)
     
     var deg = petalContainerDeg + degDelta;
     petalContainerDeg = deg;
@@ -191,7 +167,7 @@ $( document ).on('turbolinks:load', function() {
       '-o-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
       'transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
     });
-  }
+  };
   
   $responsive.on('mousedown', function() {
     $(this).addClass('mousedown');
