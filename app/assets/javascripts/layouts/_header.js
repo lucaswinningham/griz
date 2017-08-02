@@ -122,11 +122,6 @@ $( document ).on('turbolinks:load', function() {
     });
   };
   
-  // var sectionPositionsTimeout = window.setTimeout(function() {
-  //   updateSectionPositions();
-  //   window.clearTimeout(sectionPositionsTimeout);
-  // }, 1);
-  
   var burgerTrack = function() {
     var scrollPosition = $( document ).scrollTop();
     var sectionScrollBreakRatio = 0.75;
@@ -147,10 +142,10 @@ $( document ).on('turbolinks:load', function() {
     if ($burger.hasClass('lines')) {
       $patty.removeClass('track');
       $(patty + ':nth-child(' + sectionIndex + ')').addClass('track');
-      
-      $navlink.removeClass('active');
-      $(navlink + ':nth-child(' + (sectionIndex + 1) + ')').addClass('active');
     }
+    
+    $navlink.removeClass('active');
+    $(navlink + ':nth-child(' + (sectionIndex + 1) + ')').addClass('active');
   };
   
   var sectionTrackingTimeout = window.setTimeout(function() {
