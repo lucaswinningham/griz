@@ -6,12 +6,14 @@ $( document ).on('turbolinks:load', function() {
       var navlink = navbar + ' a';
       var navtext = navbar + ' span';
     var burger = header + ' div#burger';
+      var patty = burger + ' i';
   
   var $header = $(header);
     var $navbar = $(navbar);
       var $navlink = $(navlink);
       var $navtext = $(navtext);
     var $burger = $(burger);
+      var $patty = $(patty);
   
   var $responsive = $([burger, navlink].join(', '));
   
@@ -26,6 +28,7 @@ $( document ).on('turbolinks:load', function() {
       window.menuTimeout = window.setTimeout(function() {
         $burger.removeClass('opening closing lines');
         $burger.addClass('cross');
+        $patty.removeClass('track');
       }, 150);
     };
     
@@ -36,6 +39,7 @@ $( document ).on('turbolinks:load', function() {
       window.menuTimeout = window.setTimeout(function() {
         $burger.removeClass('opening closing cross');
         $burger.addClass('lines');
+        burgerTrack();
       }, 300);
     };
     
@@ -97,4 +101,65 @@ $( document ).on('turbolinks:load', function() {
     e.preventDefault();
     $(this).addClass('mousedown');
   });
+  
+  // Scrolling reactions
+  
+  var about = 'section#about';
+  var history = 'section#history';
+  var work = 'section#work';
+  var contact = 'section#contact';
+  
+  var $about = $(about);
+  var $history = $(history);
+  var $work = $(work);
+  var $contact = $(contact);
+  
+  var sectionPositions = [];
+  
+  var updateSectionPositions = function() {
+    sectionPositions = [$about, $history, $work, $contact].map(function(val) {
+      return val.offset().top;
+    });
+  };
+  
+  // var sectionPositionsTimeout = window.setTimeout(function() {
+  //   updateSectionPositions();
+  //   window.clearTimeout(sectionPositionsTimeout);
+  // }, 1);
+  
+  var burgerTrack = function() {
+    var scrollPosition = $( document ).scrollTop();
+    var sectionScrollBreakRatio = 0.75;
+    var sectionIndex = 0;
+    
+    sectionPositions.forEach(function(sectionPosition, i, arr) {
+      if (i > 0) {
+        var lastSectionPosition = arr[i - 1];
+        var sectionRange = sectionPosition - lastSectionPosition;
+        var sectionBreak = sectionRange * sectionScrollBreakRatio + lastSectionPosition;
+        
+        if (scrollPosition > sectionBreak) {
+          sectionIndex = i;
+        }
+      }
+    });
+    
+    if ($burger.hasClass('lines')) {
+      $patty.removeClass('track');
+      $(patty + ':nth-child(' + sectionIndex + ')').addClass('track');
+      
+      $navlink.removeClass('active');
+      $(navlink + ':nth-child(' + (sectionIndex + 1) + ')').addClass('active');
+    }
+  };
+  
+  var sectionTrackingTimeout = window.setTimeout(function() {
+    updateSectionPositions();
+    burgerTrack();
+    window.clearTimeout(sectionTrackingTimeout);
+  });
+  
+  $( window ).resize(sectionTrackingTimeout);
+  
+  $( window ).scroll(burgerTrack);
 });
