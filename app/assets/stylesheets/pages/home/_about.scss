@@ -1,7 +1,7 @@
 section#about {
   background: map-get($mex, blue);
   box-sizing: content-box;
-  border-bottom: 50px solid map-get($mex, blue);
+  border-bottom: 200px solid map-get($mex, blue);
   
   div#about-hero {
     @include display-flex;

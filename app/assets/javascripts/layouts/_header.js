@@ -124,7 +124,7 @@ $( document ).on('turbolinks:load', function() {
   
   var burgerTrack = function() {
     var scrollPosition = $( document ).scrollTop();
-    var sectionScrollBreakRatio = 0.75;
+    var sectionScrollBreakRatio = 0.5;
     var sectionIndex = 0;
     
     sectionPositions.forEach(function(sectionPosition, i, arr) {
@@ -148,13 +148,15 @@ $( document ).on('turbolinks:load', function() {
     $(navlink + ':nth-child(' + (sectionIndex + 1) + ')').addClass('active');
   };
   
-  var sectionTrackingTimeout = window.setTimeout(function() {
-    updateSectionPositions();
-    burgerTrack();
-    window.clearTimeout(sectionTrackingTimeout);
-  });
+  var updateTracking = function() {
+    var timeout = window.setTimeout(function() {
+      updateSectionPositions();
+      burgerTrack();
+      window.clearTimeout(timeout);
+    }, 0);
+  };
   
-  $( window ).resize(sectionTrackingTimeout);
+  $( window ).resize(updateTracking);
   
   $( window ).scroll(burgerTrack);
 });

@@ -1,18 +1,5 @@
 /* global $ */
 
-$.fn.animateRotate = function(angle, duration, easing, complete) {
-  var args = $.speed(duration, easing, complete);
-  var step = args.step;
-  return this.each(function(i, e) {
-    args.step = function(now) {
-      $.style(e, 'transform', 'rotate(' + now + 'deg)');
-      if (step) return step.apply(this, arguments);
-    };
-    
-    $({deg: 0}).animate({deg: angle}, args);
-  });
-};
-
 $( document ).on('turbolinks:load', function() {
   var work = 'section#work';
     var menu = work + ' div#work-menu';
@@ -61,7 +48,7 @@ $( document ).on('turbolinks:load', function() {
   ];
   
   content.forEach(function(val, i) {
-    $petalContainer.append('<div class="work-menu-petal"></div>');
+    $petalContainer.append('<div class="work-menu-petal">' + i + '</div>');
   });
   
   var $petal = $(petal);

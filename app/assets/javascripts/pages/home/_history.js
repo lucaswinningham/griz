@@ -2,24 +2,26 @@
 
 $( document ).on('turbolinks:load', function() {
   var history = 'section#history';
-    var track = history + ' div#history-track';
-      var detents = track + ' div#history-track-detents';
-        var detent = detents + ' span';
-    var slider = history + ' div#history-slider';
-    var cards = history + ' div#history-cards';
-      var card = cards + ' div.history-card';
-      var heroCard = cards + ' div#history-card-hero';
-      var contactCard = cards + ' div#history-card-contact';
-            var contact = contactCard + ' div div.history-card-body a#history-contact';
+    var container = history + ' div#history-container';
+      var track = container + ' div#history-track';
+        var detents = track + ' div#history-track-detents';
+          var detent = detents + ' span';
+      var slider = container + ' div#history-slider';
+      var cards = container + ' div#history-cards';
+        var card = cards + ' div.history-card';
+        var heroCard = cards + ' div#history-card-hero';
+        var contactCard = cards + ' div#history-card-contact';
+              var contact = contactCard + ' div div.history-card-body a#history-contact';
   
   var $history = $(history);
-    var $track = $(track);
-    var $slider = $(slider);
-    var $detents = $(detents);
-    var $cards = $(cards);
-      var $heroCard = $(heroCard);
-      var $contactCard = $(contactCard);
-            var $contact = $(contact);
+    var $container = $(container);
+      var $track = $(track);
+      var $slider = $(slider);
+      var $detents = $(detents);
+      var $cards = $(cards);
+        var $heroCard = $(heroCard);
+        var $contactCard = $(contactCard);
+              var $contact = $(contact);
   
   var content = [
     {
@@ -52,7 +54,7 @@ $( document ).on('turbolinks:load', function() {
   var $detent = $(detent);
   var $card = $(card);
   
-  var $responsive = $([slider, contact].join(', '));
+  var $responsive = $([slider, track, contact].join(', '));
   
   var mousedown;
   var trackTop;
@@ -62,11 +64,44 @@ $( document ).on('turbolinks:load', function() {
   
   var sectionFill = function() {
     $history.css({
-      'height': $( window ).height(),
+      'height': ($( window ).height() + 200) + 'px',
+      'padding-bottom': 200 + 'px',
+    });
+    
+    $container.css({
+      'height': $( window ).height() + 'px',
     });
   };
   
   sectionFill();
+  
+  var handleFixed = function() {
+    var scrollPosition = Math.round($( document ).scrollTop());
+    var top = $history.offset().top;
+    var bottom = $history.offset().top + 200;
+    
+    if (scrollPosition < top) {
+      $container.css({
+        'position': 'absolute',
+        'top': '0px',
+      });
+    } else if (scrollPosition > bottom) {
+      $container.css({
+        'position': 'absolute',
+        'top': 200 + 'px',
+      });
+    } else {
+      $container.css({
+        'position': 'fixed',
+        'top': '0px',
+      });
+      
+      // sliderTop = $slider.position().top;
+      // sliderBot = sliderTop + $slider.outerHeight();
+    }
+  };
+  
+  handleFixed();
   
   var repositionSlider = function() {
     var trackOffset = Math.floor($track.position().top);
@@ -78,7 +113,7 @@ $( document ).on('turbolinks:load', function() {
   
   var trackExtents = function() {
     trackTop = $track.offset().top;
-    trackBot = $track.offset().top + $track.outerHeight();
+    trackBot = trackTop + $track.outerHeight();
   };
   
   trackExtents();
@@ -97,6 +132,14 @@ $( document ).on('turbolinks:load', function() {
   
   $( window ).resize(function() {
     sectionFill();
+    handleFixed();
+    repositionSlider();
+    trackExtents();
+    positionDetents();
+  });
+  
+  $( window ).scroll(function(e) {
+    handleFixed();
     repositionSlider();
     trackExtents();
     positionDetents();
@@ -117,13 +160,46 @@ $( document ).on('turbolinks:load', function() {
     $slider.animate({top: newSliderPosition + 'px'}, 500);
   };
   
+  var moveSlider = function(userPosition) {
+    var cssTop = parseInt($track.css('top'));
+    var newSliderPosition = userPosition - trackTop + cssTop;
+    
+  	$slider.css({top: newSliderPosition + 'px'});
+  	
+  	var relativeSliderPosition = newSliderPosition - $track.position().top;
+    
+    $card.each(function(i) {
+      if (relativeSliderPosition > detentInflections[i]) {
+        if (relativeSliderPosition < detentInflections[i + 1]) {
+          $(this).removeClass('away').addClass('focus');
+          $heroCard.removeClass('focus').addClass('away');
+          $contactCard.removeClass('focus');
+        } else {
+          $(this).removeClass('focus').addClass('away');
+        }
+      } else {
+        $(this).removeClass('focus away');
+      }
+    });
+    
+    if (relativeSliderPosition < detentInflections[0]) {
+      $heroCard.removeClass('away').addClass('focus');
+      $contactCard.removeClass('focus');
+    }
+    
+    if (relativeSliderPosition > detentInflections[detentInflections.length - 1]) {
+      $heroCard.addClass('away').removeClass('focus');
+      $contactCard.addClass('focus');
+    }
+  };
+  
   var trackSlider = function(userPosition) {
   	if ($slider.hasClass('mousedown')) {
       var cssTop = parseInt($slider.css('top'));
       var diff = userPosition - mousedown;
-      var top = $slider.offset().top;
-      var bot = $slider.offset().top + $slider.outerHeight();
-      var mid = (top + bot) / 2;
+      var sliderTop = $slider.offset().top;
+      var sliderBot = sliderTop + $slider.outerHeight();
+      var mid = (sliderTop + sliderBot) / 2;
       
       if (userPosition > trackTop && userPosition < trackBot) {
         if ((mid + diff > trackTop) && (mid + diff < trackBot)) {
@@ -161,17 +237,31 @@ $( document ).on('turbolinks:load', function() {
     }
   };
   
-  $responsive.on('mousedown', function() {
-    $(this).addClass('mousedown');
-  });
+  // $slider.on('mousedown', function(e) {
+  //   $slider.addClass('mousedown');
+  //   $slider.stop();
+  // 	mousedown = e.pageY;
+  // });
   
-  $slider.on('mousedown', function(e) {
+  $track.on('mousedown', function(e) {
+    $track.addClass('mousedown');
+    $slider.addClass('mousedown');
     $slider.stop();
   	mousedown = e.pageY;
+    moveSlider(mousedown);
+  });
+  
+  $contact.on('mousedown', function() {
+    $contact.addClass('mousedown');
   });
   
   $slider.on('touchend touchcancel', function() {
     $slider.removeClass('mousedown hover');
+    detentSlider();
+  });
+  
+  $track.on('touchend touchcancel', function() {
+    $track.removeClass('mousedown hover');
     detentSlider();
   });
   
@@ -180,6 +270,10 @@ $( document ).on('turbolinks:load', function() {
     e.preventDefault();
     
     $contact.removeClass('mousedown hover');
+    
+    // todo
+    // make animate function a variable and use .off() on that var
+    // do the same for every other _section.js that reused this code
     
     $('html, body').on('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove', function() {
       $('html, body').stop();
@@ -200,7 +294,11 @@ $( document ).on('turbolinks:load', function() {
     trackSlider(e.pageY);
   });
   
-  $slider.on('touchmove', function(e) {
+  // $slider.on('touchmove', function(e) {
+  //   trackSlider(e.originalEvent.touches[0].pageY);
+  // });
+  
+  $track.on('touchmove', function(e) {
     trackSlider(e.originalEvent.touches[0].pageY);
   });
   
@@ -214,14 +312,27 @@ $( document ).on('turbolinks:load', function() {
   });
   
   $contact.on('mouseleave', function() {
-    $(this).removeClass('hover mousedown');
+    $contact.removeClass('hover mousedown');
   });
   
-  $slider.on('touchstart', function(e) {
+  $slider.on('mouseleave', function() {
+    $slider.removeClass('hover');
+  });
+  
+  // $slider.on('touchstart', function(e) {
+  //   e.preventDefault();
+  //   $slider.stop();
+  //   $slider.addClass('mousedown');
+  // 	mousedown = e.originalEvent.touches[0].pageY;
+  // });
+  
+  $track.on('touchstart', function(e) {
     e.preventDefault();
     $slider.stop();
-    $(this).addClass('mousedown');
+    $track.addClass('mousedown');
+    $slider.addClass('mousedown');
   	mousedown = e.originalEvent.touches[0].pageY;
+    moveSlider(mousedown);
   });
   
   $contact.on('touchstart', function(e) {

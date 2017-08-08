@@ -1,13 +1,14 @@
 section#work {
   background: map-get($mex, red);
   box-sizing: content-box;
-  border-top: 50px solid map-get($mex, red);
-  border-bottom: 50px solid map-get($mex, red);
+  border-top: 0px solid map-get($mex, red);
+  border-bottom: 200px solid map-get($mex, red);
   position: relative;
+  overflow-x: hidden;
+  overflow-y: hidden;
   
   div#work-menu {
     position: absolute;
-    // background: rgba(0,0,0,0.3);
     
     div#work-menu-center {
       position: absolute;
@@ -27,10 +28,14 @@ section#work {
       
       div.work-menu-petal {
         position: absolute;
+        height: 50%;
+        width: 50%;
+        text-align: center;
         background: white;
+        cursor: pointer;
         
         @include transform(translate(-50%,-50%));
-        // @include border-radius(50%);
+        @include border-radius(50%);
         
         @include transition(transform, 1s, $normal-bezier, 0s);
       }
