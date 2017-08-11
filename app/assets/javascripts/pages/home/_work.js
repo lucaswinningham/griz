@@ -25,26 +25,26 @@ $( document ).on('turbolinks:load', function() {
       head: '',
       body: '',
     },
-    {
-      head: '',
-      body: '',
-    },
-    {
-      head: '',
-      body: '',
-    },
-    {
-      head: '',
-      body: '',
-    },
-    {
-      head: '',
-      body: '',
-    },
-    {
-      head: '',
-      body: '',
-    },
+    // {
+    //   head: '',
+    //   body: '',
+    // },
+    // {
+    //   head: '',
+    //   body: '',
+    // },
+    // {
+    //   head: '',
+    //   body: '',
+    // },
+    // {
+    //   head: '',
+    //   body: '',
+    // },
+    // {
+    //   head: '',
+    //   body: '',
+    // },
   ];
   
   content.forEach(function(val, i) {

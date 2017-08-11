@@ -3,10 +3,11 @@
 $( document ).on('turbolinks:load', function() {
   var history = 'section#history';
     var container = history + ' div#history-container';
-      var track = container + ' div#history-track';
-        var detents = track + ' div#history-track-detents';
-          var detent = detents + ' span';
-      var slider = container + ' div#history-slider';
+      var mechanism = container + ' div#history-mechanism';
+        var track = mechanism + ' div#history-track';
+          var detents = track + ' div#history-track-detents';
+            var detent = detents + ' span';
+        var slider = mechanism + ' div#history-slider';
       var cards = container + ' div#history-cards';
         var card = cards + ' div.history-card';
         var heroCard = cards + ' div#history-card-hero';
@@ -15,10 +16,11 @@ $( document ).on('turbolinks:load', function() {
   
   var $history = $(history);
     var $container = $(container);
-      var $track = $(track);
-      var $slider = $(slider);
-      var $detents = $(detents);
-      var $cards = $(cards);
+      var $mechanism = $(mechanism);
+        var $track = $(track);
+          var $detents = $(detents);
+        var $slider = $(slider);
+        var $cards = $(cards);
         var $heroCard = $(heroCard);
         var $contactCard = $(contactCard);
               var $contact = $(contact);
@@ -48,7 +50,7 @@ $( document ).on('turbolinks:load', function() {
     var cardHead = '<div class="history-card-head"><span>' + val.head + '</span></div>';
     var cardBody = '<div class="history-card-body">' + val.body + '</div>';
     var card = '<div class="history-card"><div>' + cardHead + cardBody + '</div></div>';
-    $cards.append(card);
+    $(card).insertBefore($contactCard);
   });
   
   var $detent = $(detent);
@@ -56,16 +58,16 @@ $( document ).on('turbolinks:load', function() {
   
   var $responsive = $([slider, track, contact].join(', '));
   
-  var mousedown;
-  var trackTop;
-  var trackBot;
+  var fixedBuffer = 200;
+  
   var pxDetentIncrement;
-  var detentInflections;
+  // var detentInflections;
+  var sliderRatio;
   
   var sectionFill = function() {
     $history.css({
-      'height': ($( window ).height() + 200) + 'px',
-      'padding-bottom': 200 + 'px',
+      'height': ($( window ).height() + fixedBuffer) + 'px',
+      'padding-bottom': fixedBuffer + 'px',
     });
     
     $container.css({
@@ -77,191 +79,101 @@ $( document ).on('turbolinks:load', function() {
   
   var handleFixed = function() {
     var scrollPosition = Math.round($( document ).scrollTop());
-    var top = $history.offset().top;
-    var bottom = $history.offset().top + 200;
+    var fixedTop = $history.offset().top;
+    var fixedBottom = $history.offset().top + fixedBuffer;
     
-    if (scrollPosition < top) {
+    if (scrollPosition < fixedTop) {
       $container.css({
         'position': 'absolute',
         'top': '0px',
       });
-    } else if (scrollPosition > bottom) {
+    } else if (scrollPosition > fixedBottom) {
       $container.css({
         'position': 'absolute',
-        'top': 200 + 'px',
+        'top': fixedBuffer + 'px',
       });
     } else {
       $container.css({
         'position': 'fixed',
         'top': '0px',
       });
-      
-      // sliderTop = $slider.position().top;
-      // sliderBot = sliderTop + $slider.outerHeight();
     }
   };
   
   handleFixed();
   
-  var repositionSlider = function() {
-    var trackOffset = Math.floor($track.position().top);
-    var sliderRatio = (parseInt($slider.css('top')) - trackOffset) / (trackBot - trackTop);
-    var newSliderPosition = $track.outerHeight() * sliderRatio + trackOffset;
-    
-    $slider.css({top: newSliderPosition + 'px'});
-  };
-  
-  var trackExtents = function() {
-    trackTop = $track.offset().top;
-    trackBot = trackTop + $track.outerHeight();
-  };
-  
-  trackExtents();
-  
   var positionDetents = function() {
-    pxDetentIncrement = (trackBot - trackTop) / ($detent.length + 1);
-  	detentInflections = [0.5 * pxDetentIncrement];
+    pxDetentIncrement = $track.outerHeight() / ($detent.length + 1);
     
     $detent.each(function(i) {
       $(this).css({top: (pxDetentIncrement * (i + 1)) + 'px'});
-      detentInflections.push(pxDetentIncrement * (i + 1.5));
     });
   };
   
   positionDetents();
   
-  $( window ).resize(function() {
-    sectionFill();
-    handleFixed();
-    repositionSlider();
-    trackExtents();
-    positionDetents();
-  });
-  
-  $( window ).scroll(function(e) {
-    handleFixed();
-    repositionSlider();
-    trackExtents();
-    positionDetents();
-  });
-  
   var detentSlider = function() {
-    var trackOffset = Math.floor($track.position().top);
-  	var relativeSliderPosition = parseInt($slider.css('top')) - $track.position().top;
-  	// + 4 for border spacing
-    var newSliderPosition = trackOffset + 4;
-          
-    detentInflections.forEach(function(val, i) {
-      if (relativeSliderPosition > val) {
-        newSliderPosition += pxDetentIncrement;
-      }
-    });
+  	var sliderPosition = parseInt($slider.css('top'), 10);
+    var newSliderTarget = Math.round(sliderPosition / pxDetentIncrement);
+    var newSliderPosition = newSliderTarget * pxDetentIncrement;
     
     $slider.animate({top: newSliderPosition + 'px'}, 500);
   };
   
-  var moveSlider = function(userPosition) {
-    var cssTop = parseInt($track.css('top'));
-    var newSliderPosition = userPosition - trackTop + cssTop;
+  $( window ).resize(function() {
+    sectionFill();
+    handleFixed();
+    $slider.stop();
+    $slider.css({top: ($track.outerHeight() * sliderRatio) + 'px'});
+    positionDetents();
+    detentSlider();
+  });
+  
+  $( window ).scroll(function() {
+    handleFixed();
+  });
+  
+  var handleCards = function() {
+  	var sliderPosition = parseInt($slider.css('top'), 10);
+    var newSliderTarget = Math.round(sliderPosition / pxDetentIncrement);
     
-  	$slider.css({top: newSliderPosition + 'px'});
-  	
-  	var relativeSliderPosition = newSliderPosition - $track.position().top;
+    $card.removeClass('away focus');
     
     $card.each(function(i) {
-      if (relativeSliderPosition > detentInflections[i]) {
-        if (relativeSliderPosition < detentInflections[i + 1]) {
-          $(this).removeClass('away').addClass('focus');
-          $heroCard.removeClass('focus').addClass('away');
-          $contactCard.removeClass('focus');
-        } else {
-          $(this).removeClass('focus').addClass('away');
-        }
-      } else {
-        $(this).removeClass('focus away');
+      if (i == newSliderTarget) {
+        $(this).addClass('focus');
+      } else if (i > newSliderTarget) {
+        $(this).addClass('away');
       }
     });
-    
-    if (relativeSliderPosition < detentInflections[0]) {
-      $heroCard.removeClass('away').addClass('focus');
-      $contactCard.removeClass('focus');
-    }
-    
-    if (relativeSliderPosition > detentInflections[detentInflections.length - 1]) {
-      $heroCard.addClass('away').removeClass('focus');
-      $contactCard.addClass('focus');
-    }
   };
   
   var trackSlider = function(userPosition) {
-  	if ($slider.hasClass('mousedown')) {
-      var cssTop = parseInt($slider.css('top'));
-      var diff = userPosition - mousedown;
-      var sliderTop = $slider.offset().top;
-      var sliderBot = sliderTop + $slider.outerHeight();
-      var mid = (sliderTop + sliderBot) / 2;
+  	if ($mechanism.hasClass('mousedown')) {
+      var newSliderPosition = userPosition - $track.offset().top;
       
-      if (userPosition > trackTop && userPosition < trackBot) {
-        if ((mid + diff > trackTop) && (mid + diff < trackBot)) {
-          var newSliderPosition = diff + cssTop;
-          
-        	$slider.css({top: newSliderPosition + 'px'});
-        	
-        	var relativeSliderPosition = newSliderPosition - $track.position().top;
-          
-          $card.each(function(i) {
-            if (relativeSliderPosition > detentInflections[i]) {
-              if (relativeSliderPosition < detentInflections[i + 1]) {
-                $(this).removeClass('away').addClass('focus');
-                $heroCard.removeClass('focus').addClass('away');
-                $contactCard.removeClass('focus');
-              } else {
-                $(this).removeClass('focus').addClass('away');
-              }
-            } else {
-              $(this).removeClass('focus away');
-            }
-          });
-          
-          if (relativeSliderPosition < detentInflections[0]) {
-            $heroCard.removeClass('away').addClass('focus');
-          }
-          
-          if (relativeSliderPosition > detentInflections[detentInflections.length - 1]) {
-            $contactCard.addClass('focus');
-          }
-        }
+      if (newSliderPosition > 0 && newSliderPosition < $track.outerHeight()) {
+      	$slider.css({top: newSliderPosition + 'px'});
+      	
+        sliderRatio = newSliderPosition / $track.outerHeight();
+        
+        handleCards(newSliderPosition - $track.position().top);
       }
-      
-    	mousedown = userPosition;
     }
   };
   
-  // $slider.on('mousedown', function(e) {
-  //   $slider.addClass('mousedown');
-  //   $slider.stop();
-  // 	mousedown = e.pageY;
-  // });
-  
-  $track.on('mousedown', function(e) {
-    $track.addClass('mousedown');
-    $slider.addClass('mousedown');
+  $mechanism.on('mousedown', function(e) {
+    $mechanism.addClass('mousedown');
     $slider.stop();
-  	mousedown = e.pageY;
-    moveSlider(mousedown);
+    trackSlider(e.pageY);
   });
   
   $contact.on('mousedown', function() {
     $contact.addClass('mousedown');
   });
   
-  $slider.on('touchend touchcancel', function() {
-    $slider.removeClass('mousedown hover');
-    detentSlider();
-  });
-  
-  $track.on('touchend touchcancel', function() {
-    $track.removeClass('mousedown hover');
+  $mechanism.on('touchend touchcancel', function() {
+    $mechanism.removeClass('mousedown hover');
     detentSlider();
   });
   
@@ -281,7 +193,7 @@ $( document ).on('turbolinks:load', function() {
     });
     
     var top = $('#contact').offset().top;
-    var border = parseInt($('#contact').css('border-top-width'));
+    var border = parseInt($('#contact').css('border-top-width'), 10);
     $('html, body').animate({scrollTop: top + border}, 2000, function() {
       $('html, body').off('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove');
     });
@@ -294,11 +206,7 @@ $( document ).on('turbolinks:load', function() {
     trackSlider(e.pageY);
   });
   
-  // $slider.on('touchmove', function(e) {
-  //   trackSlider(e.originalEvent.touches[0].pageY);
-  // });
-  
-  $track.on('touchmove', function(e) {
+  $mechanism.on('touchmove', function(e) {
     trackSlider(e.originalEvent.touches[0].pageY);
   });
   
@@ -307,7 +215,7 @@ $( document ).on('turbolinks:load', function() {
   });
   
   $( window ).on('mouseup', function() {
-    $slider.removeClass('mousedown hover');
+    $mechanism.removeClass('mousedown hover');
     detentSlider();
   });
   
@@ -315,24 +223,15 @@ $( document ).on('turbolinks:load', function() {
     $contact.removeClass('hover mousedown');
   });
   
-  $slider.on('mouseleave', function() {
-    $slider.removeClass('hover');
+  $mechanism.on('mouseleave', function() {
+    $mechanism.removeClass('hover');
   });
   
-  // $slider.on('touchstart', function(e) {
-  //   e.preventDefault();
-  //   $slider.stop();
-  //   $slider.addClass('mousedown');
-  // 	mousedown = e.originalEvent.touches[0].pageY;
-  // });
-  
-  $track.on('touchstart', function(e) {
+  $mechanism.on('touchstart', function(e) {
     e.preventDefault();
     $slider.stop();
-    $track.addClass('mousedown');
-    $slider.addClass('mousedown');
-  	mousedown = e.originalEvent.touches[0].pageY;
-    moveSlider(mousedown);
+    $mechanism.addClass('mousedown');
+    trackSlider(e.originalEvent.touches[0].pageY);
   });
   
   $contact.on('touchstart', function(e) {
