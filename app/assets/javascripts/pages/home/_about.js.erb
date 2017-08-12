@@ -11,7 +11,8 @@ $( document ).on('turbolinks:load', function() {
         var pullInfo = pullContent + ' div#about-pull-info';
         var pullSummary = pullContent + ' div#about-pull-summary';
       var pullBreadcrumbs = pull + ' div#about-pull-breadcrumbs';
-        var pullBreadcrumb = pullBreadcrumbs + ' span';
+        // var pullBreadcrumb = pullBreadcrumbs + ' span';
+          var pullBreadcrumb = pullBreadcrumbs + ' div svg';
     var contact = about + ' a#about-contact';
   
   var $about = $(about);
@@ -24,6 +25,7 @@ $( document ).on('turbolinks:load', function() {
         var $pullInfo = $(pullInfo);
         var $pullSummary = $(pullSummary);
       var $pullBreadCrumbs = $(pullBreadcrumbs);
+          var $pullBreadcrumb = $(pullBreadcrumb);
     var $contact = $(contact);
   
   var content = [
@@ -34,28 +36,18 @@ $( document ).on('turbolinks:load', function() {
       tondo: '<%= asset_path "bear.jpg" %>',
     },
     {
-      tease: 'MILLIE THE PUP',
-      info: 'Rescued and sassy, she loves playing with bones and howling at strangers',
-      summary: 'Will demand play before cuddles',
-      tondo: '<%= asset_path "millie.jpg" %>',
-    },
-    {
       tease: 'MY BESTFRIEND',
       info: 'Going strong for 7 years, I\'m the luckiest guy alive to have Leigh',
       summary: 'I love spending everyday with her',
       tondo: '<%= asset_path "leigh.jpg" %>',
     },
+    {
+      tease: 'MILLIE THE PUP',
+      info: 'Rescued and sassy, she loves playing with bones and howling at strangers',
+      summary: 'Will demand play before cuddles',
+      tondo: '<%= asset_path "millie.jpg" %>',
+    },
   ];
-    
-  $pullBreadCrumbs.html('<span class="active"></span>');
-  
-  content.forEach(function(val, i) {
-    if (i > 0) {
-      $pullBreadCrumbs.append('<span></span>');
-    }
-  });
-  
-  var $pullBreadcrumb = $(pullBreadcrumb);
   
   var $responsive = $([pullHandle, contact, pullTondo, pullBreadcrumb].join(', '));
   
@@ -158,7 +150,7 @@ $( document ).on('turbolinks:load', function() {
       $(this).removeClass('mousedown hover');
       
       if (!$(this).hasClass('active')) {
-        setContent($(this).index());
+        setContent($(this).parent().index());
         $pullBreadcrumb.removeClass('active');
         $(this).addClass('active');
       }

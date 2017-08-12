@@ -211,11 +211,29 @@ section#about {
         cursor: pointer;
         
         @include border-radius(16px);
-        
         @include transition(all, 0.5s, $normal-bezier, 0s);
         
         &.active {
           background: white;
+        }
+      }
+      
+      div {
+        display: inline-block;
+        text-align: center;
+        position: relative;
+        max-height: 100%;
+        max-width: 30%;
+        width: 64px;
+        padding: 4px;
+        background: white;
+        margin: 8px;
+        cursor: pointer;
+        
+        @include border-radius(50%);
+        
+        svg {
+          stroke: darken(map-get($mex, blue), 20%);
         }
       }
     }
