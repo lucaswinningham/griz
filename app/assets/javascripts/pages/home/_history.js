@@ -61,7 +61,6 @@ $( document ).on('turbolinks:load', function() {
   var fixedBuffer = 200;
   
   var pxDetentIncrement;
-  // var detentInflections;
   var sliderRatio;
   
   var sectionFill = function() {
@@ -129,9 +128,7 @@ $( document ).on('turbolinks:load', function() {
     detentSlider();
   });
   
-  $( window ).scroll(function() {
-    handleFixed();
-  });
+  $( window ).scroll(handleFixed);
   
   var handleCards = function() {
   	var sliderPosition = parseInt($slider.css('top'), 10);

@@ -122,6 +122,11 @@ $( document ).on('turbolinks:load', function() {
     });
   };
   
+  var updateSectionPositionsTimeout = window.setTimeout(function() {
+    updateSectionPositions();
+    window.clearTimeout(updateSectionPositionsTimeout);
+  }, 0);
+  
   var burgerTrack = function() {
     var scrollPosition = $( document ).scrollTop();
     var sectionScrollBreakRatio = 0.5;
