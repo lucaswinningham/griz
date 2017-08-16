@@ -2,31 +2,94 @@
 
 $( document ).on('turbolinks:load', function() {
   var about = 'section#about';
-    var hero = about + ' div#about-hero';
-    var pull = about + ' div#about-pull';
-      var pullHandle = pull + ' div#about-pull-handle';
-      var pullTondo = pull + ' div#about-pull-tondo';
-      var pullContent = pull + ' div#about-pull-content';
-        var pullTease = pullContent + ' div#about-pull-tease';
-        var pullInfo = pullContent + ' div#about-pull-info';
-        var pullSummary = pullContent + ' div#about-pull-summary';
-      var pullBreadcrumbs = pull + ' div#about-pull-breadcrumbs';
-        // var pullBreadcrumb = pullBreadcrumbs + ' span';
-          var pullBreadcrumb = pullBreadcrumbs + ' div svg';
-    var contact = about + ' a#about-contact';
+    var container = about + ' div#about-container';
+      var tondo = container + ' div#about-tondo';
+      var cards = container + ' div#about-cards';
+        var card = cards + ' div.about-card';
+        var contactCard = cards + ' div#about-card-contact';
+              var contact = contactCard + ' div div.about-card-body a#about-contact';
+      var breadcrumbs = container + ' div#about-breadcrumbs';
+        var breadcrumb = breadcrumbs + ' div';
+  
+    // var hero = about + ' div#about-hero';
+    // var pull = about + ' div#about-pull';
+    //   var pullHandle = pull + ' div#about-pull-handle';
+    //   var pullTondo = pull + ' div#about-pull-tondo';
+    //   var pullContent = pull + ' div#about-pull-content';
+    //     var pullTease = pullContent + ' div#about-pull-tease';
+    //     var pullInfo = pullContent + ' div#about-pull-info';
+    //     var pullSummary = pullContent + ' div#about-pull-summary';
+    //   var pullBreadcrumbs = pull + ' div#about-pull-breadcrumbs';
+    //     // var pullBreadcrumb = pullBreadcrumbs + ' span';
+    //       var pullBreadcrumb = pullBreadcrumbs + ' div svg';
+    // var contact = about + ' a#about-contact';
   
   var $about = $(about);
-    var $hero = $(hero);
-    var $pull = $(pull);
-      var $pullHandle = $(pullHandle);
-      var $pullTondo = $(pullTondo);
-      var $pullContent = $(pullContent);
-        var $pullTease = $(pullTease);
-        var $pullInfo = $(pullInfo);
-        var $pullSummary = $(pullSummary);
-      var $pullBreadCrumbs = $(pullBreadcrumbs);
-          var $pullBreadcrumb = $(pullBreadcrumb);
-    var $contact = $(contact);
+    var $container = $(container);
+      var $tondo = $(tondo);
+      var $cards = $(cards);
+        var $contactCard = $(contactCard);
+              var $contact = $(contact);
+      var $breadcrumbs = $(breadcrumbs);
+        var $breadcrumb = $(breadcrumb);
+  
+    // var $hero = $(hero);
+    // var $pull = $(pull);
+    //   var $pullHandle = $(pullHandle);
+    //   var $pullTondo = $(pullTondo);
+    //   var $pullContent = $(pullContent);
+    //     var $pullTease = $(pullTease);
+    //     var $pullInfo = $(pullInfo);
+    //     var $pullSummary = $(pullSummary);
+    //   var $pullBreadCrumbs = $(pullBreadcrumbs);
+    //       var $pullBreadcrumb = $(pullBreadcrumb);
+    // var $contact = $(contact);
+  
+  (function() {
+    var msAnimationDuration = 1500;
+    var msAnimationDelay = 1500;
+    var msIncrement = msAnimationDuration / $breadcrumb.length;
+    
+    $breadcrumb.each(function(i) {
+      var thisDelay = (msAnimationDuration - (i + 1) * msIncrement) + 'ms';
+      
+      $(this).css({
+        '-webkit-transition-delay': thisDelay,
+        '-moz-transition-delay': thisDelay,
+        '-o-transition-delay': thisDelay,
+        'transition-delay': thisDelay,
+        '-webkit-transition-duration': msAnimationDuration + 'ms',
+        '-moz-transition-duration': msAnimationDuration + 'ms',
+        '-o-transition-duration': msAnimationDuration + 'ms',
+        'transition-duration': msAnimationDuration + 'ms',
+      });
+    });
+    
+    var animationDelayTimeout = window.setTimeout(function() {
+      $breadcrumb.each(function(i) {
+        $(this).css({
+          'left': (100 * (i + 1) / ($breadcrumb.length + 1)) + '%',
+        });
+      });
+      
+      var animationDurationTimeout = window.setTimeout(function() {
+        $breadcrumb.css({
+          '-webkit-transition-delay': '',
+          '-moz-transition-delay': '',
+          '-o-transition-delay': '',
+          'transition-delay': '',
+          '-webkit-transition-duration': '',
+          '-moz-transition-duration': '',
+          '-o-transition-duration': '',
+          'transition-duration': '',
+        });
+        
+        window.clearTimeout(animationDurationTimeout);
+      }, msAnimationDuration / 2);
+      
+      window.clearTimeout(animationDelayTimeout);
+    }, msAnimationDelay);
+  })();
   
   var content = [
     {
@@ -49,97 +112,131 @@ $( document ).on('turbolinks:load', function() {
     },
   ];
   
-  var $responsive = $([pullHandle, contact, pullTondo, pullBreadcrumb].join(', '));
+  content.forEach(function(val, i) {
+    // $tondo.css({
+    //   backgroundImage: 'url(' + newContent.tondo + ')',
+    // });
+    
+    var tease = '<div class="about-card-tease"><span>' + val.tease + '</span></div>';
+    var info = '<div class="about-card-info"><span>' + val.info + '</span></div>';
+    var summary = '<div class="about-card-summary"><span>' + val.summary + '</span></div>';
+    var card = '<div class="about-card">' + tease + info + summary + '</div>';
+    
+    $(card).insertBefore($contactCard);
+  });
+  
+  var $card = $(card);
+  
+  $breadcrumb.first().addClass('active');
+  $card.first().addClass('focus');
+  
+  // var $responsive = $([pullHandle, contact, pullTondo, pullBreadcrumb].join(', '));
+  var $responsive = $([breadcrumb].join(', '));
+  
+  var fixedBuffer = 200;
   
   var sectionFill = function() {
     $about.css({
-      'height': $( window ).height(),
+      'height': ($( window ).height() + fixedBuffer) + 'px',
+      'padding-bottom': fixedBuffer + 'px',
+    });
+    
+    $container.css({
+      'height': $( window ).height() + 'px',
     });
   };
   
   sectionFill();
   
-  var tondoFocus = function() {
-    var windowHeight = $( window ).height();
-    var windowWidth =  $( window ).width();
+  var handleFixed = function() {
+    var scrollPosition = Math.round($( document ).scrollTop());
+    var fixedTop = $about.offset().top;
+    var fixedBottom = $about.offset().top + fixedBuffer;
     
-    if (windowHeight > windowWidth) {
-      $pullTondo.css({
-        height: windowWidth - 30,
-        width: windowWidth - 30,
-        top: windowHeight / 2 - windowWidth / 2 - $pull.offset().top + 15 - 4,
-        right: 15 - 4,
+    if (scrollPosition < fixedTop) {
+      $container.css({
+        'position': 'absolute',
+        'top': '0px',
+      });
+    } else if (scrollPosition > fixedBottom) {
+      $container.css({
+        'position': 'absolute',
+        'top': fixedBuffer + 'px',
       });
     } else {
-      $pullTondo.css({
-        height: windowHeight - 30,
-        width: windowHeight - 30,
-        top: 15 - 4 - $pull.offset().top,
-        right: windowWidth / 2 - windowHeight / 2 + 15 - 4,
+      $container.css({
+        'position': 'fixed',
+        'top': '0px',
       });
     }
   };
   
-  var tondoUnfocus = function() {
-    var windowWidth =  $( window ).width();
+  // var tondoFocus = function() {
+  //   var windowHeight = $( window ).height();
+  //   var windowWidth =  $( window ).width();
     
-    $pullTondo.css({
-      height: windowWidth / 5,
-      width: '',
-      top: (-windowWidth / 10),
-      right: '',
-    });
-  };
+  //   if (windowHeight > windowWidth) {
+  //     $pullTondo.css({
+  //       height: windowWidth - 30,
+  //       width: windowWidth - 30,
+  //       top: windowHeight / 2 - windowWidth / 2 - $pull.offset().top + 15 - 4,
+  //       right: 15 - 4,
+  //     });
+  //   } else {
+  //     $pullTondo.css({
+  //       height: windowHeight - 30,
+  //       width: windowHeight - 30,
+  //       top: 15 - 4 - $pull.offset().top,
+  //       right: windowWidth / 2 - windowHeight / 2 + 15 - 4,
+  //     });
+  //   }
+  // };
   
-  tondoUnfocus();
+  // var tondoUnfocus = function() {
+  //   var windowWidth =  $( window ).width();
+    
+  //   $pullTondo.css({
+  //     height: windowWidth / 5,
+  //     width: '',
+  //     top: (-windowWidth / 10),
+  //     right: '',
+  //   });
+  // };
+  
+  // tondoUnfocus();
   
   $( window ).resize(function() {
     sectionFill();
-    if ($pullTondo.hasClass('focus')) {
-      tondoFocus();
-    } else {
-      tondoUnfocus();
-    }
+    // if ($pullTondo.hasClass('focus')) {
+    //   tondoFocus();
+    // } else {
+    //   tondoUnfocus();
+    // }
   });
   
-  var togglePull = function() {
-    if ($(this).hasClass('mousedown')) {
-      $pullHandle.removeClass('mousedown hover');
-      
-      if ($pull.hasClass('show')) {
-        $pull.removeClass('show');
-        $pullHandle.html('<span>></span>');
-        $hero.removeClass('shrink');
-      } else {
-        $pull.addClass('show');
-        $pullHandle.html('<span><</span>');
-        $hero.addClass('shrink');
-      }
-    }
-  };
-  
-  var toggleTondo = function() {
-    if ($pullTondo.hasClass('mousedown')) {
-      $pullTondo.removeClass('mousedown hover');
-      
-      if ($pullTondo.hasClass('focus')) {
-        $pullTondo.removeClass('focus');
-        tondoUnfocus();
-      } else {
-        $pullTondo.addClass('focus');
-        tondoFocus();
-      }
-    }
-  };
+  $( window ).scroll(handleFixed);
   
   var setContent = function(index) {
-    var newContent = content[index];
-    $pullTease.html('<span>' + newContent.tease + '</span>');
-    $pullInfo.html('<span>' + newContent.info + '</span>');
-    $pullSummary.html('<span>' + newContent.summary + '</span>');
-  
-    $pullTondo.css({
-      backgroundImage: 'url(' + newContent.tondo + ')',
+    $card.removeClass('away focus');
+    
+    $card.each(function(i) {
+      $(this).css({
+        'left': ((i - index) * 150 + 50) + '%',
+      });
+      // if (i == index) {
+      //   $(this).css({
+      //     'left': '50%',
+      //   });
+      // } else {
+      //   $(this).css({
+      //     'left': ((i - index) * 150 + 50) + '%',
+      //   });
+      // }
+      // if (i == index) {
+      //   $(this).addClass('focus');
+      // } else if (i > index) {
+      //   $(this).addClass('away');
+      // }
     });
   };
   
@@ -150,8 +247,8 @@ $( document ).on('turbolinks:load', function() {
       $(this).removeClass('mousedown hover');
       
       if (!$(this).hasClass('active')) {
-        setContent($(this).parent().index());
-        $pullBreadcrumb.removeClass('active');
+        setContent($(this).index());
+        $breadcrumb.removeClass('active');
         $(this).addClass('active');
       }
     }
@@ -160,8 +257,6 @@ $( document ).on('turbolinks:load', function() {
   $responsive.on('mousedown', function() {
     $(this).addClass('mousedown');
   });
-  
-  $pullHandle.on('mouseup touchend touchcancel', togglePull);
   
   // Screen actually follows link when mouseup event used instead of click
   $contact.on('click touchend touchcancel', function(e) {
@@ -183,9 +278,7 @@ $( document ).on('turbolinks:load', function() {
     return false;
   });
   
-  $pullTondo.on('mouseup touchend touchcancel', toggleTondo);
-  
-  $pullBreadcrumb.on('mouseup touchend touchcancel', updateContent);
+  $breadcrumb.on('mouseup touchend touchcancel', updateContent);
   
   $responsive.on('mouseenter', function() {
     $(this).addClass('hover');

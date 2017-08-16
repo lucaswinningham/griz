@@ -1,27 +1,27 @@
 <section id="about">
-  <div id="about-hero">
-    <div>
-      <span id="about-hero-large">THEY CALL ME GRIZ</span>
-      <span id="about-hero-small">ASPIRING UX DESIGNER</span>
+  <div id="about-container">
+    <div id="about-tondo"></div>
+    
+    <div id="about-cards">
+      <div id="about-card-contact" class="about-card">
+        <div>
+          <div class="about-card-head">
+            <span>Maybe you feel like reaching out</span>
+          </div>
+          <div class="about-card-body">
+            <a id="about-contact" href="#contact">
+              <span>CONTACT</span>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  
-  <div id="about-pull">
-    <div id="about-pull-handle"><span>></span></div>
-    <div id="about-pull-tondo"></div>
-    <div id="about-pull-content">
-      <div id="about-pull-tease"></div>
-      <div id="about-pull-info"></div>
-      <div id="about-pull-summary"></div>
-    </div>
-    <div id="about-pull-breadcrumbs">
+    
+    <div id="about-breadcrumbs">
       <div><%= render "icons/beard" %></div>
       <div><%= render "icons/leigh" %></div>
       <div><%= render "icons/hound" %></div>
+      <div><%= render "icons/contact" %></div>
     </div>
   </div>
-  
-  <a id="about-contact" href="#contact">
-    <span>CONTACT</span>
-  </a>
 </section>

@@ -20,7 +20,7 @@ $( document ).on('turbolinks:load', function() {
         var $track = $(track);
           var $detents = $(detents);
         var $slider = $(slider);
-        var $cards = $(cards);
+      var $cards = $(cards);
         var $heroCard = $(heroCard);
         var $contactCard = $(contactCard);
               var $contact = $(contact);
@@ -56,6 +56,8 @@ $( document ).on('turbolinks:load', function() {
   var $detent = $(detent);
   var $card = $(card);
   
+  // todo
+  // probably remove this entirely and individually select responsive elements
   var $responsive = $([slider, track, contact].join(', '));
   
   var fixedBuffer = 200;
