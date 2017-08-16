@@ -7,43 +7,18 @@ $( document ).on('turbolinks:load', function() {
       var cards = container + ' div#about-cards';
         var card = cards + ' div.about-card';
         var contactCard = cards + ' div#about-card-contact';
-              var contact = contactCard + ' div div.about-card-body a#about-contact';
+            var contact = contactCard + ' div a#about-contact';
       var breadcrumbs = container + ' div#about-breadcrumbs';
         var breadcrumb = breadcrumbs + ' div';
-  
-    // var hero = about + ' div#about-hero';
-    // var pull = about + ' div#about-pull';
-    //   var pullHandle = pull + ' div#about-pull-handle';
-    //   var pullTondo = pull + ' div#about-pull-tondo';
-    //   var pullContent = pull + ' div#about-pull-content';
-    //     var pullTease = pullContent + ' div#about-pull-tease';
-    //     var pullInfo = pullContent + ' div#about-pull-info';
-    //     var pullSummary = pullContent + ' div#about-pull-summary';
-    //   var pullBreadcrumbs = pull + ' div#about-pull-breadcrumbs';
-    //     // var pullBreadcrumb = pullBreadcrumbs + ' span';
-    //       var pullBreadcrumb = pullBreadcrumbs + ' div svg';
-    // var contact = about + ' a#about-contact';
   
   var $about = $(about);
     var $container = $(container);
       var $tondo = $(tondo);
       var $cards = $(cards);
         var $contactCard = $(contactCard);
-              var $contact = $(contact);
+            var $contact = $(contact);
       var $breadcrumbs = $(breadcrumbs);
         var $breadcrumb = $(breadcrumb);
-  
-    // var $hero = $(hero);
-    // var $pull = $(pull);
-    //   var $pullHandle = $(pullHandle);
-    //   var $pullTondo = $(pullTondo);
-    //   var $pullContent = $(pullContent);
-    //     var $pullTease = $(pullTease);
-    //     var $pullInfo = $(pullInfo);
-    //     var $pullSummary = $(pullSummary);
-    //   var $pullBreadCrumbs = $(pullBreadcrumbs);
-    //       var $pullBreadcrumb = $(pullBreadcrumb);
-    // var $contact = $(contact);
   
   (function() {
     var msAnimationDuration = 1500;
@@ -131,14 +106,13 @@ $( document ).on('turbolinks:load', function() {
   $card.first().addClass('focus');
   
   // var $responsive = $([pullHandle, contact, pullTondo, pullBreadcrumb].join(', '));
-  var $responsive = $([breadcrumb].join(', '));
+  var $responsive = $([breadcrumb, contact].join(', '));
   
   var fixedBuffer = 200;
   
   var sectionFill = function() {
     $about.css({
-      'height': ($( window ).height() + fixedBuffer) + 'px',
-      'padding-bottom': fixedBuffer + 'px',
+      'height': $( window ).height() + 'px',
     });
     
     $container.css({
@@ -147,29 +121,6 @@ $( document ).on('turbolinks:load', function() {
   };
   
   sectionFill();
-  
-  var handleFixed = function() {
-    var scrollPosition = Math.round($( document ).scrollTop());
-    var fixedTop = $about.offset().top;
-    var fixedBottom = $about.offset().top + fixedBuffer;
-    
-    if (scrollPosition < fixedTop) {
-      $container.css({
-        'position': 'absolute',
-        'top': '0px',
-      });
-    } else if (scrollPosition > fixedBottom) {
-      $container.css({
-        'position': 'absolute',
-        'top': fixedBuffer + 'px',
-      });
-    } else {
-      $container.css({
-        'position': 'fixed',
-        'top': '0px',
-      });
-    }
-  };
   
   // var tondoFocus = function() {
   //   var windowHeight = $( window ).height();
@@ -213,8 +164,6 @@ $( document ).on('turbolinks:load', function() {
     //   tondoUnfocus();
     // }
   });
-  
-  $( window ).scroll(handleFixed);
   
   var setContent = function(index) {
     $card.removeClass('away focus');

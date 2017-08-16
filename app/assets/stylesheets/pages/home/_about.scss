@@ -1,7 +1,5 @@
 section#about {
   background: map-get($mex, blue);
-  // box-sizing: content-box;
-  // border-bottom: 200px solid map-get($mex, blue);
   position: relative;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -43,6 +41,7 @@ section#about {
         
         // 100% - breadcrumb height - 30 - 15
         height: calc(100% - 109px);
+        @include respond-to(phone) { height: calc(100% - 93px); }
         
         // breadcrumb height + breadcrumb bottom + 30 / 2
         top: 15px;
@@ -94,6 +93,64 @@ section#about {
           @include respond-to(phone) { font-size: 1em; }
         }
       }
+      
+      div#about-card-contact {
+        span {
+          position: absolute;
+          top: 33%;
+          left: 50%;
+          width: 100%;
+          text-align: center;
+          color: white;
+          font-size: 3.75em;
+          
+          @include transform(translate(-50%,-50%));
+          
+          @include respond-to(phone) { font-size: 2em; }
+        }
+        
+        a#about-contact {
+          position: absolute;
+          top: 67%;
+          left: 50%;
+          height: 64px;
+          width: 40%;
+          text-decoration: none;
+          text-align: center;
+          background: white;
+          
+          @include border-radius(8px);
+          @include transform(translate(-50%,-50%));
+          
+          @include respond-to(phone) {
+            width: calc(100% - 60px);
+            height: 48px;
+            font-size: 1.5em;
+          }
+          
+          span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            font-size: 1em;
+            color: darken(map-get($mex, blue), 15%);
+            
+            @include transform(translate(-50%,-50%));
+            
+            // @include respond-to(phone) { font-size: 1.5em; }
+          }
+          
+          &.hover {
+            border: 4px solid darken(map-get($mex, blue), 15%);
+          }
+          
+          &.mousedown {
+            @include transform(translateY(4px));
+            @include transform(translate(-50%, calc(-50% + 4px)));
+          }
+        }
+      }
     }
     
     div#about-breadcrumbs {
@@ -117,6 +174,12 @@ section#about {
         @include border-radius(50%);
         @include transition(all, 0s, $normal-bezier, 0s);
         @include transform(translateX(-50%));
+        
+        @include respond-to(phone) {
+          height: 48px;
+          width: 48px;
+          padding: 3px;
+        }
         
         svg {
           stroke: darken(map-get($mex, blue), 15%);
@@ -143,6 +206,12 @@ section#about {
         &.mousedown {
           @include transform(translate(-50%,4px));
         }
+      }
+      
+      div#about-breadcrumb-contact {
+        padding: 12px;
+        
+        @include respond-to(phone) { padding: 9px; }
       }
     }
   }
