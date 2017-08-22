@@ -43,11 +43,10 @@ section#about {
         height: calc(100% - 109px);
         @include respond-to(phone) { height: calc(100% - 93px); }
         
-        // breadcrumb height + breadcrumb bottom + 30 / 2
-        top: 15px;
+        top: -150%;
         
         @include transform(translateX(-50%));
-        @include transition(all, 1.5s, $normal-bezier, 0s);
+        @include transition(all, 1s, $normal-bezier, 0s);
         @include border-radius(8px);
         
         div.about-card-tease, div.about-card-info, div.about-card-summary {
@@ -91,6 +90,17 @@ section#about {
           top: 75%;
           
           @include respond-to(phone) { font-size: 1em; }
+        }
+        
+        &.focus {
+          left: 50%;
+          
+          // breadcrumb height + breadcrumb bottom + 30 / 2
+          top: 15px;
+        }
+        
+        &.away {
+          left: -100%;
         }
       }
       
@@ -172,7 +182,7 @@ section#about {
         cursor: pointer;
         
         @include border-radius(50%);
-        @include transition(all, 0s, $normal-bezier, 0s);
+        @include transition(left, 1.5s, $normal-bezier, 0s);
         @include transform(translateX(-50%));
         
         @include respond-to(phone) {

@@ -74,7 +74,7 @@ section#history {
         width: calc(100% - 80px);
         height: calc(100% - 60px);
         left: 110%;
-        top: 110%;
+        top: -110%;
         padding: 10px;
         background: darken(map-get($mex, purple), 10%);
         
@@ -127,8 +127,7 @@ section#history {
         }
         
         &.away {
-          left: 110%;
-          top: -110%;
+          top: 110%;
         }
       }
       

@@ -136,13 +136,15 @@ $( document ).on('turbolinks:load', function() {
   	var sliderPosition = parseInt($slider.css('top'), 10);
     var newSliderTarget = Math.round(sliderPosition / pxDetentIncrement);
     
-    $card.removeClass('away focus');
+    // $card.removeClass('away focus');
     
     $card.each(function(i) {
       if (i == newSliderTarget) {
-        $(this).addClass('focus');
-      } else if (i > newSliderTarget) {
-        $(this).addClass('away');
+        $(this).removeClass('away').addClass('focus');
+      } else if (i < newSliderTarget) {
+        $(this).removeClass('focus').addClass('away');
+      } else {
+        $(this).removeClass('away focus');
       }
     });
   };

@@ -21,50 +21,16 @@ $( document ).on('turbolinks:load', function() {
         var $breadcrumb = $(breadcrumb);
   
   (function() {
-    var msAnimationDuration = 1500;
-    var msAnimationDelay = 1500;
-    var msIncrement = msAnimationDuration / $breadcrumb.length;
-    
-    $breadcrumb.each(function(i) {
-      var thisDelay = (msAnimationDuration - (i + 1) * msIncrement) + 'ms';
-      
-      $(this).css({
-        '-webkit-transition-delay': thisDelay,
-        '-moz-transition-delay': thisDelay,
-        '-o-transition-delay': thisDelay,
-        'transition-delay': thisDelay,
-        '-webkit-transition-duration': msAnimationDuration + 'ms',
-        '-moz-transition-duration': msAnimationDuration + 'ms',
-        '-o-transition-duration': msAnimationDuration + 'ms',
-        'transition-duration': msAnimationDuration + 'ms',
-      });
-    });
-    
-    var animationDelayTimeout = window.setTimeout(function() {
+    var timeout = window.setTimeout(function() {
       $breadcrumb.each(function(i) {
         $(this).css({
           'left': (100 * (i + 1) / ($breadcrumb.length + 1)) + '%',
         });
       });
       
-      var animationDurationTimeout = window.setTimeout(function() {
-        $breadcrumb.css({
-          '-webkit-transition-delay': '',
-          '-moz-transition-delay': '',
-          '-o-transition-delay': '',
-          'transition-delay': '',
-          '-webkit-transition-duration': '',
-          '-moz-transition-duration': '',
-          '-o-transition-duration': '',
-          'transition-duration': '',
-        });
-        
-        window.clearTimeout(animationDurationTimeout);
-      }, msAnimationDuration / 2);
-      
-      window.clearTimeout(animationDelayTimeout);
-    }, msAnimationDelay);
-  })();
+      window.clearTimeout(timeout);
+    }, 1500);
+  }());
   
   var content = [
     {
@@ -103,7 +69,14 @@ $( document ).on('turbolinks:load', function() {
   var $card = $(card);
   
   $breadcrumb.first().addClass('active');
-  $card.first().addClass('focus');
+  
+  (function() {
+    var timeout = window.setTimeout(function() {
+      $card.first().addClass('focus');
+      
+      window.clearTimeout(timeout);
+    }, 500);
+  }());
   
   // var $responsive = $([pullHandle, contact, pullTondo, pullBreadcrumb].join(', '));
   var $responsive = $([breadcrumb, contact].join(', '));
@@ -166,30 +139,16 @@ $( document ).on('turbolinks:load', function() {
   });
   
   var setContent = function(index) {
-    $card.removeClass('away focus');
-    
     $card.each(function(i) {
-      $(this).css({
-        'left': ((i - index) * 150 + 50) + '%',
-      });
-      // if (i == index) {
-      //   $(this).css({
-      //     'left': '50%',
-      //   });
-      // } else {
-      //   $(this).css({
-      //     'left': ((i - index) * 150 + 50) + '%',
-      //   });
-      // }
-      // if (i == index) {
-      //   $(this).addClass('focus');
-      // } else if (i > index) {
-      //   $(this).addClass('away');
-      // }
+      if (i == index) {
+        $(this).removeClass('away').addClass('focus');
+      } else if (i < index) {
+        $(this).removeClass('focus').addClass('away');
+      } else {
+        $(this).removeClass('away focus');
+      }
     });
   };
-  
-  setContent(0);
   
   var updateContent = function() {
     if ($(this).hasClass('mousedown')) {
