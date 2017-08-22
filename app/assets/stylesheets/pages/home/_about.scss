@@ -10,28 +10,6 @@ section#about {
     left: 0;
     width: 100%;
     
-    div#about-tondo {
-      position: absolute;
-      width: 20%;
-      right: 100%;
-      background: white;
-      cursor: pointer;
-      z-index: 2;
-      
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-color: #ccc;
-      background-size: cover;
-    
-      @include border-radius(50%);
-      @include transition(all, 1s, $normal-bezier, 0s);
-      
-      &.focus {
-        @include border-radius(16px);
-        right: 15%;
-      }
-    }
-    
     div#about-cards {
       div.about-card {
         position: absolute;
@@ -48,6 +26,40 @@ section#about {
         @include transform(translateX(-50%));
         @include transition(all, 1s, $normal-bezier, 0s);
         @include border-radius(8px);
+        
+        &.focus {
+          left: 50%;
+          
+          // breadcrumb height + breadcrumb bottom + 30 / 2
+          top: 15px;
+        }
+        
+        &.away {
+          left: -100%;
+        }
+        
+        div.about-card-tondo {
+          position: absolute;
+          width: 20%;
+          height: 20%;
+          right: 50%;
+          background: white;
+          cursor: pointer;
+          z-index: 2;
+          
+          background-repeat: no-repeat;
+          background-position: center center;
+          background-color: #ccc;
+          background-size: cover;
+        
+          @include border-radius(50%);
+          @include transition(all, 1s, $normal-bezier, 0s);
+          
+          &.focus {
+            @include border-radius(16px);
+            right: 15%;
+          }
+        }
         
         div.about-card-tease, div.about-card-info, div.about-card-summary {
           @include display-flex;
@@ -90,17 +102,6 @@ section#about {
           top: 75%;
           
           @include respond-to(phone) { font-size: 1em; }
-        }
-        
-        &.focus {
-          left: 50%;
-          
-          // breadcrumb height + breadcrumb bottom + 30 / 2
-          top: 15px;
-        }
-        
-        &.away {
-          left: -100%;
         }
       }
       
@@ -156,7 +157,6 @@ section#about {
           }
           
           &.mousedown {
-            @include transform(translateY(4px));
             @include transform(translate(-50%, calc(-50% + 4px)));
           }
         }
@@ -215,6 +215,8 @@ section#about {
         
         &.mousedown {
           @include transform(translate(-50%,4px));
+          
+          @include respond-to(phone) { @include transform(translate(-50%,-24px)); }
         }
       }
       

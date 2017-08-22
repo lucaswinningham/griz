@@ -3,9 +3,9 @@
 $( document ).on('turbolinks:load', function() {
   var about = 'section#about';
     var container = about + ' div#about-container';
-      var tondo = container + ' div#about-tondo';
       var cards = container + ' div#about-cards';
         var card = cards + ' div.about-card';
+          var tondo = card + ' div.about-card-tondo';
         var contactCard = cards + ' div#about-card-contact';
             var contact = contactCard + ' div a#about-contact';
       var breadcrumbs = container + ' div#about-breadcrumbs';
@@ -13,7 +13,6 @@ $( document ).on('turbolinks:load', function() {
   
   var $about = $(about);
     var $container = $(container);
-      var $tondo = $(tondo);
       var $cards = $(cards);
         var $contactCard = $(contactCard);
             var $contact = $(contact);
@@ -54,19 +53,23 @@ $( document ).on('turbolinks:load', function() {
   ];
   
   content.forEach(function(val, i) {
-    // $tondo.css({
-    //   backgroundImage: 'url(' + newContent.tondo + ')',
-    // });
-    
+    var tondo = '<div class="about-card-tondo"></div>';
     var tease = '<div class="about-card-tease"><span>' + val.tease + '</span></div>';
     var info = '<div class="about-card-info"><span>' + val.info + '</span></div>';
     var summary = '<div class="about-card-summary"><span>' + val.summary + '</span></div>';
-    var card = '<div class="about-card">' + tease + info + summary + '</div>';
+    var card = '<div class="about-card">' + tondo + tease + info + summary + '</div>';
     
     $(card).insertBefore($contactCard);
   });
   
   var $card = $(card);
+  var $tondo = $(tondo);
+  
+  $tondo.each(function(i) {
+    $(this).css({
+      backgroundImage: 'url(' + content[i].tondo + ')',
+    });
+  });
   
   $breadcrumb.first().addClass('active');
   
