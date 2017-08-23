@@ -13,7 +13,7 @@ section#about {
     div#about-cards {
       div.about-card {
         position: absolute;
-        left: 200%;
+        left: -100%;
         width: calc(100% - 30px);
         background: darken(map-get($mex, blue), 15%);
         
@@ -35,13 +35,11 @@ section#about {
         }
         
         &.away {
-          left: -100%;
+          left: 200%;
         }
         
         div.about-card-tondo {
           position: absolute;
-          width: 20%;
-          height: 20%;
           right: 50%;
           background: white;
           cursor: pointer;
@@ -54,6 +52,7 @@ section#about {
         
           @include border-radius(50%);
           @include transition(all, 1s, $normal-bezier, 0s);
+          @include transform(translate(-50%,-50%));
           
           &.focus {
             @include border-radius(16px);

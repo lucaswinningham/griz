@@ -98,47 +98,53 @@ $( document ).on('turbolinks:load', function() {
   
   sectionFill();
   
-  // var tondoFocus = function() {
-  //   var windowHeight = $( window ).height();
-  //   var windowWidth =  $( window ).width();
+  var tondoFocus = function() {
+    var cardHeight = $card.height();
+    var cardWidth =  $card.width();
+    var pixelGutter = 15;
+    var tondoSide = (cardHeight > cardWidth ? cardWidth : cardHeight) - pixelGutter * 2;
     
-  //   if (windowHeight > windowWidth) {
-  //     $pullTondo.css({
-  //       height: windowWidth - 30,
-  //       width: windowWidth - 30,
-  //       top: windowHeight / 2 - windowWidth / 2 - $pull.offset().top + 15 - 4,
-  //       right: 15 - 4,
-  //     });
-  //   } else {
-  //     $pullTondo.css({
-  //       height: windowHeight - 30,
-  //       width: windowHeight - 30,
-  //       top: 15 - 4 - $pull.offset().top,
-  //       right: windowWidth / 2 - windowHeight / 2 + 15 - 4,
-  //     });
-  //   }
-  // };
+    $tondo.css({
+      height: tondoSide,
+      width: tondoSide,
+      top: cardHeight / 2,
+      left: cardWidth / 2,
+    });
+  };
   
-  // var tondoUnfocus = function() {
-  //   var windowWidth =  $( window ).width();
+  var handleTondoSizing = function(focus) {
+    var cardHeight = $card.height();
+    var cardWidth =  $card.width();
+    var pixelGutter = 15;
+    var tondoRatio = 0.3;
+    var pixelOffsetTop;
+    var pixelOffsetLeft;
+    var tondoSide =  (cardHeight > cardWidth ? cardWidth : cardHeight);
     
-  //   $pullTondo.css({
-  //     height: windowWidth / 5,
-  //     width: '',
-  //     top: (-windowWidth / 10),
-  //     right: '',
-  //   });
-  // };
+    if (focus) {
+      tondoSide -= pixelGutter * 2;
+      pixelOffsetTop = cardHeight / 2;
+      pixelOffsetLeft = cardWidth / 2;
+    } else {
+      tondoSide *= tondoRatio;
+      tondoSide -= pixelGutter * 2;
+      pixelOffsetTop = tondoSide / 2 + pixelGutter;
+      pixelOffsetLeft = tondoSide / 2 + pixelGutter;
+    }
+    
+    $tondo.css({
+      height: tondoSide,
+      width: tondoSide,
+      top: pixelOffsetTop,
+      left: pixelOffsetLeft,
+    });
+  };
   
-  // tondoUnfocus();
+  handleTondoSizing(false);
   
   $( window ).resize(function() {
     sectionFill();
-    // if ($pullTondo.hasClass('focus')) {
-    //   tondoFocus();
-    // } else {
-    //   tondoUnfocus();
-    // }
+    handleTondoSizing($tondo.hasClass('focus'));
   });
   
   var setContent = function(index) {
@@ -190,6 +196,11 @@ $( document ).on('turbolinks:load', function() {
   });
   
   $breadcrumb.on('mouseup touchend touchcancel', updateContent);
+  
+  $tondo.on('mouseup touchend touchcancel', function() {
+    $tondo.toggleClass('focus');
+    handleTondoSizing($tondo.hasClass('focus'));
+  });
   
   $responsive.on('mouseenter', function() {
     $(this).addClass('hover');
