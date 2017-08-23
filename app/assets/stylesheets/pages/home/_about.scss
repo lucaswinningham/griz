@@ -15,31 +15,35 @@ section#about {
     @include transition(height, 1s, $normal-bezier, 0s);
     
     div#about-cards {
+      position: absolute;
+      width: calc(100% - 30px);
+      top: 15px;
+      left: 15px;
+      
+      // 100% - breadcrumb height - 30 - 15
+      height: calc(100% - 109px);
+      @include respond-to(phone) { height: calc(100% - 93px); }
+      
       div.about-card {
         position: absolute;
-        left: -100%;
-        width: calc(100% - 30px);
+        left: -150%;
+        top: -150%;
+        width: 100%;
+        height: 100%;
         background: darken(map-get($mex, blue), 15%);
         
-        // 100% - breadcrumb height - 30 - 15
-        height: calc(100% - 109px);
-        @include respond-to(phone) { height: calc(100% - 93px); }
-        
-        top: -150%;
-        
-        @include transform(translateX(-50%));
         @include transition(all, 1s, $normal-bezier, 0s);
         @include border-radius(8px);
         
         &.focus {
-          left: 50%;
+          left: 0;
           
           // breadcrumb height + breadcrumb bottom + 30 / 2
-          top: 15px;
+          top: 0;
         }
         
         &.away {
-          left: 200%;
+          left: 150%;
         }
         
         div.about-card-tondo {
@@ -169,6 +173,7 @@ section#about {
     div#about-breadcrumbs {
       position: absolute;
       bottom: 0;
+      left: 0;
       width: 100%;
       
       div {
@@ -231,309 +236,40 @@ section#about {
     }
   }
   
-  div#about-hero {
-    @include display-flex;
-    @include align-items(center);
-    position: relative;
-    height: 50%;
-    width: 100%;
-    max-width: 960px;
-    margin: 0px auto;
-    color: white;
+  // a#about-contact {
+  //   @include display-flex;
+  //   @include align-items(center);
+  //   position: absolute;
+  //   height: 64px;
+  //   width: 40%;
+  //   bottom: 30px;
+  //   right: 30px;
+  //   text-decoration: none;
+  //   font-size: 2em;
+  //   color: darken(map-get($mex, blue), 15%);
+  //   background: white;
+      
+  //   @include respond-to(phone) {
+  //     width: calc(100% - 60px);
+  //     height: 48px;
+  //     font-size: 1.5em;
+  //   }
     
-    @include transition(all, 1s, $normal-bezier, 1s);
+  //   @include border-radius(8px);
+      
+  //   span {
+  //     display: block;
+  //     width: 100%;
+  //     text-align: center;
+  //     position: relative;
+  //   }
     
-    div {
-      display: block;
-      width: 100%;
-      
-      span#about-hero-large {
-        font-weight: normal;
-        font-size: 3.75em;
-        display: block;
-        width: 100%;
-        text-align: center;
-        position: relative;
-        
-        @include respond-to(phone) { font-size: 1.5em; }
-      }
-      
-      span#about-hero-small {
-        font-size: 2.8em;
-        display: block;
-        height: 50%;
-        width: 100%;
-        text-align: center;
-        position: relative;
-        
-        @include respond-to(phone) { font-size: 1.25em; }
-      }
-    }
+  //   &.hover {
+  //     border: 4px solid map-get($mex, blue);
+  //   }
     
-    &.shrink {
-      @include transition(all, 1s, $normal-bezier, 0s);
-      height: 33%;
-      padding-right: 30%;
-    }
-  }
-  
-  div#about-pull {
-    position: absolute;
-    height: 67%;
-    width: 100%;
-    bottom: 0px;
-    border: 4px solid white;
-    right: 100%;
-    background: darken(map-get($mex, blue), 15%);
-    z-index: 1;
-    
-    @include transition(all, 1s, $normal-bezier, 0s);
-    @include border-radius(8px 8px 0 0);
-    
-    div#about-pull-handle {
-      @include display-flex;
-      @include align-items(center);
-      position: absolute;
-      height: 100%;
-      width: 30%;
-      right: -30%;
-      bottom: 0;
-      font-size: 12em;
-      background: transparent;
-      color: white;
-      cursor: pointer;
-      z-index: 2;
-      
-      @include transition(right, 1s, $normal-bezier, 0s);
-      @include border-radius(0 5px 5px 0);
-      
-      @include respond-to(phone) { font-size: 6em; }
-      
-      span {
-        display: block;
-        width: 100%;
-        text-align: center;
-        position: relative;
-      }
-      
-      &.hover {
-        background: rgba(0,0,0,0.1);
-        font-size: 13em;
-      
-        @include respond-to(phone) { font-size: 6.5em; }
-      }
-      
-      &.mousedown {
-        background: rgba(0,0,0,0.2);
-        font-size: 14em;
-      
-        @include respond-to(phone) { font-size: 7em; }
-      }
-    }
-    
-    div#about-pull-tondo {
-      position: absolute;
-      width: 20%;
-      right: 100%;
-      background: white;
-      cursor: pointer;
-      z-index: 2;
-      
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-color: #ccc;
-      background-size: cover;
-    
-      @include border-radius(50%);
-      @include transition(all, 1s, $normal-bezier, 0s);
-      
-      &.focus {
-        @include border-radius(16px);
-      }
-    }
-    
-    div#about-pull-content {
-      z-index: -1;
-      
-      div#about-pull-tease, div#about-pull-info, div#about-pull-summary {
-        @include display-flex;
-        position: absolute;
-        height: 100%;
-        width: 30%;
-        padding: 4px;
-        color: white;
-        z-index: -1;
-        
-        @include transition(opacity, 1s, $normal-bezier, 0s);
-        
-        span {
-          display: block;
-          width: 100%;
-          text-align: center;
-          position: relative;
-        }
-      }
-      
-      div#about-pull-tease {
-        font-size: 3.75em;
-        
-        @include align-items(flex-start);
-        
-        @include respond-to(phone) {
-          font-size: 1.75em;
-          width: 50%;
-        
-          span {
-            text-align: left;
-          }
-        }
-      }
-      
-      div#about-pull-info {
-        left: 30%;
-        font-size: 3.25em;
-        
-        @include align-items(center);
-        
-        @include respond-to(phone) {
-          top: 30%;
-          left: 0;
-          font-size: 1.25em;
-          height: 25%;
-          width: 90%;
-        }
-      }
-      
-      div#about-pull-summary {
-        left: 60%;
-        font-size: 2.5em;
-        padding-bottom: 32px;
-        
-        @include align-items(flex-end);
-        
-        @include respond-to(phone) {
-          top: 60%;
-          left: 0;
-          font-size: 1em;
-          height: 25%;
-          width: 90%;
-        
-          span {
-            text-align: right;
-          }
-        }
-      }
-    }
-    
-    div#about-pull-breadcrumbs {
-      position: absolute;
-      bottom: 0;
-      
-      span {
-        display: inline-block;
-        height: 32px;
-        width: 32px;
-        margin: 8px;
-        background: transparent;
-        border: 4px solid white;
-        cursor: pointer;
-        
-        @include border-radius(16px);
-        @include transition(all, 0.5s, $normal-bezier, 0s);
-        
-        &.active {
-          background: white;
-        }
-      }
-      
-      div {
-        display: inline-block;
-        text-align: center;
-        position: relative;
-        max-height: 100%;
-        max-width: 30%;
-        width: 64px;
-        padding: 4px;
-        background: white;
-        margin: 8px;
-        cursor: pointer;
-        
-        @include border-radius(50%);
-        
-        svg {
-          stroke: darken(map-get($mex, blue), 15%);
-        }
-      }
-    }
-    
-    &.show {
-      right: 0;
-      
-      div#about-pull-handle {
-        font-size: 6em;
-        width: 10%;
-        right: 0;
-        
-        @include border-radius(5px 5px 0 5px);
-        
-        @include respond-to(phone) { font-size: 3em; }
-      
-        &.hover {
-          background: rgba(0,0,0,0.1);
-          font-size: 6.5em;
-        
-          @include respond-to(phone) { font-size: 3.25em; }
-        }
-        
-        &.mousedown {
-          background: rgba(0,0,0,0.2);
-          font-size: 7em;
-        
-          @include respond-to(phone) { font-size: 3.5em; }
-        }
-      }
-      
-      div#about-pull-tondo {
-        // 10% for pull, 30% / 2 to center, 20% / 2 to center
-        right: 15%;
-      }
-    }
-  }
-  
-  a#about-contact {
-    @include display-flex;
-    @include align-items(center);
-    position: absolute;
-    height: 64px;
-    width: 40%;
-    bottom: 30px;
-    right: 30px;
-    text-decoration: none;
-    font-size: 2em;
-    color: darken(map-get($mex, blue), 15%);
-    background: white;
-      
-    @include respond-to(phone) {
-      width: calc(100% - 60px);
-      height: 48px;
-      font-size: 1.5em;
-    }
-    
-    @include border-radius(8px);
-      
-    span {
-      display: block;
-      width: 100%;
-      text-align: center;
-      position: relative;
-    }
-    
-    &.hover {
-      border: 4px solid map-get($mex, blue);
-    }
-    
-    &.mousedown {
-      @include transform(translateY(4px));
-    }
-  }
+  //   &.mousedown {
+  //     @include transform(translateY(4px));
+  //   }
+  // }
 }

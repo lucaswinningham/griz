@@ -14,6 +14,8 @@ $( document ).on('turbolinks:load', function() {
   var $about = $(about);
     var $container = $(container);
       var $cards = $(cards);
+        // Cards defined below after insertion
+          // Tondos defined below after card insertion
         var $contactCard = $(contactCard);
             var $contact = $(contact);
       var $breadcrumbs = $(breadcrumbs);
@@ -23,13 +25,15 @@ $( document ).on('turbolinks:load', function() {
     var timeout = window.setTimeout(function() {
       $breadcrumb.each(function(i) {
         $(this).css({
-          'left': (100 * (i + 1) / ($breadcrumb.length + 1)) + '%',
+          left: (100 * (i + 1) / ($breadcrumb.length + 1)) + '%',
         });
       });
       
       window.clearTimeout(timeout);
     }, 1500);
   }());
+  
+  $breadcrumb.first().addClass('active');
   
   var content = [
     {
@@ -71,8 +75,6 @@ $( document ).on('turbolinks:load', function() {
     });
   });
   
-  $breadcrumb.first().addClass('active');
-  
   (function() {
     var timeout = window.setTimeout(function() {
       $card.first().addClass('focus');
@@ -84,6 +86,7 @@ $( document ).on('turbolinks:load', function() {
   var $responsive = $([breadcrumb, tondo, contact].join(', '));
   
   var fixedBuffer = 100;
+  var originalUserPosition;
   
   var sectionFill = function() {
     $about.css({
@@ -170,6 +173,10 @@ $( document ).on('turbolinks:load', function() {
     });
   };
   
+  // var selectBreadcrumb = function(index) {
+    
+  // }
+  
   var updateContent = function(e) {
     e.preventDefault();
     if ($(this).hasClass('mousedown')) {
@@ -182,6 +189,98 @@ $( document ).on('turbolinks:load', function() {
       }
     }
   };
+  
+  var enableCardTransitionDuration = function(enable) {
+    if (enable) {
+      $card.css({
+        '-webkit-transition-duration': '',
+        '-moz-transition-duration': '',
+        '-o-transition-duration': '',
+        'transition-duration': '',
+      });
+    } else {
+      $card.css({
+        '-webkit-transition-duration': '0s',
+        '-moz-transition-duration': '0s',
+        '-o-transition-duration': '0s',
+        'transition-duration': '0s',
+      });
+    }
+  };
+  
+  var trackCard = function(userPosition, $thisCard) {
+  	if ($thisCard.hasClass('mousedown')) {
+  	  originalUserPosition = originalUserPosition || userPosition;
+      
+    	$thisCard.css({left: userPosition - originalUserPosition});
+    }
+  };
+  
+  var detentCard = function($thisCard) {
+  	if ($thisCard.hasClass('mousedown')) {
+  	  $thisCard.removeClass('mousedown hover');
+  	  
+  	  var cardLeftPx = parseInt($thisCard.css('left'), 10);
+  	  var cardWidthPx = parseInt($thisCard.css('width'), 10);
+  	  var cardIndex = $thisCard.index();
+  	  
+  	  if (cardLeftPx < -cardWidthPx / 10 && cardIndex > 0) {
+  	    cardIndex -= 1;
+  	  } else if (cardLeftPx > cardWidthPx / 10 && cardIndex < $card.length - 1) {
+  	    cardIndex += 1;
+  	  }
+  	  
+  	  setContent(cardIndex);
+  	  
+	    $breadcrumb.removeClass('active');
+	    
+      $breadcrumb.each(function(i) {
+        if (i == cardIndex) {
+          $(this).addClass('active');
+        }
+      });
+  	  
+    	$thisCard.css({left: ''});
+    	
+  	  originalUserPosition = null;
+    }
+  };
+  
+  $card.on('mousedown', function(e) {
+    $card.addClass('mousedown');
+    enableCardTransitionDuration(false);
+    trackCard(e.pageX, $(this));
+  });
+  
+  $card.on('mouseup touchend touchcancel', function() {
+    enableCardTransitionDuration(true);
+    detentCard($(this));
+  });
+  
+  $card.on('mousemove', function(e) {
+    e.preventDefault();
+    trackCard(e.pageX, $(this));
+  });
+  
+  $card.on('touchmove', function(e) {
+    trackCard(e.originalEvent.touches[0].pageX, $(this));
+  });
+  
+  // $card.on('mouseup', function(e) {
+  //   $card.removeClass('mousedown hover');
+  //   detentCard($(this));
+  // });
+  
+  $card.on('mouseleave', function() {
+    $card.removeClass('mousedown hover');
+    originalUserPosition = null;
+  });
+  
+  $card.on('touchstart', function(e) {
+    $card.addClass('mousedown');
+    enableCardTransitionDuration(false);
+    trackCard(e.originalEvent.touches[0].pageX, $(this));
+  });
   
   $responsive.on('mousedown', function() {
     $(this).addClass('mousedown');
