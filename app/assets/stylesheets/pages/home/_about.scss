@@ -4,11 +4,15 @@ section#about {
   overflow-x: hidden;
   overflow-y: hidden;
   
+  @include transition(all, 1s, $normal-bezier, 0s);
+  
   div#about-container {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
+    
+    @include transition(height, 1s, $normal-bezier, 0s);
     
     div#about-cards {
       div.about-card {

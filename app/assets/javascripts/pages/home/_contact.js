@@ -7,7 +7,7 @@ $( document ).on('turbolinks:load', function() {
   
   var sectionFill = function() {
     $contact.css({
-      'height': $( window ).height(),
+      'height': window.innerHeight,
     });
   };
   

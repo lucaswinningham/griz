@@ -60,19 +60,19 @@ $( document ).on('turbolinks:load', function() {
   // probably remove this entirely and individually select responsive elements
   var $responsive = $([slider, track, contact].join(', '));
   
-  var fixedBuffer = 200;
-  
-  var pxDetentIncrement;
+  var detentIncrementRatio;
   var sliderRatio;
+  
+  var fixedBuffer = 200;
   
   var sectionFill = function() {
     $history.css({
-      'height': ($( window ).height() + fixedBuffer) + 'px',
+      'height': (window.innerHeight + fixedBuffer) + 'px',
       'padding-bottom': fixedBuffer + 'px',
     });
     
     $container.css({
-      'height': $( window ).height() + 'px',
+      'height': window.innerHeight + 'px',
     });
   };
   
@@ -103,45 +103,34 @@ $( document ).on('turbolinks:load', function() {
   
   handleFixed();
   
-  var positionDetents = function() {
-    pxDetentIncrement = $track.outerHeight() / ($detent.length + 1);
-    
-    $detent.each(function(i) {
-      $(this).css({top: (pxDetentIncrement * (i + 1)) + 'px'});
-    });
-  };
+  detentIncrementRatio = 1 / ($detent.length + 1);
   
-  positionDetents();
+  $detent.each(function(i) {
+    $(this).css({top: ((i + 1) * detentIncrementRatio * 100) + '%'});
+  });
   
   var detentSlider = function() {
-  	var sliderPosition = parseInt($slider.css('top'), 10);
-    var newSliderTarget = Math.round(sliderPosition / pxDetentIncrement);
-    var newSliderPosition = newSliderTarget * pxDetentIncrement;
+  	var detentNumber = Math.round(sliderRatio / detentIncrementRatio);
+  	
+    sliderRatio = detentNumber / ($detent.length + 1);
     
-    $slider.animate({top: newSliderPosition + 'px'}, 500);
+    $slider.animate({top: (sliderRatio * 100) + '%'}, 500);
   };
   
   $( window ).resize(function() {
     sectionFill();
     handleFixed();
-    $slider.stop();
-    $slider.css({top: ($track.outerHeight() * sliderRatio) + 'px'});
-    positionDetents();
-    detentSlider();
   });
   
   $( window ).scroll(handleFixed);
   
   var handleCards = function() {
-  	var sliderPosition = parseInt($slider.css('top'), 10);
-    var newSliderTarget = Math.round(sliderPosition / pxDetentIncrement);
-    
-    // $card.removeClass('away focus');
-    
+  	var detentNumber = Math.round(sliderRatio / detentIncrementRatio);
+  	
     $card.each(function(i) {
-      if (i == newSliderTarget) {
+      if (i == detentNumber) {
         $(this).removeClass('away').addClass('focus');
-      } else if (i < newSliderTarget) {
+      } else if (i < detentNumber) {
         $(this).removeClass('focus').addClass('away');
       } else {
         $(this).removeClass('away focus');
@@ -151,14 +140,14 @@ $( document ).on('turbolinks:load', function() {
   
   var trackSlider = function(userPosition) {
   	if ($mechanism.hasClass('mousedown')) {
-      var newSliderPosition = userPosition - $track.offset().top;
+      var sliderTopPx = userPosition - $track.offset().top;
       
-      if (newSliderPosition > 0 && newSliderPosition < $track.outerHeight()) {
-      	$slider.css({top: newSliderPosition + 'px'});
-      	
-        sliderRatio = newSliderPosition / $track.outerHeight();
+      if (sliderTopPx > 0 && sliderTopPx < $track.outerHeight()) {
+        sliderRatio = sliderTopPx / $track.outerHeight();
         
-        handleCards(newSliderPosition - $track.position().top);
+      	$slider.css({top: (sliderRatio * 100) + '%'});
+      	
+        handleCards();
       }
     }
   };

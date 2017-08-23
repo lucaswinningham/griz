@@ -2,15 +2,17 @@
 
 $( document ).on('turbolinks:load', function() {
   var work = 'section#work';
-    var menu = work + ' div#work-menu';
-      var center = menu + ' div#work-menu-center';
-      var petalContainer = menu + ' div#work-menu-petal-container';
-        var petal = petalContainer + ' div.work-menu-petal';
+    var container = work + ' div#work-container';
+      var menu = container + ' div#work-menu';
+        var center = menu + ' div#work-menu-center';
+        var petalContainer = menu + ' div#work-menu-petal-container';
+          var petal = petalContainer + ' div.work-menu-petal';
   
   var $work = $(work);
-    var $menu = $(menu);
-      var $center = $(center);
-      var $petalContainer = $(petalContainer);
+    var $container = $(container);
+      var $menu = $(menu);
+        var $center = $(center);
+        var $petalContainer = $(petalContainer);
   
   var content = [
     {
@@ -57,13 +59,45 @@ $( document ).on('turbolinks:load', function() {
   
   var petalContainerDeg = 0;
   
+  var fixedBuffer = 200;
+  
   var sectionFill = function() {
     $work.css({
-      'height': $( window ).height(),
+      'height': (window.innerHeight + fixedBuffer) + 'px',
+      'padding-bottom': fixedBuffer + 'px',
+    });
+    
+    $container.css({
+      'height': window.innerHeight + 'px',
     });
   };
   
   sectionFill();
+  
+  var handleFixed = function() {
+    var scrollPosition = Math.round($( document ).scrollTop());
+    var fixedTop = $work.offset().top;
+    var fixedBottom = $work.offset().top + fixedBuffer;
+    
+    if (scrollPosition < fixedTop) {
+      $container.css({
+        'position': 'absolute',
+        'top': '0px',
+      });
+    } else if (scrollPosition > fixedBottom) {
+      $container.css({
+        'position': 'absolute',
+        'top': fixedBuffer + 'px',
+      });
+    } else {
+      $container.css({
+        'position': 'fixed',
+        'top': '0px',
+      });
+    }
+  };
+  
+  handleFixed();
   
   var positionMenu = function() {
     var windowHeight = $( window ).height();
@@ -123,8 +157,11 @@ $( document ).on('turbolinks:load', function() {
   
   $( window ).resize(function() {
     sectionFill();
+    handleFixed();
     positionMenu();
   });
+  
+  $( window ).scroll(handleFixed);
   
   var focusPetal = function() {
     var degTarget = $(this).index() * (360 / $petal.length);

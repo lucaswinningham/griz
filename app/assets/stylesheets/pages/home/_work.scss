@@ -1,43 +1,51 @@
 section#work {
   background: map-get($mex, red);
-  box-sizing: content-box;
-  border-top: 0px solid map-get($mex, red);
-  border-bottom: 200px solid map-get($mex, red);
   position: relative;
   overflow-x: hidden;
   overflow-y: hidden;
+  @include transition(height, 1s, $normal-bezier, 0s);
+  @include transition(padding-bottom, 1s, $normal-bezier, 0s);
   
-  div#work-menu {
+  div#work-container {
+    background: darken(map-get($mex, red), 5%);
     position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    @include transition(height, 1s, $normal-bezier, 0s);
     
-    div#work-menu-center {
+    div#work-menu {
       position: absolute;
-      background: white;
       
-      @include transform(translate(-50%,-50%));
-      @include border-radius(50%);
-    }
-    
-    div#work-menu-petal-container {
-      position: relative;
-      height: 100%;
-      width: 100%;
-      background: rgba(0,0,0,0.3);
-      
-      @include transition(transform, 1s, $normal-bezier, 0s);
-      
-      div.work-menu-petal {
+      div#work-menu-center {
         position: absolute;
-        height: 50%;
-        width: 50%;
-        text-align: center;
         background: white;
-        cursor: pointer;
         
         @include transform(translate(-50%,-50%));
         @include border-radius(50%);
+      }
+      
+      div#work-menu-petal-container {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        background: rgba(0,0,0,0.3);
         
         @include transition(transform, 1s, $normal-bezier, 0s);
+        
+        div.work-menu-petal {
+          position: absolute;
+          height: 50%;
+          width: 50%;
+          text-align: center;
+          background: white;
+          cursor: pointer;
+          
+          @include transform(translate(-50%,-50%));
+          @include border-radius(50%);
+          
+          @include transition(transform, 1s, $normal-bezier, 0s);
+        }
       }
     }
   }

@@ -81,35 +81,44 @@ $( document ).on('turbolinks:load', function() {
     }, 500);
   }());
   
-  // var $responsive = $([pullHandle, contact, pullTondo, pullBreadcrumb].join(', '));
-  var $responsive = $([breadcrumb, contact].join(', '));
+  var $responsive = $([breadcrumb, tondo, contact].join(', '));
   
-  var fixedBuffer = 200;
+  var fixedBuffer = 100;
   
   var sectionFill = function() {
     $about.css({
-      'height': $( window ).height() + 'px',
+      'height': (window.innerHeight + fixedBuffer) + 'px',
+      'padding-bottom': fixedBuffer + 'px',
     });
     
     $container.css({
-      'height': $( window ).height() + 'px',
+      'height': window.innerHeight + 'px',
     });
   };
   
   sectionFill();
   
-  var tondoFocus = function() {
-    var cardHeight = $card.height();
-    var cardWidth =  $card.width();
-    var pixelGutter = 15;
-    var tondoSide = (cardHeight > cardWidth ? cardWidth : cardHeight) - pixelGutter * 2;
+  var handleFixed = function() {
+    var scrollPosition = Math.round($( document ).scrollTop());
+    var fixedTop = $about.offset().top;
+    var fixedBottom = $about.offset().top + fixedBuffer;
     
-    $tondo.css({
-      height: tondoSide,
-      width: tondoSide,
-      top: cardHeight / 2,
-      left: cardWidth / 2,
-    });
+    if (scrollPosition < fixedTop) {
+      $container.css({
+        'position': 'absolute',
+        'top': '0px',
+      });
+    } else if (scrollPosition > fixedBottom) {
+      $container.css({
+        'position': 'absolute',
+        'top': fixedBuffer + 'px',
+      });
+    } else {
+      $container.css({
+        'position': 'fixed',
+        'top': '0px',
+      });
+    }
   };
   
   var handleTondoSizing = function(focus) {
@@ -147,6 +156,8 @@ $( document ).on('turbolinks:load', function() {
     handleTondoSizing($tondo.hasClass('focus'));
   });
   
+  $( window ).scroll(handleFixed);
+  
   var setContent = function(index) {
     $card.each(function(i) {
       if (i == index) {
@@ -159,7 +170,8 @@ $( document ).on('turbolinks:load', function() {
     });
   };
   
-  var updateContent = function() {
+  var updateContent = function(e) {
+    e.preventDefault();
     if ($(this).hasClass('mousedown')) {
       $(this).removeClass('mousedown hover');
       
@@ -197,7 +209,8 @@ $( document ).on('turbolinks:load', function() {
   
   $breadcrumb.on('mouseup touchend touchcancel', updateContent);
   
-  $tondo.on('mouseup touchend touchcancel', function() {
+  $tondo.on('mouseup touchend touchcancel', function(e) {
+    e.preventDefault();
     $tondo.toggleClass('focus');
     handleTondoSizing($tondo.hasClass('focus'));
   });
