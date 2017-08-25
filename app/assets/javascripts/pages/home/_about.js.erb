@@ -293,7 +293,7 @@ $( document ).on('turbolinks:load', function() {
   });
   
   $card.on('touchstart', function(e) {
-    $(this).addClass('mousedown');
+    $(this).addClass('hover mousedown');
     enableCardTransitionDuration(false);
     originalUserPosition = {
       x: e.originalEvent.touches[0].pageX,
@@ -305,11 +305,21 @@ $( document ).on('turbolinks:load', function() {
     $(this).addClass('mousedown');
   });
   
-  // Screen actually follows link when mouseup event used instead of click
+  // On desktop: bug
+  // Despite preventing default, screen actually follows link when mouseup event used instead of click
   $contact.on('click touchend touchcancel', function(e) {
     e.preventDefault();
     
     $contact.removeClass('mousedown hover');
+    
+    var sectionSnapTop = $about.offset().top + fixedBuffer;
+    if ($( window ).scrollTop() < sectionSnapTop) {
+      $( window ).scrollTop(sectionSnapTop);
+    }
+    
+    // todo
+    // make animate function a variable and use .off() on that var
+    // do the same for every other _section.js that reused this code
     
     $('html, body').on('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove', function() {
       $('html, body').stop();
@@ -321,6 +331,11 @@ $( document ).on('turbolinks:load', function() {
     $('html, body').animate({scrollTop: top + border}, 3000, function() {
       $('html, body').off('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove');
     });
+    
+    // Reset card properties
+    enableCardTransitionDuration(true);
+    detentCard($contactCard);
+    $contactCard.removeClass('mousedown hover');
     
     return false;
   });
@@ -343,6 +358,6 @@ $( document ).on('turbolinks:load', function() {
   
   $responsive.on('touchstart', function(e) {
     e.preventDefault();
-    $(this).addClass('mousedown');
+    $(this).addClass('hover mousedown');
   });
 });

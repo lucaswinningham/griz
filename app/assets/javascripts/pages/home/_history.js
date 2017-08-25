@@ -167,15 +167,17 @@ $( document ).on('turbolinks:load', function() {
     detentSlider();
   });
   
-  // Screen actually follows link when mouseup event used instead of click
+  // On desktop: bug
+  // Despite preventing default, screen actually follows link when mouseup event used instead of click
   $contact.on('click touchend touchcancel', function(e) {
     e.preventDefault();
     
     $contact.removeClass('mousedown hover');
     
-    // todo
-    // make animate function a variable and use .off() on that var
-    // do the same for every other _section.js that reused this code
+    var sectionSnapTop = $history.offset().top + fixedBuffer;
+    if ($( window ).scrollTop() < sectionSnapTop) {
+      $( window ).scrollTop(sectionSnapTop);
+    }
     
     $('html, body').on('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove', function() {
       $('html, body').stop();

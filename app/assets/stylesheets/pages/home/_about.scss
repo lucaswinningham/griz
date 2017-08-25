@@ -168,10 +168,18 @@ section#about {
           }
           
           &.hover {
-            border: 4px solid darken(map-get($mex, blue), 15%);
+            background: map-get($mex, blue);
+            
+            border: 4px solid white;
+            
+            span {
+              color: white;
+            }
           }
           
           &.mousedown {
+            background: darken(map-get($mex, blue), 15%);
+            
             @include transform(translate(-50%, calc(-50% + 4px)));
           }
         }
