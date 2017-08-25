@@ -209,67 +209,83 @@ $( document ).on('turbolinks:load', function() {
   };
   
   var trackCard = function(userPosition, $thisCard) {
-  	if ($thisCard.hasClass('mousedown')) {
-  	  originalUserPosition = originalUserPosition || userPosition;
-      
-    	$thisCard.css({left: userPosition - originalUserPosition});
-    }
   };
   
   var detentCard = function($thisCard) {
-  	if ($thisCard.hasClass('mousedown')) {
-  	  $thisCard.removeClass('mousedown hover');
-  	  
-  	  var cardLeftPx = parseInt($thisCard.css('left'), 10);
-  	  var cardWidthPx = parseInt($thisCard.css('width'), 10);
-  	  var cardIndex = $thisCard.index();
-  	  
-  	  if (cardLeftPx < -cardWidthPx / 10 && cardIndex > 0) {
-  	    cardIndex -= 1;
-  	  } else if (cardLeftPx > cardWidthPx / 10 && cardIndex < $card.length - 1) {
-  	    cardIndex += 1;
-  	  }
-  	  
-  	  setContent(cardIndex);
-  	  
-	    $breadcrumb.removeClass('active');
-	    
-      $breadcrumb.each(function(i) {
-        if (i == cardIndex) {
-          $(this).addClass('active');
-        }
-      });
-  	  
-    	$thisCard.css({left: ''});
-    	
-  	  originalUserPosition = null;
-    }
+	  var cardLeftPx = parseInt($thisCard.css('left'), 10);
+	  var cardWidthPx = parseInt($thisCard.css('width'), 10);
+	  var cardIndex = $thisCard.index();
+	  
+	  // Assume 96px = 1in
+	  if (cardLeftPx < -96 && cardIndex < $card.length - 1) {
+	    cardIndex += 1;
+	  } else if (cardLeftPx > 96 && cardIndex > 0) {
+	    cardIndex -= 1;
+	  }
+	  
+	  setContent(cardIndex);
+	  
+    $breadcrumb.removeClass('active');
+    
+    $breadcrumb.each(function(i) {
+      if (i == cardIndex) {
+        $(this).addClass('active');
+      }
+    });
+	  
+  	$thisCard.css({left: ''});
   };
   
   $card.on('mousedown', function(e) {
-    $card.addClass('mousedown');
+    $(this).addClass('mousedown');
     enableCardTransitionDuration(false);
-    trackCard(e.pageX, $(this));
+    originalUserPosition = {x: e.pageX, y: e.pageY};
   });
   
   $card.on('mouseup touchend touchcancel', function() {
     enableCardTransitionDuration(true);
     detentCard($(this));
+    $(this).removeClass('mousedown hover');
   });
   
   $card.on('mousemove', function(e) {
-    e.preventDefault();
-    trackCard(e.pageX, $(this));
+    // e.preventDefault();
+    var userPosition = {x: e.pageX, y: e.pageY};
+    
+  	if ($(this).hasClass('mousedown')) {
+    	$(this).css({left: userPosition.x - originalUserPosition.x});
+    }
   });
   
   $card.on('touchmove', function(e) {
-    trackCard(e.originalEvent.touches[0].pageX, $(this));
+    if ($(this).hasClass('mousedown')) {
+      var userPosition = {
+        x: e.originalEvent.touches[0].pageX,
+        y: $(window).scrollTop()
+      };
+      
+      var deltaPosition = {
+        x: Math.abs(userPosition.x - originalUserPosition.x),
+        y: Math.abs(userPosition.y - originalUserPosition.y)
+      };
+      
+    	if (deltaPosition.x > deltaPosition.y) {
+      	$(this).css({left: userPosition.x - originalUserPosition.x});
+      } else {
+        // Reset if user most likely scrolling
+        // Force touchend and touchstart to reenable
+        // Assume 96px = 1in
+        if (deltaPosition.y > 96) {
+          $(this).removeClass('hover mousedown');
+          enableCardTransitionDuration(true);
+          detentCard($(this));
+        }
+        
+        enableCardTransitionDuration(true);
+        detentCard($(this));
+      }
+    }
   });
-  
-  // $card.on('mouseup', function(e) {
-  //   $card.removeClass('mousedown hover');
-  //   detentCard($(this));
-  // });
   
   $card.on('mouseleave', function() {
     $card.removeClass('mousedown hover');
@@ -277,9 +293,12 @@ $( document ).on('turbolinks:load', function() {
   });
   
   $card.on('touchstart', function(e) {
-    $card.addClass('mousedown');
+    $(this).addClass('mousedown');
     enableCardTransitionDuration(false);
-    trackCard(e.originalEvent.touches[0].pageX, $(this));
+    originalUserPosition = {
+      x: e.originalEvent.touches[0].pageX,
+      y: $(window).scrollTop()
+    };
   });
   
   $responsive.on('mousedown', function() {

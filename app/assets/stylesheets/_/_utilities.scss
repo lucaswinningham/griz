@@ -44,6 +44,19 @@
   user-select: $user-select-option;
 }
 
+@mixin cursor-grab {
+  cursor: move;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+
+@mixin cursor-grabbing {
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+  cursor: grabbing;
+}
+
 $break-small: 768px;
 $break-large: 1200px;
 
