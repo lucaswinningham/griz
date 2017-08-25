@@ -7,6 +7,10 @@ $( document ).on('turbolinks:load', function() {
         var center = menu + ' div#work-menu-center';
         var petalContainer = menu + ' div#work-menu-petal-container';
           var petal = petalContainer + ' div.work-menu-petal';
+      var cards = container + ' div#work-cards';
+        var card = cards + ' div.work-card';
+        var contactCard = cards + ' div#work-card-contact';
+              var contact = contactCard + ' div div.work-card-body a#work-contact';
   
   var $work = $(work);
     var $container = $(container);
@@ -14,30 +18,45 @@ $( document ).on('turbolinks:load', function() {
         var $center = $(center);
         var $petalContainer = $(petalContainer);
           var $petal = $(petal);
+      var $cards = $(cards);
+        var $contactCard = $(contactCard);
+              var $contact = $(contact);
   
-  // var content = [
-  //   {
-  //     head: '',
-  //     body: '',
-  //   },
-  //   {
-  //     head: '',
-  //     body: '',
-  //   },
-  //   {
-  //     head: '',
-  //     body: '',
-  //   },
-  // ];
+  var content = [
+    {
+      head: 'My Work',
+      body: 'You can find all of the source code at the github link below.',
+    },
+    {
+      head: 'AutoLisp',
+      body: 'During my time as a Controls Engineer, I programmed several time saving tools to be used with AutoCAD. I learned Lisp for all it was, good and bad. The bad parts I didn\'t like so much compared to the Ruby programming language so I decided to implement some of Ruby\'s usefulness for Lisp by creating a code interpreter that not only found and replaced some functionality, such as rest parameters, but also injected pseudo object oriented paradigms for lists to act like Ruby array objects.',
+    },
+    {
+      head: 'Bashful',
+      body: 'I attempted learning Ruby on Rails four separate times, failing the first three. I wasn\'t (and still amn\'t) good at the command line which was my biggest fear and pitfall for getting started. After making several apps using Rails in the Cloud9 environment, I made a couple bash scripts to completely automate the process from creating a new workspace in C9 to a live running app in Heroku and backed up on Github.',
+    },
+  ];
   
   // content.forEach(function(val, i) {
   //   $petalContainer.append('<div class="work-menu-petal">' + i + '</div>');
   // });
   
+  content.forEach(function(val, i) {
+    var cardHead = '<div class="work-card-head"><span>' + val.head + '</span></div>';
+    var cardBody = '<div class="work-card-body"><span>' + val.body + '</span></div>';
+    var card = '<div class="work-card"><div>' + cardHead + cardBody + '</div></div>';
+    $(card).insertBefore($contactCard);
+  });
+  
+  var $card = $(card);
+  
+  $card.first().addClass('focus');
+  
   var $responsive = $([center, petal].join(', '));
   
   var petalContainerDeg = 0;
   var fixedBuffer = 200;
+  var originalUserPosition;
   
   var sectionFill = function() {
     $work.css({
@@ -141,9 +160,23 @@ $( document ).on('turbolinks:load', function() {
   
   $( window ).scroll(handleFixed);
   
+  var setContent = function(index) {
+    $card.each(function(i) {
+      if (i == index) {
+        $(this).removeClass('away').addClass('focus');
+      } else if (i < index) {
+        $(this).removeClass('focus').addClass('away');
+      } else {
+        $(this).removeClass('away focus');
+      }
+    });
+  };
+  
   var focusPetal = function() {
     if ($(this).hasClass('mousedown')) {
       $(this).removeClass('hover mousedown');
+      
+      setContent($(this).index());
       
       var degTarget = $(this).index() * (360 / $petal.length);
       // Damn js and its quirks
@@ -174,6 +207,113 @@ $( document ).on('turbolinks:load', function() {
       });
     }
   };
+  
+  var enableCardTransitionDuration = function(enable) {
+    if (enable) {
+      $card.css({
+        '-webkit-transition-duration': '',
+        '-moz-transition-duration': '',
+        '-o-transition-duration': '',
+        'transition-duration': '',
+      });
+    } else {
+      $card.css({
+        '-webkit-transition-duration': '0s',
+        '-moz-transition-duration': '0s',
+        '-o-transition-duration': '0s',
+        'transition-duration': '0s',
+      });
+    }
+  };
+  
+  var detentCard = function($thisCard) {
+	  var cardLeftPx = parseInt($thisCard.css('left'), 10);
+	  var cardIndex = $thisCard.index();
+	  
+	  // Assume 96px = 1in
+	  if (cardLeftPx < -96 && cardIndex < $card.length - 1) {
+	    cardIndex += 1;
+	  } else if (cardLeftPx > 96 && cardIndex > 0) {
+	    cardIndex -= 1;
+	  }
+	  
+	  setContent(cardIndex);
+	  
+    // $breadcrumb.removeClass('active');
+    
+    // $breadcrumb.each(function(i) {
+    //   if (i == cardIndex) {
+    //     $(this).addClass('active');
+    //   }
+    // });
+	  
+  	$thisCard.css({left: ''});
+  };
+  
+  $card.on('mousedown', function(e) {
+    $(this).addClass('mousedown');
+    enableCardTransitionDuration(false);
+    originalUserPosition = {x: e.pageX, y: e.pageY};
+  });
+  
+  $card.on('mouseup touchend touchcancel', function() {
+    enableCardTransitionDuration(true);
+    detentCard($(this));
+    $(this).removeClass('mousedown hover');
+  });
+  
+  $card.on('mousemove', function(e) {
+    // e.preventDefault();
+    var userPosition = {x: e.pageX, y: e.pageY};
+    
+  	if ($(this).hasClass('mousedown')) {
+    	$(this).css({left: userPosition.x - originalUserPosition.x});
+    }
+  });
+  
+  $card.on('touchmove', function(e) {
+    if ($(this).hasClass('mousedown')) {
+      var userPosition = {
+        x: e.originalEvent.touches[0].pageX,
+        y: $(window).scrollTop()
+      };
+      
+      var deltaPosition = {
+        x: Math.abs(userPosition.x - originalUserPosition.x),
+        y: Math.abs(userPosition.y - originalUserPosition.y)
+      };
+      
+    	if (deltaPosition.x > deltaPosition.y) {
+      	$(this).css({left: userPosition.x - originalUserPosition.x});
+      } else {
+        // Reset if user most likely scrolling
+        // Force touchend and touchstart to reenable
+        // Assume 96px = 1in
+        if (deltaPosition.y > 96) {
+          $(this).removeClass('hover mousedown');
+          enableCardTransitionDuration(true);
+          detentCard($(this));
+        }
+        
+        enableCardTransitionDuration(true);
+        detentCard($(this));
+      }
+    }
+  });
+  
+  $card.on('mouseleave', function() {
+    $card.removeClass('mousedown hover');
+    originalUserPosition = null;
+  });
+  
+  $card.on('touchstart', function(e) {
+    $(this).addClass('hover mousedown');
+    enableCardTransitionDuration(false);
+    originalUserPosition = {
+      x: e.originalEvent.touches[0].pageX,
+      y: $(window).scrollTop()
+    };
+  });
   
   $responsive.on('mousedown', function() {
     $(this).addClass('mousedown');
