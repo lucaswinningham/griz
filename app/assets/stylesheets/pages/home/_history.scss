@@ -26,7 +26,7 @@ section#history {
         position: absolute;
         top: 0;
         left: 50%;
-        background: transparent;
+        background: darken(map-get($mex, purple), 10%);
         height: 100%;
         width: 20px;
         border: 4px solid white;
@@ -65,24 +65,42 @@ section#history {
     
     div#history-cards {
       position: absolute;
-      width: 100%;
-      height: 100%;
+      // 100% - mechanism width - (mechanism width - track width) / 2
+      width: calc(100% - 80px);
+      height: calc(100% - 60px);
+      // mechanism width
+      left: 60px;
+      top: 30px;
       color: white;
       
       div.history-card {
         @include display-flex;
         @include align-items(center);
         position: absolute;
-        // 100% - mechanism width - (mechanism width - track width) / 2
-        width: calc(100% - 80px);
-        height: calc(100% - 60px);
+        width: 100%;
+        height: 100%;
         left: 110%;
         top: -110%;
         padding: 10px;
         background: darken(map-get($mex, purple), 10%);
         
+        @include user-select(none);
+        @include cursor-grab;
         @include transition(all, 1s, $normal-bezier, 0s);
         @include border-radius(8px);
+        
+        &.focus {
+          left: 0;
+          top: 0;
+        }
+        
+        &.away {
+          top: 110%;
+        }
+        
+        &.mousedown {
+          @include cursor-grabbing;
+        }
         
         div {
           display: block;
@@ -121,16 +139,6 @@ section#history {
             
             @include respond-to(phone) { font-size: 1em; }
           }
-        }
-        
-        &.focus {
-          // mechanism width
-          left: 60px;
-          top: 30px;
-        }
-        
-        &.away {
-          top: 110%;
         }
       }
       

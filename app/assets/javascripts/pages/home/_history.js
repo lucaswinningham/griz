@@ -60,10 +60,10 @@ $( document ).on('turbolinks:load', function() {
   // probably remove this entirely and individually select responsive elements
   var $responsive = $([slider, track, contact].join(', '));
   
+  var fixedBuffer = 200;
+  var originalUserPosition;
   var detentIncrementRatio;
   var sliderRatio;
-  
-  var fixedBuffer = 200;
   
   var sectionFill = function() {
     $history.css({
@@ -109,14 +109,6 @@ $( document ).on('turbolinks:load', function() {
     $(this).css({top: ((i + 1) * detentIncrementRatio * 100) + '%'});
   });
   
-  var detentSlider = function() {
-  	var detentNumber = Math.round(sliderRatio / detentIncrementRatio);
-  	
-    sliderRatio = detentNumber / ($detent.length + 1);
-    
-    $slider.animate({top: (sliderRatio * 100) + '%'}, 500);
-  };
-  
   $( window ).resize(function() {
     sectionFill();
     handleFixed();
@@ -124,18 +116,24 @@ $( document ).on('turbolinks:load', function() {
   
   $( window ).scroll(handleFixed);
   
-  var handleCards = function() {
-  	var detentNumber = Math.round(sliderRatio / detentIncrementRatio);
-  	
+  var setContent = function(index) {
     $card.each(function(i) {
-      if (i == detentNumber) {
+      if (i == index) {
         $(this).removeClass('away').addClass('focus');
-      } else if (i < detentNumber) {
+      } else if (i < index) {
         $(this).removeClass('focus').addClass('away');
       } else {
         $(this).removeClass('away focus');
       }
     });
+  };
+  
+  var detentSlider = function() {
+  	var detentNumber = Math.round(sliderRatio / detentIncrementRatio);
+  	
+    sliderRatio = detentNumber / ($detent.length + 1);
+    
+    $slider.animate({top: (sliderRatio * 100) + '%'}, 500);
   };
   
   var trackSlider = function(userPosition) {
@@ -147,10 +145,112 @@ $( document ).on('turbolinks:load', function() {
         
       	$slider.css({top: (sliderRatio * 100) + '%'});
       	
-        handleCards();
+        setContent(Math.round(sliderRatio / detentIncrementRatio));
       }
     }
   };
+  
+  var enableCardTransitionDuration = function(enable) {
+    if (enable) {
+      $card.css({
+        '-webkit-transition-duration': '',
+        '-moz-transition-duration': '',
+        '-o-transition-duration': '',
+        'transition-duration': '',
+      });
+    } else {
+      $card.css({
+        '-webkit-transition-duration': '0s',
+        '-moz-transition-duration': '0s',
+        '-o-transition-duration': '0s',
+        'transition-duration': '0s',
+      });
+    }
+  };
+  
+  var detentCard = function($thisCard) {
+	  var cardLeftPx = parseInt($thisCard.css('left'), 10);
+	  var cardIndex = $thisCard.index();
+	  
+	  // Assume 96px = 1in
+	  if (cardLeftPx < -96 && cardIndex < $card.length - 1) {
+	    cardIndex += 1;
+	  } else if (cardLeftPx > 96 && cardIndex > 0) {
+	    cardIndex -= 1;
+	  }
+	  
+	  setContent(cardIndex);
+	  
+	  sliderRatio = cardIndex * detentIncrementRatio;
+	  detentSlider();
+	  
+  	$thisCard.css({left: ''});
+  };
+  
+  $card.on('mousedown', function(e) {
+    $(this).addClass('mousedown');
+    enableCardTransitionDuration(false);
+    originalUserPosition = {x: e.pageX, y: e.pageY};
+  });
+  
+  $card.on('mouseup touchend touchcancel', function() {
+    enableCardTransitionDuration(true);
+    detentCard($(this));
+    $(this).removeClass('mousedown hover');
+  });
+  
+  $card.on('mousemove', function(e) {
+    // e.preventDefault();
+    var userPosition = {x: e.pageX, y: e.pageY};
+    
+  	if ($(this).hasClass('mousedown')) {
+    	$(this).css({left: userPosition.x - originalUserPosition.x});
+    }
+  });
+  
+  $card.on('touchmove', function(e) {
+    if ($(this).hasClass('mousedown')) {
+      var userPosition = {
+        x: e.originalEvent.touches[0].pageX,
+        y: $(window).scrollTop()
+      };
+      
+      var deltaPosition = {
+        x: Math.abs(userPosition.x - originalUserPosition.x),
+        y: Math.abs(userPosition.y - originalUserPosition.y)
+      };
+      
+    	if (deltaPosition.x > deltaPosition.y) {
+      	$(this).css({left: userPosition.x - originalUserPosition.x});
+      } else {
+        // Reset if user most likely scrolling
+        // Force touchend and touchstart to reenable
+        // Assume 96px = 1in
+        if (deltaPosition.y > 96) {
+          $(this).removeClass('hover mousedown');
+          enableCardTransitionDuration(true);
+          detentCard($(this));
+        }
+        
+        enableCardTransitionDuration(true);
+        detentCard($(this));
+      }
+    }
+  });
+  
+  $card.on('mouseleave', function() {
+    $card.removeClass('mousedown hover');
+    originalUserPosition = null;
+  });
+  
+  $card.on('touchstart', function(e) {
+    $(this).addClass('hover mousedown');
+    enableCardTransitionDuration(false);
+    originalUserPosition = {
+      x: e.originalEvent.touches[0].pageX,
+      y: $(window).scrollTop()
+    };
+  });
   
   $mechanism.on('mousedown', function(e) {
     $mechanism.addClass('mousedown');
@@ -167,32 +267,6 @@ $( document ).on('turbolinks:load', function() {
     detentSlider();
   });
   
-  // On desktop: bug
-  // Despite preventing default, screen actually follows link when mouseup event used instead of click
-  $contact.on('click touchend touchcancel', function(e) {
-    e.preventDefault();
-    
-    $contact.removeClass('mousedown hover');
-    
-    var sectionSnapTop = $history.offset().top + fixedBuffer;
-    if ($( window ).scrollTop() < sectionSnapTop) {
-      $( window ).scrollTop(sectionSnapTop);
-    }
-    
-    $('html, body').on('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove', function() {
-      $('html, body').stop();
-      $('html, body').off('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove');
-    });
-    
-    var top = $('#contact').offset().top;
-    var border = parseInt($('#contact').css('border-top-width'), 10);
-    $('html, body').animate({scrollTop: top + border}, 2000, function() {
-      $('html, body').off('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove');
-    });
-    
-    return false;
-  });
-  
   $( window ).on('mousemove', function(e) {
     e.preventDefault();
     trackSlider(e.pageY);
@@ -202,17 +276,9 @@ $( document ).on('turbolinks:load', function() {
     trackSlider(e.originalEvent.touches[0].pageY);
   });
   
-  $responsive.on('mouseenter', function() {
-    $(this).addClass('hover');
-  });
-  
   $( window ).on('mouseup', function() {
     $mechanism.removeClass('mousedown hover');
     detentSlider();
-  });
-  
-  $contact.on('mouseleave', function() {
-    $contact.removeClass('hover mousedown');
   });
   
   $mechanism.on('mouseleave', function() {
@@ -226,8 +292,54 @@ $( document ).on('turbolinks:load', function() {
     trackSlider(e.originalEvent.touches[0].pageY);
   });
   
+  // On desktop: bug
+  // Despite preventing default, screen actually follows link when mouseup event used instead of click
+  $contact.on('click touchend touchcancel', function(e) {
+    e.preventDefault();
+    
+    $contact.removeClass('mousedown hover');
+    
+    var windowScrollTop = $( window ).scrollTop();
+    var sectionTop = $history.offset().top;
+    var sectionSnapTop = sectionTop + fixedBuffer;
+    if (windowScrollTop > sectionTop && windowScrollTop < sectionSnapTop) {
+      $( window ).scrollTop(sectionSnapTop);
+    }
+    
+    var userScrollEvents = 'scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove';
+    
+    var autoScrollStop = function() {
+      $('html, body').stop();
+      $('html, body').off(userScrollEvents, autoScrollStop);
+    };
+    
+    $('html, body').on(userScrollEvents, function() {
+      $('html, body').stop();
+      $('html, body').off(userScrollEvents, autoScrollStop);
+    });
+    
+    $('html, body').animate({scrollTop: $('#contact').offset().top}, 2000, function() {
+      $('html, body').off(userScrollEvents, autoScrollStop);
+    });
+    
+    // // Reset card properties
+    enableCardTransitionDuration(true);
+    detentCard($contactCard);
+    $contactCard.removeClass('mousedown hover');
+    
+    return false;
+  });
+  
+  $responsive.on('mouseenter', function() {
+    $(this).addClass('hover');
+  });
+  
+  $contact.on('mouseleave', function() {
+    $contact.removeClass('hover mousedown');
+  });
+  
   $contact.on('touchstart', function(e) {
     e.preventDefault();
-    $(this).addClass('mousedown');
+    $(this).addClass('hover mousedown');
   });
 });

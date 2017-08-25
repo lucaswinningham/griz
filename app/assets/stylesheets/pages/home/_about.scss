@@ -39,8 +39,6 @@ section#about {
         
         &.focus {
           left: 0;
-          
-          // breadcrumb height + breadcrumb bottom + 30 / 2
           top: 0;
         }
         
@@ -64,7 +62,6 @@ section#about {
           background-color: #ccc;
           background-size: cover;
           
-          @include user-select(none);
           @include border-radius(50%);
           @include transition(all, 1s, $normal-bezier, 0s);
           @include transform(translate(-50%,-50%));
@@ -85,8 +82,6 @@ section#about {
           color: white;
           cursor: default;
           
-          @include user-select(none);
-          @include cursor-grab;
           @include transform(translate(-50%, -50%));
           @include transition(all, 1s, $normal-bezier, 0s);
           

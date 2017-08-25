@@ -173,10 +173,6 @@ $( document ).on('turbolinks:load', function() {
     });
   };
   
-  // var selectBreadcrumb = function(index) {
-    
-  // }
-  
   var updateContent = function(e) {
     e.preventDefault();
     if ($(this).hasClass('mousedown')) {
@@ -208,12 +204,8 @@ $( document ).on('turbolinks:load', function() {
     }
   };
   
-  var trackCard = function(userPosition, $thisCard) {
-  };
-  
   var detentCard = function($thisCard) {
 	  var cardLeftPx = parseInt($thisCard.css('left'), 10);
-	  var cardWidthPx = parseInt($thisCard.css('width'), 10);
 	  var cardIndex = $thisCard.index();
 	  
 	  // Assume 96px = 1in
@@ -312,24 +304,24 @@ $( document ).on('turbolinks:load', function() {
     
     $contact.removeClass('mousedown hover');
     
-    var sectionSnapTop = $about.offset().top + fixedBuffer;
-    if ($( window ).scrollTop() < sectionSnapTop) {
-      $( window ).scrollTop(sectionSnapTop);
+    if ($( window ).scrollTop() < fixedBuffer) {
+      $( window ).scrollTop(fixedBuffer);
     }
     
-    // todo
-    // make animate function a variable and use .off() on that var
-    // do the same for every other _section.js that reused this code
+    var userScrollEvents = 'scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove';
     
-    $('html, body').on('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove', function() {
+    var autoScrollStop = function() {
       $('html, body').stop();
-      $('html, body').off('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove');
+      $('html, body').off(userScrollEvents, autoScrollStop);
+    };
+    
+    $('html, body').on(userScrollEvents, function() {
+      $('html, body').stop();
+      $('html, body').off(userScrollEvents, autoScrollStop);
     });
     
-    var top = $('#contact').offset().top;
-    var border = parseInt($('#contact').css("border-top-width"));
-    $('html, body').animate({scrollTop: top + border}, 3000, function() {
-      $('html, body').off('scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove');
+    $('html, body').animate({scrollTop: $('#contact').offset().top}, 3000, function() {
+      $('html, body').off(userScrollEvents, autoScrollStop);
     });
     
     // Reset card properties
