@@ -182,6 +182,7 @@ $( document ).on('turbolinks:load', function() {
 	  setContent(cardIndex);
 	  
 	  sliderRatio = cardIndex * detentIncrementRatio;
+	  $slider.stop();
 	  detentSlider();
 	  
   	$thisCard.css({left: ''});

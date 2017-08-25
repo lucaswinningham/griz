@@ -124,16 +124,16 @@ $( document ).on('turbolinks:load', function() {
     }
   };
   
-  var handleTondoSizing = function(focus) {
+  var sizeTondo = function($thisTondo) {
     var cardHeight = $card.height();
     var cardWidth =  $card.width();
     var pixelGutter = 15;
-    var tondoRatio = 0.3;
+    var tondoRatio = 0.4;
     var pixelOffsetTop;
     var pixelOffsetLeft;
     var tondoSide =  (cardHeight > cardWidth ? cardWidth : cardHeight);
     
-    if (focus) {
+    if ($thisTondo.hasClass('focus')) {
       tondoSide -= pixelGutter * 2;
       pixelOffsetTop = cardHeight / 2;
       pixelOffsetLeft = cardWidth / 2;
@@ -144,7 +144,7 @@ $( document ).on('turbolinks:load', function() {
       pixelOffsetLeft = tondoSide / 2 + pixelGutter;
     }
     
-    $tondo.css({
+    $thisTondo.css({
       height: tondoSide,
       width: tondoSide,
       top: pixelOffsetTop,
@@ -152,14 +152,31 @@ $( document ).on('turbolinks:load', function() {
     });
   };
   
-  handleTondoSizing(false);
+  var sizeAllTondos = function() {
+    $tondo.each(function(i) {
+      sizeTondo($(this));
+    });
+  };
+  
+  sizeAllTondos();
   
   $( window ).resize(function() {
     sectionFill();
-    handleTondoSizing($tondo.hasClass('focus'));
+    
+    var timeout = window.setTimeout(function() {
+      sizeAllTondos();
+      window.clearTimeout(timeout);
+    }, 1100);
   });
   
-  $( window ).scroll(handleFixed);
+  $( window ).scroll(function() {
+    handleFixed();
+    
+    var timeout = window.setTimeout(function() {
+      sizeAllTondos();
+      window.clearTimeout(timeout);
+    }, 1100);
+  });
   
   var setContent = function(index) {
     $card.each(function(i) {
@@ -336,8 +353,8 @@ $( document ).on('turbolinks:load', function() {
   
   $tondo.on('mouseup touchend touchcancel', function(e) {
     e.preventDefault();
-    $tondo.toggleClass('focus');
-    handleTondoSizing($tondo.hasClass('focus'));
+    $(this).toggleClass('focus');
+    sizeTondo($(this));
   });
   
   $responsive.on('mouseenter', function() {

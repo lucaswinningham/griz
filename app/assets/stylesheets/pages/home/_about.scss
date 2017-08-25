@@ -96,8 +96,13 @@ section#about {
         div.about-card-tease {
           font-size: 3.75em;
           top: 25%;
+          padding-right: 10%;
           
           @include respond-to(phone) { font-size: 1.75em; }
+          
+          span {
+            text-align: right;
+          }
         }
         
         div.about-card-info {

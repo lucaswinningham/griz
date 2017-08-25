@@ -38,10 +38,10 @@ section#history {
           span {
           position: absolute;
           left: 50%;
-          background: transparent;
+          background: white;
           height: 10px;
           width: 10px;
-          border: 2px solid white;
+          // border: 2px solid white;
           
           @include transform(translate(-50%, -50%));
           @include border-radius(50%);

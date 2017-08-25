@@ -35,8 +35,6 @@ section#work {
         
         div.work-menu-petal {
           position: absolute;
-          height: 50%;
-          width: 50%;
           text-align: center;
           background: white;
           cursor: pointer;
@@ -45,6 +43,48 @@ section#work {
           @include border-radius(50%);
           
           @include transition(transform, 1s, $normal-bezier, 0s);
+          
+          &.hover {
+            background: darken(map-get($mex, red), 2%);
+            border: 1px solid white;
+            
+            div {
+              svg {
+                stroke: white;
+              }
+            }
+          }
+          
+          &.mousedown, &.active {
+            background: darken(map-get($mex, red), 5%);
+            border: 1px solid white;
+            
+            div {
+              svg {
+                stroke: white;
+              }
+            }
+          }
+          
+          &.mousedown {
+            // @include transform(translate(-50%,4px));
+            
+            // @include respond-to(phone) { @include transform(translate(-50%,-24px)); }
+          }
+          
+          div {
+            // display: inline-block;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            left: 0;
+            top: 0;
+            padding: 17.5%;
+            
+            svg {
+              stroke: darken(map-get($mex, red), 5%);
+            }
+          }
         }
       }
     }

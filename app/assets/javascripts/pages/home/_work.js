@@ -13,52 +13,30 @@ $( document ).on('turbolinks:load', function() {
       var $menu = $(menu);
         var $center = $(center);
         var $petalContainer = $(petalContainer);
+          var $petal = $(petal);
   
-  var content = [
-    {
-      head: '',
-      body: '',
-    },
-    {
-      head: '',
-      body: '',
-    },
-    {
-      head: '',
-      body: '',
-    },
-    // {
-    //   head: '',
-    //   body: '',
-    // },
-    // {
-    //   head: '',
-    //   body: '',
-    // },
-    // {
-    //   head: '',
-    //   body: '',
-    // },
-    // {
-    //   head: '',
-    //   body: '',
-    // },
-    // {
-    //   head: '',
-    //   body: '',
-    // },
-  ];
+  // var content = [
+  //   {
+  //     head: '',
+  //     body: '',
+  //   },
+  //   {
+  //     head: '',
+  //     body: '',
+  //   },
+  //   {
+  //     head: '',
+  //     body: '',
+  //   },
+  // ];
   
-  content.forEach(function(val, i) {
-    $petalContainer.append('<div class="work-menu-petal">' + i + '</div>');
-  });
-  
-  var $petal = $(petal);
+  // content.forEach(function(val, i) {
+  //   $petalContainer.append('<div class="work-menu-petal">' + i + '</div>');
+  // });
   
   var $responsive = $([center, petal].join(', '));
   
   var petalContainerDeg = 0;
-  
   var fixedBuffer = 200;
   
   var sectionFill = function() {
@@ -164,33 +142,37 @@ $( document ).on('turbolinks:load', function() {
   $( window ).scroll(handleFixed);
   
   var focusPetal = function() {
-    var degTarget = $(this).index() * (360 / $petal.length);
-    // Damn js and its quirks
-    // https://stackoverflow.com/questions/4467539/javascript-modulo-not-behaving
-    var degDelta = degTarget - (((petalContainerDeg % 360) + 360) % 360);
-    
-    if (degDelta > 180) {
-      degDelta -= 360;
-    } else if (degDelta < -180) {
-      degDelta += 360;
+    if ($(this).hasClass('mousedown')) {
+      $(this).removeClass('hover mousedown');
+      
+      var degTarget = $(this).index() * (360 / $petal.length);
+      // Damn js and its quirks
+      // https://stackoverflow.com/questions/4467539/javascript-modulo-not-behaving
+      var degDelta = degTarget - (((petalContainerDeg % 360) + 360) % 360);
+      
+      if (degDelta > 180) {
+        degDelta -= 360;
+      } else if (degDelta < -180) {
+        degDelta += 360;
+      }
+      
+      var deg = petalContainerDeg + degDelta;
+      petalContainerDeg = deg;
+      
+      $petalContainer.css({
+        '-webkit-transform': 'rotate(' + deg + 'deg)',
+        '-moz-transform': 'rotate(' + deg + 'deg)',
+        '-o-transform': 'rotate(' + deg + 'deg)',
+        'transform': 'rotate(' + deg + 'deg)',
+      });
+      
+      $petal.css({
+        '-webkit-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
+        '-moz-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
+        '-o-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
+        'transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
+      });
     }
-    
-    var deg = petalContainerDeg + degDelta;
-    petalContainerDeg = deg;
-    
-    $petalContainer.css({
-      '-webkit-transform': 'rotate(' + deg + 'deg)',
-      '-moz-transform': 'rotate(' + deg + 'deg)',
-      '-o-transform': 'rotate(' + deg + 'deg)',
-      'transform': 'rotate(' + deg + 'deg)',
-    });
-    
-    $petal.css({
-      '-webkit-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
-      '-moz-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
-      '-o-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
-      'transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
-    });
   };
   
   $responsive.on('mousedown', function() {
@@ -211,6 +193,6 @@ $( document ).on('turbolinks:load', function() {
   
   $responsive.on('touchstart', function(e) {
     e.preventDefault();
-    $(this).addClass('mousedown');
+    $(this).addClass('hover mousedown');
   });
 });
