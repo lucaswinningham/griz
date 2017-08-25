@@ -22,6 +22,8 @@ $( document ).on('turbolinks:load', function() {
         var $contactCard = $(contactCard);
               var $contact = $(contact);
   
+  $petal.first().addClass('active');
+  
   var content = [
     {
       head: 'My Work',
@@ -160,70 +162,95 @@ $( document ).on('turbolinks:load', function() {
   
   $( window ).scroll(handleFixed);
   
-  var setContent = function(index) {
-    $card.each(function(i) {
-      if (i == index) {
-        $(this).removeClass('away').addClass('focus');
-      } else if (i < index) {
-        $(this).removeClass('focus').addClass('away');
-      } else {
-        $(this).removeClass('away focus');
+  var setContent = function(index, clockwise) {
+    var enterLeft;
+    var exitLeft;
+    
+    if (clockwise) {
+      enterLeft = '-110%';
+      exitLeft = '110%';
+    } else {
+      enterLeft = '110%';
+      exitLeft = '-110%';
+    }
+    
+    enableCardTransitionDuration(false);
+    
+    $card.each(function() {
+      if (!$(this).hasClass('focus')) {
+        $(this).css({left: enterLeft});
+        // OK, somehow console logging the css here causes the following bug to go away
+        // On very first card swipe, if counterclockwise (index 0 to len - 1), contact card comes in from wrong side or wrong left
+        // TODO figure out why the hell this is
+        console.log($(this).css('left'));
       }
     });
+    
+    enableCardTransitionDuration(true);
+    
+    $card.each(function(i) {
+      if ($(this).hasClass('focus')) {
+        $(this).removeClass('focus').css({left: exitLeft});
+      } else if (i == index) {
+        $(this).addClass('focus').css({left: ''});
+      }
+    });
+  };
+  
+  var movePetals = function(index) {
+    var degTarget = index * (360 / $petal.length);
+    // Damn js and its quirks
+    // https://stackoverflow.com/questions/4467539/javascript-modulo-not-behaving
+    var degDelta = degTarget - (((petalContainerDeg % 360) + 360) % 360);
+    
+    if (degDelta > 180) {
+      degDelta -= 360;
+    } else if (degDelta < -180) {
+      degDelta += 360;
+    }
+    
+    var deg = petalContainerDeg + degDelta;
+    petalContainerDeg = deg;
+    
+    $petalContainer.css({
+      '-webkit-transform': 'rotate(' + deg + 'deg)',
+      '-moz-transform': 'rotate(' + deg + 'deg)',
+      '-o-transform': 'rotate(' + deg + 'deg)',
+      'transform': 'rotate(' + deg + 'deg)',
+    });
+    
+    $petal.css({
+      '-webkit-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
+      '-moz-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
+      '-o-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
+      'transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
+    });
+    
+    return degDelta > 0;
   };
   
   var focusPetal = function() {
     if ($(this).hasClass('mousedown')) {
       $(this).removeClass('hover mousedown');
       
-      setContent($(this).index());
+      $petal.removeClass('active');
+      $(this).addClass('active');
       
-      var degTarget = $(this).index() * (360 / $petal.length);
-      // Damn js and its quirks
-      // https://stackoverflow.com/questions/4467539/javascript-modulo-not-behaving
-      var degDelta = degTarget - (((petalContainerDeg % 360) + 360) % 360);
-      
-      if (degDelta > 180) {
-        degDelta -= 360;
-      } else if (degDelta < -180) {
-        degDelta += 360;
-      }
-      
-      var deg = petalContainerDeg + degDelta;
-      petalContainerDeg = deg;
-      
-      $petalContainer.css({
-        '-webkit-transform': 'rotate(' + deg + 'deg)',
-        '-moz-transform': 'rotate(' + deg + 'deg)',
-        '-o-transform': 'rotate(' + deg + 'deg)',
-        'transform': 'rotate(' + deg + 'deg)',
-      });
-      
-      $petal.css({
-        '-webkit-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
-        '-moz-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
-        '-o-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
-        'transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
-      });
+      var clockwise = movePetals($(this).index());
+    
+      setContent($(this).index(), clockwise);
     }
   };
   
   var enableCardTransitionDuration = function(enable) {
-    if (enable) {
-      $card.css({
-        '-webkit-transition-duration': '',
-        '-moz-transition-duration': '',
-        '-o-transition-duration': '',
-        'transition-duration': '',
-      });
-    } else {
-      $card.css({
-        '-webkit-transition-duration': '0s',
-        '-moz-transition-duration': '0s',
-        '-o-transition-duration': '0s',
-        'transition-duration': '0s',
-      });
-    }
+    var duration = (enable ? '' : '0s');
+    
+    $card.css({
+      '-webkit-transition-duration': duration,
+      '-moz-transition-duration': duration,
+      '-o-transition-duration': duration,
+      'transition-duration': duration,
+    });
   };
   
   var detentCard = function($thisCard) {
@@ -231,23 +258,43 @@ $( document ).on('turbolinks:load', function() {
 	  var cardIndex = $thisCard.index();
 	  
 	  // Assume 96px = 1in
-	  if (cardLeftPx < -96 && cardIndex < $card.length - 1) {
-	    cardIndex += 1;
-	  } else if (cardLeftPx > 96 && cardIndex > 0) {
+	  if (cardLeftPx < -96) {
 	    cardIndex -= 1;
+	    if (cardIndex < 0) {
+	      cardIndex = $card.length - 1;
+	    }
+	    
+	    setContent(cardIndex, false);
+  	  
+      $petal.removeClass('active');
+      
+      $petal.each(function(i) {
+        if (i == cardIndex) {
+          $(this).addClass('active');
+        }
+      });
+      
+      movePetals(cardIndex);
+	  } else if (cardLeftPx > 96) {
+	    cardIndex += 1;
+	    if (cardIndex >= $card.length) {
+	      cardIndex = 0;
+	    }
+	    
+	    setContent(cardIndex, true);
+  	  
+      $petal.removeClass('active');
+      
+      $petal.each(function(i) {
+        if (i == cardIndex) {
+          $(this).addClass('active');
+        }
+      });
+      
+      movePetals(cardIndex);
+	  } else {
+	    $thisCard.css({left: ''});
 	  }
-	  
-	  setContent(cardIndex);
-	  
-    // $breadcrumb.removeClass('active');
-    
-    // $breadcrumb.each(function(i) {
-    //   if (i == cardIndex) {
-    //     $(this).addClass('active');
-    //   }
-    // });
-	  
-  	$thisCard.css({left: ''});
   };
   
   $card.on('mousedown', function(e) {

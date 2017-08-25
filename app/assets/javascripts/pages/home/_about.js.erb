@@ -204,21 +204,14 @@ $( document ).on('turbolinks:load', function() {
   };
   
   var enableCardTransitionDuration = function(enable) {
-    if (enable) {
-      $card.css({
-        '-webkit-transition-duration': '',
-        '-moz-transition-duration': '',
-        '-o-transition-duration': '',
-        'transition-duration': '',
-      });
-    } else {
-      $card.css({
-        '-webkit-transition-duration': '0s',
-        '-moz-transition-duration': '0s',
-        '-o-transition-duration': '0s',
-        'transition-duration': '0s',
-      });
-    }
+    var duration = (enable ? '' : '0s');
+    
+    $card.css({
+      '-webkit-transition-duration': duration,
+      '-moz-transition-duration': duration,
+      '-o-transition-duration': duration,
+      'transition-duration': duration,
+    });
   };
   
   var detentCard = function($thisCard) {

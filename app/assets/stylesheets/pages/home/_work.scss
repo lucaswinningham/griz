@@ -42,8 +42,8 @@ section#work {
         div.work-menu-petal {
           position: absolute;
           text-align: center;
-          background: darken(map-get($mex, red), 10%);
-          border: 2px solid white;
+          background: white;
+          border: 2px solid darken(map-get($mex, red), 10%);
           cursor: pointer;
           
           @include transform(translate(-50%,-50%));
@@ -52,31 +52,25 @@ section#work {
           @include transition(transform, 1s, $normal-bezier, 0s);
           
           &.hover {
-            background: white;
-            border: 2px solid darken(map-get($mex, red), 10%);
+            background: darken(map-get($mex, red), 10%);
+            border: 2px solid white;
             
             div {
               svg {
-                stroke: darken(map-get($mex, red), 10%);
+                stroke: white;
               }
             }
           }
           
           &.mousedown, &.active {
-            background: white;
-            border: 2px solid darken(map-get($mex, red), 20%);
+            background: darken(map-get($mex, red), 20%);
+            border: 2px solid white;
             
             div {
               svg {
-                stroke: darken(map-get($mex, red), 20%);
+                stroke: white;
               }
             }
-          }
-          
-          &.mousedown {
-            // @include transform(translate(-50%,4px));
-            
-            // @include respond-to(phone) { @include transform(translate(-50%,-24px)); }
           }
           
           div {
@@ -89,7 +83,7 @@ section#work {
             padding: 17.5%;
             
             svg {
-              stroke: white;
+              stroke: darken(map-get($mex, red), 10%);
             }
           }
         }
@@ -127,7 +121,7 @@ section#work {
         }
         
         // &.away {
-        //   top: 110%;
+        //   left: 110%;
         // }
         
         &.mousedown {
