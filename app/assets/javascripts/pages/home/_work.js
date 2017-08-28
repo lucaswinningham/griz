@@ -3,8 +3,9 @@
 $( document ).on('turbolinks:load', function() {
   var work = 'section#work';
     var container = work + ' div#work-container';
+      var toggle = container + ' div#work-menu-toggle';
       var menu = container + ' div#work-menu';
-        var center = menu + ' div#work-menu-center';
+        // var center = menu + ' div#work-menu-center';
         var petalContainer = menu + ' div#work-menu-petal-container';
           var petal = petalContainer + ' div.work-menu-petal';
       var cards = container + ' div#work-cards';
@@ -14,8 +15,8 @@ $( document ).on('turbolinks:load', function() {
   
   var $work = $(work);
     var $container = $(container);
+      var $toggle = $(toggle);
       var $menu = $(menu);
-        var $center = $(center);
         var $petalContainer = $(petalContainer);
           var $petal = $(petal);
       var $cards = $(cards);
@@ -54,11 +55,12 @@ $( document ).on('turbolinks:load', function() {
   
   $card.first().addClass('focus');
   
-  var $responsive = $([center, petal].join(', '));
+  var $responsive = $([toggle, petal].join(', '));
   
   var petalContainerDeg = 0;
   var fixedBuffer = 200;
   var originalUserPosition;
+  var menuTimeout;
   
   var sectionFill = function() {
     $work.css({
@@ -98,6 +100,37 @@ $( document ).on('turbolinks:load', function() {
   
   handleFixed();
   
+  var focusToggle = function(focus) {
+    focus = focus || $toggle.hasClass('focus');
+    var windowHeight = $( window ).height();
+    var windowWidth =  $( window ).width();
+    var boundingLength = (windowHeight > windowWidth ? windowWidth : windowHeight);
+    var gutter = 15;
+    
+    // var centerRatio = 0.075;
+    var toggleRatio = 0.1;
+    var toggleRadius = boundingLength * toggleRatio;
+    
+    $toggle.css({
+      width: toggleRadius * 2,
+      height: toggleRadius * 2,
+    });
+    
+    if (focus) {
+      $toggle.css({
+        top: '50%',
+        left: '50%',
+      });
+    } else {
+      $toggle.css({
+        top: windowHeight - toggleRadius - gutter * 2,
+        left: windowWidth - toggleRadius - gutter * 2,
+      });
+    }
+  };
+  
+  focusToggle();
+  
   var positionMenu = function() {
     var windowHeight = $( window ).height();
     var windowWidth =  $( window ).width();
@@ -124,17 +157,8 @@ $( document ).on('turbolinks:load', function() {
       });
     }
     
-    var centerRatio = 0.05;
     var petalRatio = 0.1;
-    var centerRadius = boundingLength * centerRatio;
     var petalRadius = boundingLength * petalRatio;
-    
-    $center.css({
-      top: '50%',
-      left: '50%',
-      width: centerRadius * 2,
-      height: centerRadius * 2,
-    });
     
     $petal.each(function(i) {
       var theta = (-i * 360 / $petal.length + 90) * Math.PI / 180;
@@ -157,10 +181,15 @@ $( document ).on('turbolinks:load', function() {
   $( window ).resize(function() {
     sectionFill();
     handleFixed();
+    focusToggle();
     positionMenu();
   });
   
-  $( window ).scroll(handleFixed);
+  $( window ).scroll(function() {
+    handleFixed();
+    focusToggle();
+    positionMenu();
+  });
   
   var setContent = function(index, clockwise) {
     var enterLeft;
@@ -181,7 +210,7 @@ $( document ).on('turbolinks:load', function() {
         $(this).css({left: enterLeft});
         // OK, somehow console logging the css here causes the following bug to go away
         // On very first card swipe, if counterclockwise (index 0 to len - 1), contact card comes in from wrong side or wrong left
-        // TODO figure out why the hell this is
+        // TODO: figure out why the hell this is
         console.log($(this).css('left'));
       }
     });
@@ -366,7 +395,33 @@ $( document ).on('turbolinks:load', function() {
     $(this).addClass('mousedown');
   });
   
-  // $center.on('mouseup touchend touchcancel', doSomething);
+  $toggle.on('mouseup touchend touchcancel', function() {
+    window.clearTimeout(menuTimeout);
+    
+    if ($menu.hasClass('opened') || $menu.hasClass('opening')) {
+      $menu.removeClass('closed opening opened').addClass('closing');
+      $toggle.addClass('focus');
+      focusToggle(true);
+      
+      menuTimeout = window.setTimeout(function() {
+        $menu.removeClass('closing opening opened').addClass('closed');
+        $toggle.removeClass('focus');
+        focusToggle(false);
+        
+        window.clearTimeout(menuTimeout);
+      }, 500);
+    } else if ($menu.hasClass('closed') || $menu.hasClass('closing')) {
+      $menu.removeClass('opened closing closed').addClass('opening');
+      $toggle.addClass('focus');
+      focusToggle(true);
+      
+      menuTimeout = window.setTimeout(function() {
+        $menu.removeClass('opening closing closed').addClass('opened');
+        
+        window.clearTimeout(menuTimeout);
+      }, 1000);
+    }
+  });
   
   $petal.on('mouseup touchend touchcancel', focusPetal);
   

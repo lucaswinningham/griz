@@ -14,29 +14,43 @@ section#work {
     width: 100%;
     @include transition(height, 1s, $normal-bezier, 0s);
     
+    div#work-menu-toggle {
+      position: absolute;
+      background: white;
+      border: 2px solid darken(map-get($mex, red), 30%);
+      z-index: 2;
+      cursor: pointer;
+      
+      @include transform(translate(-50%,-50%));
+      @include transition(all, 1s, $normal-bezier, 0s);
+      @include border-radius(50%);
+    }
+    
     div#work-menu {
       position: absolute;
-      z-index: 1;
+      z-index: -1;
       
-      div#work-menu-center {
-        position: absolute;
-        background: white;
-        border: 2px solid darken(map-get($mex, red), 30%);
-        z-index: 1;
+      &.opened {
+        div#work-menu-petal-container {
+          background: rgba(255, 255, 255, 0.35);
         
-        @include transform(translate(-50%,-50%));
-        @include border-radius(50%);
+          div.work-menu-petal {
+            opacity: 1;
+          }
+        }
+      }
+      
+      &.opened, &.opening, &.closing {
+        z-index: 1;
       }
       
       div#work-menu-petal-container {
         position: relative;
         height: 100%;
         width: 100%;
-        // background: rgba(map-get($mex, red), 25%);
-        background: rgba(255, 255, 255, 0.35);
-        // border: 10px solid rgba(255, 255, 255, 0.75);
+        background: transparent;
         
-        @include transition(transform, 1s, $normal-bezier, 0s);
+        @include transition(all, 1s, $normal-bezier, 0s);
         @include border-radius(50%);
         
         div.work-menu-petal {
@@ -45,11 +59,13 @@ section#work {
           background: white;
           border: 2px solid darken(map-get($mex, red), 10%);
           cursor: pointer;
+          opacity: 0;
+          // z-index: -1;
           
           @include transform(translate(-50%,-50%));
           @include border-radius(50%);
           
-          @include transition(transform, 1s, $normal-bezier, 0s);
+          @include transition(all, 1s, $normal-bezier, 0s);
           
           &.hover {
             background: darken(map-get($mex, red), 10%);

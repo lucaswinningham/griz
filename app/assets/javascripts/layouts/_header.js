@@ -18,7 +18,7 @@ $( document ).on('turbolinks:load', function() {
   var $responsive = $([burger, navlink].join(', '));
   
   var toggleMenu = function() {
-    window.clearTimeout(window.menuTimeout);
+    window.clearTimeout(window.menuTimeout); // TODO remove property use global
     $responsive.removeClass('mousedown');
     
     var open = function() {
