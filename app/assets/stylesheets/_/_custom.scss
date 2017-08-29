@@ -11,3 +11,114 @@ $mex: (
 
 $wobble-bezier: cubic-bezier(.1,3,.75,0.5);
 $normal-bezier: cubic-bezier(.25,1,.5,1);
+
+.burger {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  background-color: transparent;
+  
+  @include user-select(none);
+  @include transition(all, 0.8s, cubic-bezier(.25,1.5,.5,1), 0s);
+  
+  i {
+    display: block;
+    height: 10%;
+    width: 100%;
+    background-color: white;
+    @include border-radius(5%/#{50%});
+    @include transition(transform, 0.4s, cubic-bezier(.25,1.5,.5,1), 0s);
+    
+    &:nth-child(1) {
+      margin-top: 25%;
+      margin-bottom: 10%;
+    }
+    
+    &:nth-child(2) {
+      margin-bottom: 10%;
+    }
+    
+    &:nth-child(3) {
+      margin-bottom: 25%;
+    }
+  }
+  
+	&.opened {
+    @include transform(rotate(90deg));
+
+    i:nth-child(1) {
+      @include transform(translateY( 200%) rotate( 45deg));
+    }
+    i:nth-child(2) {
+      opacity: 0;
+    }
+    i:nth-child(3) {
+      @include transform(translateY(-200%) rotate(-45deg));
+    }
+
+    &.hover  {
+      i:nth-child(1) {
+        @include transform(translateY( 200%) rotate( 50deg));
+      }
+      i:nth-child(3) {
+        @include transform(translateY(-200%) rotate(-50deg));
+      }
+    }
+
+    &.mousedown  {
+      i:nth-child(1) {
+        @include transform(translateY( 200%) rotate( 55deg));
+      }
+      i:nth-child(3) {
+        @include transform(translateY(-200%) rotate(-55deg));
+      }
+    }
+
+    &.closing {
+    	@include transform(rotate(0));
+
+      i:nth-child(1) {
+        @include transform(translateY( 200%));
+      }
+      i:nth-child(3) {
+        @include transform(translateY(-200%));
+      }
+    }
+  }
+
+  &.closed {
+    @include transform(rotate(0));
+
+    &.hover {
+      i:nth-child(1) {
+        @include transform(translateY(-50%));
+      }
+      
+      i:nth-child(3) {
+        @include transform(translateY( 50%));
+      }
+    }
+
+    &.mousedown {
+      i:nth-child(1) {
+        @include transform(translateY(-100%));
+      }
+      
+      i:nth-child(3) {
+        @include transform(translateY( 100%));
+      }
+    }
+
+    &.opening {
+      i:nth-child(1) {
+        @include transform(translateY( 200%));
+      }
+      i:nth-child(3) {
+        @include transform(translateY(-200%));
+      }
+    }
+  }
+}

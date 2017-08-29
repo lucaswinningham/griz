@@ -17,18 +17,21 @@ $( document ).on('turbolinks:load', function() {
   
   var $responsive = $([burger, navlink].join(', '));
   
+  var menuTimeout;
+  
   var toggleMenu = function() {
-    window.clearTimeout(window.menuTimeout); // TODO remove property use global
+    window.clearTimeout(menuTimeout);
     $responsive.removeClass('mousedown');
     
     var open = function() {
       $burger.addClass('opening');
       $header.removeClass('closed');
       $header.addClass('opened');
-      window.menuTimeout = window.setTimeout(function() {
+      menuTimeout = window.setTimeout(function() {
         $burger.removeClass('opening closing lines');
         $burger.addClass('cross');
         $patty.removeClass('track');
+        window.clearTimeout(menuTimeout);
       }, 150);
     };
     
@@ -36,10 +39,11 @@ $( document ).on('turbolinks:load', function() {
       $burger.addClass('closing');
       $header.removeClass('opened');
       $header.addClass('closed');
-      window.menuTimeout = window.setTimeout(function() {
+      menuTimeout = window.setTimeout(function() {
         $burger.removeClass('opening closing cross');
         $burger.addClass('lines');
         burgerTrack();
+        window.clearTimeout(menuTimeout);
       }, 300);
     };
     

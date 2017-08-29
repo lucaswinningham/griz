@@ -103,9 +103,9 @@ $( document ).on('turbolinks:load', function() {
   var focusToggle = function(focus) {
     focus = focus || $toggle.hasClass('focus');
     
-    var windowHeight = $container.height();
-    var windowWidth =  $container.width();
-    var boundingLength = (windowHeight > windowWidth ? windowWidth : windowHeight);
+    var containerHeight = $container.height();
+    var containerWidth =  $container.width();
+    var boundingLength = (containerHeight > containerWidth ? containerWidth : containerHeight);
     var gutter = 15;
     
     // var centerRatio = 0.075;
@@ -119,13 +119,13 @@ $( document ).on('turbolinks:load', function() {
     
     if (focus) {
       $toggle.css({
-        top: windowHeight / 2,
-        left: windowWidth / 2,
+        top: containerHeight / 2,
+        left: containerWidth / 2,
       });
     } else {
       $toggle.css({
-        top: windowHeight - toggleRadius - gutter * 2,
-        left: windowWidth - toggleRadius - gutter * 2,
+        top: containerHeight - toggleRadius - gutter * 2,
+        left: containerWidth - toggleRadius - gutter * 2,
       });
     }
   };
@@ -133,28 +133,28 @@ $( document ).on('turbolinks:load', function() {
   focusToggle();
   
   var positionMenu = function() {
-    var windowHeight = $container.height();
-    var windowWidth =  $container.width();
+    var containerHeight = $container.height();
+    var containerWidth =  $container.width();
     var boundingLength;
     var gutter = 15;
     
-    if (windowHeight > windowWidth) {
-      boundingLength = windowWidth;
+    if (containerHeight > containerWidth) {
+      boundingLength = containerWidth;
       
       $menu.css({
-        height: windowWidth - 2 * gutter,
-        width: windowWidth - 2 * gutter,
-        top: windowHeight / 2 - windowWidth / 2 + gutter,
+        height: containerWidth - 2 * gutter,
+        width: containerWidth - 2 * gutter,
+        top: containerHeight / 2 - containerWidth / 2 + gutter,
         right: gutter,
       });
     } else {
-      boundingLength = windowHeight;
+      boundingLength = containerHeight;
       
       $menu.css({
-        height: windowHeight - 2 * gutter,
-        width: windowHeight - 2 * gutter,
+        height: containerHeight - 2 * gutter,
+        width: containerHeight - 2 * gutter,
         top: gutter,
-        right: windowWidth / 2 - windowHeight / 2 + gutter,
+        right: containerWidth / 2 - containerHeight / 2 + gutter,
       });
     }
     
@@ -326,6 +326,19 @@ $( document ).on('turbolinks:load', function() {
 	    $thisCard.css({left: ''});
 	  }
   };
+  
+  new ContactEvents(contact, 1000, function() {
+    var windowScrollTop = $( window ).scrollTop();
+    var sectionTop = $work.offset().top;
+    var sectionSnapTop = sectionTop + fixedBuffer;
+    if (windowScrollTop > sectionTop && windowScrollTop < sectionSnapTop) {
+      $( window ).scrollTop(sectionSnapTop);
+    }
+    
+    enableCardTransitionDuration(true);
+    detentCard($contactCard);
+    $contactCard.removeClass('hover mousedown');
+  });
   
   $card.on('mousedown', function(e) {
     $(this).addClass('mousedown');

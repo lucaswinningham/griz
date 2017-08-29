@@ -1,5 +1,26 @@
 section#contact {
   background: map-get($mex, orange);
-  box-sizing: content-box;
-  border-top: 100px solid map-get($mex, orange);
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  @include transition(height, 1s, $normal-bezier, 0s);
+  @include transition(padding-bottom, 1s, $normal-bezier, 0s);
+  
+  div#contact-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    @include transition(height, 1s, $normal-bezier, 0s);
+    
+    div#burger-container {
+      position: absolute;
+      height: 300px;
+      width: 300px;
+      left: 50%;
+      top: 50%;
+      
+      @include transform(translate(-50%,-50%));
+    }
+  }
 }

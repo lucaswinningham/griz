@@ -58,7 +58,7 @@ $( document ).on('turbolinks:load', function() {
   
   // todo
   // probably remove this entirely and individually select responsive elements
-  var $responsive = $([slider, track, contact].join(', '));
+  var $responsive = $([slider, track].join(', '));
   
   var fixedBuffer = 200;
   var originalUserPosition;
@@ -181,6 +181,19 @@ $( document ).on('turbolinks:load', function() {
   	$thisCard.css({left: ''});
   };
   
+  new ContactEvents(contact, 2000, function() {
+    var windowScrollTop = $( window ).scrollTop();
+    var sectionTop = $history.offset().top;
+    var sectionSnapTop = sectionTop + fixedBuffer;
+    if (windowScrollTop > sectionTop && windowScrollTop < sectionSnapTop) {
+      $( window ).scrollTop(sectionSnapTop);
+    }
+    
+    enableCardTransitionDuration(true);
+    detentCard($contactCard);
+    $contactCard.removeClass('hover mousedown');
+  });
+  
   $card.on('mousedown', function(e) {
     $(this).addClass('mousedown');
     enableCardTransitionDuration(false);
@@ -284,44 +297,6 @@ $( document ).on('turbolinks:load', function() {
     $slider.stop();
     $mechanism.addClass('mousedown');
     trackSlider(e.originalEvent.touches[0].pageY);
-  });
-  
-  // On desktop: bug
-  // Despite preventing default, screen actually follows link when mouseup event used instead of click
-  $contact.on('click touchend touchcancel', function(e) {
-    e.preventDefault();
-    
-    $contact.removeClass('mousedown hover');
-    
-    var windowScrollTop = $( window ).scrollTop();
-    var sectionTop = $history.offset().top;
-    var sectionSnapTop = sectionTop + fixedBuffer;
-    if (windowScrollTop > sectionTop && windowScrollTop < sectionSnapTop) {
-      $( window ).scrollTop(sectionSnapTop);
-    }
-    
-    var userScrollEvents = 'scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove';
-    
-    var autoScrollStop = function() {
-      $('html, body').stop();
-      $('html, body').off(userScrollEvents, autoScrollStop);
-    };
-    
-    $('html, body').on(userScrollEvents, function() {
-      $('html, body').stop();
-      $('html, body').off(userScrollEvents, autoScrollStop);
-    });
-    
-    $('html, body').animate({scrollTop: $('#contact').offset().top}, 2000, function() {
-      $('html, body').off(userScrollEvents, autoScrollStop);
-    });
-    
-    // // Reset card properties
-    enableCardTransitionDuration(true);
-    detentCard($contactCard);
-    $contactCard.removeClass('mousedown hover');
-    
-    return false;
   });
   
   $responsive.on('mouseenter', function() {
