@@ -102,8 +102,9 @@ $( document ).on('turbolinks:load', function() {
   
   var focusToggle = function(focus) {
     focus = focus || $toggle.hasClass('focus');
-    var windowHeight = $( window ).height();
-    var windowWidth =  $( window ).width();
+    
+    var windowHeight = $container.height();
+    var windowWidth =  $container.width();
     var boundingLength = (windowHeight > windowWidth ? windowWidth : windowHeight);
     var gutter = 15;
     
@@ -118,8 +119,8 @@ $( document ).on('turbolinks:load', function() {
     
     if (focus) {
       $toggle.css({
-        top: '50%',
-        left: '50%',
+        top: windowHeight / 2,
+        left: windowWidth / 2,
       });
     } else {
       $toggle.css({
@@ -132,8 +133,8 @@ $( document ).on('turbolinks:load', function() {
   focusToggle();
   
   var positionMenu = function() {
-    var windowHeight = $( window ).height();
-    var windowWidth =  $( window ).width();
+    var windowHeight = $container.height();
+    var windowWidth =  $container.width();
     var boundingLength;
     var gutter = 15;
     
@@ -181,15 +182,15 @@ $( document ).on('turbolinks:load', function() {
   $( window ).resize(function() {
     sectionFill();
     handleFixed();
-    focusToggle();
-    positionMenu();
+    
+    var timeout = window.setTimeout(function() {
+      focusToggle();
+      positionMenu();
+      window.clearTimeout(timeout);
+    }, 1100);
   });
   
-  $( window ).scroll(function() {
-    handleFixed();
-    focusToggle();
-    positionMenu();
-  });
+  $( window ).scroll(handleFixed);
   
   var setContent = function(index, clockwise) {
     var enterLeft;

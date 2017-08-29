@@ -30,6 +30,8 @@ section#work {
       position: absolute;
       z-index: -1;
       
+      @include transition(all, 1s, $normal-bezier, 0s);
+      
       &.opened {
         div#work-menu-petal-container {
           background: rgba(255, 255, 255, 0.35);

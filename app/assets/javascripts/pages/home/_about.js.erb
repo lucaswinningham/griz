@@ -162,14 +162,6 @@ $( document ).on('turbolinks:load', function() {
   
   $( window ).resize(function() {
     sectionFill();
-    
-    var timeout = window.setTimeout(function() {
-      sizeAllTondos();
-      window.clearTimeout(timeout);
-    }, 1100);
-  });
-  
-  $( window ).scroll(function() {
     handleFixed();
     
     var timeout = window.setTimeout(function() {
@@ -177,6 +169,8 @@ $( document ).on('turbolinks:load', function() {
       window.clearTimeout(timeout);
     }, 1100);
   });
+  
+  $( window ).scroll(handleFixed);
   
   var setContent = function(index) {
     $card.each(function(i) {
