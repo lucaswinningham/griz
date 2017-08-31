@@ -1,37 +1,25 @@
-<section id="history">
-  <div id="history-container">
+<section id="history" class="section">
+  <div id="history-container" class="section-container">
+    <div id="history-cards">
+      <%= render("_/card", head: "My past", body: "Take a moment to familiarize yourself with myself.") %>
+      
+      <%= render("_/card", head: "2017", body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.") %>
+      
+      <%= render("_/card", head: "2016", body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.") %>
+      
+      <%= render("_/card", head: "2015", body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.") %>
+      
+      <%= render("_/card", head: "2014", body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.") %>
+      
+      <%= render("_/card", head: "Maybe you feel like reaching out", contact: "CONTACT") %>
+    </div>
+    
     <div id="history-mechanism">
       <div id="history-track">
         <div id="history-track-detents"></div>
       </div>
       
       <div id="history-slider"></div>
-    </div>
-    
-    <div id="history-cards">
-      <div id="history-card-hero" class="focus history-card">
-        <div>
-          <div class="history-card-head">
-            <span>A BRIEF LOOK AT MY PAST</span>
-          </div>
-          <div class="history-card-body">
-            <span>Take a moment to familiarize yourself with myself</span>
-          </div>
-        </div>
-      </div>
-      
-      <div id="history-card-contact" class="history-card">
-        <div>
-          <div class="history-card-head">
-            <span>Maybe you feel like reaching out</span>
-          </div>
-          <div class="history-card-body">
-            <a id="history-contact" href="#contact">
-              <span>CONTACT</span>
-            </a>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </section>

@@ -176,6 +176,8 @@ var cardEvents = function($card, onChange) {
     }
   });
   
+  var lastIndex = 0;
+  
   var enableCardTransitionDuration = function(enable) {
     enable = (enable === undefined ? true : enable);
     
@@ -189,35 +191,41 @@ var cardEvents = function($card, onChange) {
     });
   };
   
-  var indexCards = function(index, forward) {
-    var enterClass;
-    var exitClass;
-    
-    if (forward) {
-      enterClass = 'right';
-      exitClass = 'left';
-    } else {
-      enterClass = 'left';
-      exitClass = 'right';
+  var indexCards = function(index, forward, callback) {
+    if (index != lastIndex) {
+      forward = (forward === undefined ? (index > lastIndex) : forward);
+      
+      var enter;
+      var exit;
+      var focus = 'focus';
+      
+      if (forward) {
+        enter = 'right';
+        exit = 'left';
+      } else {
+        enter = 'left';
+        exit = 'right';
+      }
+      
+      console.log(forward)
+      
+      enableCardTransitionDuration(false);
+      
+      $card.eq(index).addClass(enter).removeClass(exit);
+      
+      var timeout = window.setTimeout(function() {
+        enableCardTransitionDuration(true);
+        
+        $card.eq(lastIndex).addClass(exit).removeClass(focus);
+        $card.eq(index).addClass(focus).removeClass(enter);
+        
+        lastIndex = index;
+        
+        callback();
+        
+        window.clearTimeout(timeout);
+      }, 1);
     }
-    
-    enableCardTransitionDuration(false);
-    
-    $card.each(function() {
-      if (!$(this).hasClass('focus')) {
-        $(this).removeClass(exitClass).addClass(enterClass);
-      }
-    });
-    
-    enableCardTransitionDuration(true);
-    
-    $card.each(function(i) {
-      if ($(this).hasClass('focus')) {
-        $(this).removeClass('focus').addClass(exitClass);
-      } else if (i == index) {
-        $(this).removeClass(enterClass).addClass('focus');
-      }
-    });
   };
   
   var detentCard = function($thisCard) {
@@ -244,14 +252,16 @@ var cardEvents = function($card, onChange) {
 	      newCardIndex = $card.length - 1;
 	    }
 	  }
-	  
-  	$thisCard.css({left: ''});
-	  
-	  if (newCardIndex != cardIndex) {
-	    indexCards(newCardIndex, forward);
-	    
-	    onChange(newCardIndex, forward);
-	  }
+  	
+  	if (newCardIndex != lastIndex) {
+  	  indexCards(newCardIndex, forward, function() {
+  	    $thisCard.css({left: ''});
+  	  });
+  	  
+  	  onChange(newCardIndex, forward);
+  	} else {
+  	  $thisCard.css({left: ''});
+  	}
   };
   
   var originalUserPosition;
@@ -286,6 +296,8 @@ var cardEvents = function($card, onChange) {
     }
   });
   
+  // Reset if user most likely scrolling
+  // Force touchend and touchstart to reenable
   $card.on('touchmove', function(e) {
     if ($(this).hasClass('mousedown')) {
       var userPosition = {
@@ -301,8 +313,6 @@ var cardEvents = function($card, onChange) {
     	if (deltaPosition.x > deltaPosition.y) {
       	$(this).css({left: userPosition.x - originalUserPosition.x});
       } else {
-        // Reset if user most likely scrolling
-        // Force touchend and touchstart to reenable
         // Assume 96px = 1in
         if (deltaPosition.y > 96) {
           $(this).removeClass('mousedown');
@@ -322,5 +332,6 @@ var cardEvents = function($card, onChange) {
     }
   });
   
+  // Return ability to remotely call card indexing
   return indexCards;
 };

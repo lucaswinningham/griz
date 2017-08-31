@@ -1,26 +1,35 @@
 /* global $ */
+/* global sectionInitialize */
+/* global responsiveEvents */
+/* global cardEvents */
+/* global contactEvents */
 
 $( document ).on('turbolinks:load', function() {
   var about = 'section#about';
     var container = about + ' div#about-container';
-      var cards = container + ' div#about-cards';
-        var card = cards + ' div.about-card';
+      var card = container + ' div#about-cards .card';
           var tondo = card + ' div.about-card-tondo';
-        var contactCard = cards + ' div#about-card-contact';
-            var contact = contactCard + ' div a#about-contact';
+          var contact = card + ' .btn-contact';
       var breadcrumbs = container + ' div#about-breadcrumbs';
         var breadcrumb = breadcrumbs + ' div';
   
   var $about = $(about);
     var $container = $(container);
-      var $cards = $(cards);
-        // Cards defined below after insertion
-          // Tondos defined below after card insertion
-        var $contactCard = $(contactCard);
-            var $contact = $(contact);
-      var $breadcrumbs = $(breadcrumbs);
-        var $breadcrumb = $(breadcrumb);
+      var $card = $(card);
+        var $tondo = $(tondo);
+        var $contact = $(contact);
+      var $breadcrumb = $(breadcrumb);
   
+  // Dramatic intro for first card
+  (function() {
+    var timeout = window.setTimeout(function() {
+      $card.first().addClass('focus');
+      
+      window.clearTimeout(timeout);
+    }, 500);
+  }());
+  
+  // Throw breadcrumbs out
   (function() {
     var timeout = window.setTimeout(function() {
       $breadcrumb.each(function(i) {
@@ -35,94 +44,9 @@ $( document ).on('turbolinks:load', function() {
   
   $breadcrumb.first().addClass('active');
   
-  var content = [
-    {
-      tease: 'I\'M LUKE',
-      info: 'I enjoy creating beautifully designed experiences',
-      summary: 'Contact me for your next website or job',
-      tondo: '<%= asset_path "bear.jpg" %>',
-    },
-    {
-      tease: 'MY BESTFRIEND',
-      info: 'Going strong for 7 years, I\'m the luckiest guy alive to have Leigh',
-      summary: 'I love spending everyday with her',
-      tondo: '<%= asset_path "leigh.jpg" %>',
-    },
-    {
-      tease: 'MILLIE THE PUP',
-      info: 'Rescued and sassy, she loves playing with bones and howling at strangers',
-      summary: 'Will demand play before cuddles',
-      tondo: '<%= asset_path "millie.jpg" %>',
-    },
-  ];
+  var pxBuffer = 100;
   
-  content.forEach(function(val, i) {
-    var tondo = '<div class="about-card-tondo"></div>';
-    var tease = '<div class="about-card-tease"><span>' + val.tease + '</span></div>';
-    var info = '<div class="about-card-info"><span>' + val.info + '</span></div>';
-    var summary = '<div class="about-card-summary"><span>' + val.summary + '</span></div>';
-    var card = '<div class="about-card">' + tondo + tease + info + summary + '</div>';
-    
-    $(card).insertBefore($contactCard);
-  });
-  
-  var $card = $(card);
-  var $tondo = $(tondo);
-  
-  $tondo.each(function(i) {
-    $(this).css({
-      backgroundImage: 'url(' + content[i].tondo + ')',
-    });
-  });
-  
-  (function() {
-    var timeout = window.setTimeout(function() {
-      $card.first().addClass('focus');
-      
-      window.clearTimeout(timeout);
-    }, 500);
-  }());
-  
-  var $responsive = $([breadcrumb, tondo].join(', '));
-  
-  var fixedBuffer = 100;
-  var originalUserPosition;
-  
-  var sectionFill = function() {
-    $about.css({
-      'height': (window.innerHeight + fixedBuffer) + 'px',
-      'padding-bottom': fixedBuffer + 'px',
-    });
-    
-    $container.css({
-      'height': window.innerHeight + 'px',
-    });
-  };
-  
-  sectionFill();
-  
-  var handleFixed = function() {
-    var scrollPosition = Math.round($( document ).scrollTop());
-    var fixedTop = $about.offset().top;
-    var fixedBottom = $about.offset().top + fixedBuffer;
-    
-    if (scrollPosition < fixedTop) {
-      $container.css({
-        'position': 'absolute',
-        'top': '0px',
-      });
-    } else if (scrollPosition > fixedBottom) {
-      $container.css({
-        'position': 'absolute',
-        'top': fixedBuffer + 'px',
-      });
-    } else {
-      $container.css({
-        'position': 'fixed',
-        'top': '0px',
-      });
-    }
-  };
+  sectionInitialize($about, $container, pxBuffer);
   
   var sizeTondo = function($thisTondo) {
     var cardHeight = $card.height();
@@ -161,62 +85,35 @@ $( document ).on('turbolinks:load', function() {
   sizeAllTondos();
   
   $( window ).resize(function() {
-    sectionFill();
-    handleFixed();
-    
     var timeout = window.setTimeout(function() {
       sizeAllTondos();
       window.clearTimeout(timeout);
     }, 1100);
   });
   
-  $( window ).scroll(handleFixed);
-  
-  var setContent = function(index) {
-    $card.each(function(i) {
-      if (i == index) {
-        $(this).removeClass('away').addClass('focus');
-      } else if (i < index) {
-        $(this).removeClass('focus').addClass('away');
-      } else {
-        $(this).removeClass('away focus');
-      }
-    });
-  };
-  
-  var updateContent = function(e) {
-    e.preventDefault();
-    if ($(this).hasClass('mousedown')) {
-      $(this).removeClass('mousedown hover');
-      
-      if (!$(this).hasClass('active')) {
-        setContent($(this).index());
-        $breadcrumb.removeClass('active');
-        $(this).addClass('active');
-      }
+  var updateContent = function() {
+    $(this).removeClass('mousedown hover');
+    
+    if (!$(this).hasClass('active')) {
+      indexCards($(this).index());
+      $breadcrumb.removeClass('active');
+      $(this).addClass('active');
     }
   };
   
-  cardEvents($card, function(newCardIndex, forward) {
-	  setContent(newCardIndex);
-	  
+  var indexCards = cardEvents($card, function(newCardIndex) {
     $breadcrumb.removeClass('active');
     
-    $breadcrumb.each(function(i) {
-      if (i == newCardIndex) {
-        $(this).addClass('active');
-      }
-    });
+    $breadcrumb.eq(newCardIndex).addClass('active');
   });
   
+  // Disable the first card focus for dramatic intro
+  $card.first().removeClass('focus');
+  
   contactEvents($contact, 3000, function() {
-    if ($( window ).scrollTop() < fixedBuffer) {
-      $( window ).scrollTop(fixedBuffer);
+    if ($( window ).scrollTop() < pxBuffer) {
+      $( window ).scrollTop(pxBuffer);
     }
-    
-    // enableCardTransitionDuration(true);
-    // detentCard($contactCard);
-    $contactCard.removeClass('hover mousedown');
   });
   
   responsiveEvents($breadcrumb, updateContent);

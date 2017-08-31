@@ -1,32 +1,18 @@
 section#work {
+  // @include transition(height, 1s, $normal-bezier, 0s);
+  // @include transition(padding-bottom, 1s, $normal-bezier, 0s);
+  
   background: map-get($mex, red);
-  position: relative;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  @include transition(height, 1s, $normal-bezier, 0s);
-  @include transition(padding-bottom, 1s, $normal-bezier, 0s);
   
   div#work-container {
-    background: darken(map-get($mex, red), 5%);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    @include transition(height, 1s, $normal-bezier, 0s);
-    
     div#work-cards {
       position: absolute;
       height: calc(100% - 30px);
       width: calc(100% - 30px);
-      top: 15px;
       left: 15px;
-      color: white;
+      top: 15px;
       
-      .card {
-        background: darken(map-get($mex, red), 15%);
-      }
-      
-      @include contact-card(darken(map-get($mex, red), 15%));
+      @include card(darken(map-get($mex, red), 15%));
     }
     
     div#work-menu-toggle {

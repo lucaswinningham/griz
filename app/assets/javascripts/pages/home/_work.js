@@ -7,22 +7,22 @@
 $( document ).on('turbolinks:load', function() {
   var work = 'section#work';
     var container = work + ' div#work-container';
+      var cards = container + ' div#work-cards';
+        var card = cards + ' .card';
+          var contact = card + ' .btn-contact';
       var toggle = container + ' div#work-menu-toggle';
       var menu = container + ' div#work-menu';
         var petalContainer = menu + ' div#work-menu-petal-container';
           var petal = petalContainer + ' div.work-menu-petal';
-      var cards = container + ' div#work-cards';
-        var card = cards + ' .card';
-          var contact = card + ' .btn-contact';
   
   var $work = $(work);
     var $container = $(container);
+        var $card = $(card);
+          var $contact = $(contact);
       var $toggle = $(toggle);
       var $menu = $(menu);
         var $petalContainer = $(petalContainer);
           var $petal = $(petal);
-        var $card = $(card);
-          var $contact = $(contact);
   
   $petal.first().addClass('active');
   
@@ -164,11 +164,7 @@ $( document ).on('turbolinks:load', function() {
   var indexCards = cardEvents($card, function(newCardIndex, forward) {
     $petal.removeClass('active');
     
-    $petal.each(function(i) {
-      if (i == newCardIndex) {
-        $(this).addClass('active');
-      }
-    });
+    $petal.eq(newCardIndex).addClass('active');
     
     movePetals(newCardIndex);
   });
@@ -180,9 +176,6 @@ $( document ).on('turbolinks:load', function() {
     if (windowScrollTop > sectionTop && windowScrollTop < sectionSnapTop) {
       $( window ).scrollTop(sectionSnapTop);
     }
-    
-    // enableCardTransitionDuration(true);
-    // detentCard($contactCard);
   });
   
   responsiveEvents($petal, focusPetal);

@@ -1,21 +1,33 @@
-<section id="about">
-  <div id="about-container">
+<!--I enjoy creating beautifully designed experiences-->
+<!--Contact me for your next website or job-->
+<!--bear.jpg-->
+  
+<!--Going strong for 7 years, I'm the luckiest guy alive to have Leigh-->
+<!--I love spending everyday with her-->
+<!--leigh.jpg-->
+
+<!--Rescued and sassy, she loves playing with bones and howling at strangers-->
+<!--Will demand play before cuddles-->
+<!--millie.jpg-->
+
+<section id="about" class="section">
+  <div id="about-container" class="section-container">
     <div id="about-cards">
-      <div id="about-card-contact" class="about-card">
-        <div>
-          <span>Maybe you feel like reaching out</span>
-          <a id="about-contact" href="#contact">
-            <span>CONTACT</span>
-          </a>
-        </div>
-      </div>
+      
+      <%= render("_/card", head: "I'm Luke", body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.") %>
+      
+      <%= render("_/card", head: "My bestfriend", body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.") %>
+      
+      <%= render("_/card", head: "Millie the pup", body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.") %>
+      
+      <%= render("_/card", head: "Find out more by getting in touch", contact: "CONTACT") %>
     </div>
     
     <div id="about-breadcrumbs">
       <div><%= render "icons/beard" %></div>
       <div><%= render "icons/leigh" %></div>
       <div><%= render "icons/hound" %></div>
-      <div id="about-breadcrumb-contact"><%= render "icons/contact" %></div>
+      <div><%= render "icons/contact" %></div>
     </div>
   </div>
 </section>

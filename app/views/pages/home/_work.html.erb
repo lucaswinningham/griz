@@ -1,5 +1,5 @@
-<section id="work">
-  <div id="work-container">
+<section id="work" class="section">
+  <div id="work-container" class="section-container">
     <div id="work-cards">
       <%= render("_/card", head: "My Work", body: "All of the source code can be found at the github link below.") %>
       
@@ -7,7 +7,7 @@
       
       <%= render("_/card", head: "Bash Automation", body: "I attempted learning Ruby on Rails four separate times, failing the first three. I wasn't (and still amn't) good at the command line which was my biggest fear and pitfall for getting started. After making several apps using Rails in the Cloud9 environment, I made a couple bash scripts to completely automate the process from creating a new workspace in C9 to a live running app in Heroku and backed up on Github.") %>
       
-      <%= render("_/contact_card", head: "Tell me what you think", text: "CONTACT") %>
+      <%= render("_/card", head: "Tell me what you think", contact: "CONTACT") %>
     </div>
     
     <div id="work-menu-toggle" class="focus">
