@@ -197,175 +197,33 @@ $( document ).on('turbolinks:load', function() {
     }
   };
   
-  var enableCardTransitionDuration = function(enable) {
-    var duration = (enable ? '' : '0s');
-    
-    $card.css({
-      '-webkit-transition-duration': duration,
-      '-moz-transition-duration': duration,
-      '-o-transition-duration': duration,
-      'transition-duration': duration,
-    });
-  };
-  
-  var detentCard = function($thisCard) {
-	  var cardLeftPx = parseInt($thisCard.css('left'), 10);
-	  var cardIndex = $thisCard.index();
-	  
-	  // Assume 96px = 1in
-	  if (cardLeftPx < -96 && cardIndex < $card.length - 1) {
-	    cardIndex += 1;
-	  } else if (cardLeftPx > 96 && cardIndex > 0) {
-	    cardIndex -= 1;
-	  }
-	  
-	  setContent(cardIndex);
+  cardEvents($card, function(newCardIndex, forward) {
+	  setContent(newCardIndex);
 	  
     $breadcrumb.removeClass('active');
     
     $breadcrumb.each(function(i) {
-      if (i == cardIndex) {
+      if (i == newCardIndex) {
         $(this).addClass('active');
       }
     });
-	  
-  	$thisCard.css({left: ''});
-  };
+  });
   
-  new ContactEvents(contact, 3000, function() {
+  contactEvents($contact, 3000, function() {
     if ($( window ).scrollTop() < fixedBuffer) {
       $( window ).scrollTop(fixedBuffer);
     }
     
-    enableCardTransitionDuration(true);
-    detentCard($contactCard);
+    // enableCardTransitionDuration(true);
+    // detentCard($contactCard);
     $contactCard.removeClass('hover mousedown');
   });
   
-  // contactEvents.msScroll = 3000;
+  responsiveEvents($breadcrumb, updateContent);
   
-  $card.on('mousedown', function(e) {
-    $(this).addClass('mousedown');
-    enableCardTransitionDuration(false);
-    originalUserPosition = {x: e.pageX, y: e.pageY};
-  });
-  
-  $card.on('mouseup touchend touchcancel', function() {
-    enableCardTransitionDuration(true);
-    detentCard($(this));
-    $(this).removeClass('mousedown hover');
-  });
-  
-  $card.on('mousemove', function(e) {
-    // e.preventDefault();
-    var userPosition = {x: e.pageX, y: e.pageY};
-    
-  	if ($(this).hasClass('mousedown')) {
-    	$(this).css({left: userPosition.x - originalUserPosition.x});
-    }
-  });
-  
-  $card.on('touchmove', function(e) {
-    if ($(this).hasClass('mousedown')) {
-      var userPosition = {
-        x: e.originalEvent.touches[0].pageX,
-        y: $(window).scrollTop()
-      };
-      
-      var deltaPosition = {
-        x: Math.abs(userPosition.x - originalUserPosition.x),
-        y: Math.abs(userPosition.y - originalUserPosition.y)
-      };
-      
-    	if (deltaPosition.x > deltaPosition.y) {
-      	$(this).css({left: userPosition.x - originalUserPosition.x});
-      } else {
-        // Reset if user most likely scrolling
-        // Force touchend and touchstart to reenable
-        // Assume 96px = 1in
-        if (deltaPosition.y > 96) {
-          $(this).removeClass('hover mousedown');
-          enableCardTransitionDuration(true);
-          detentCard($(this));
-        }
-        
-        enableCardTransitionDuration(true);
-        detentCard($(this));
-      }
-    }
-  });
-  
-  $card.on('mouseleave', function() {
-    $card.removeClass('mousedown hover');
-    originalUserPosition = null;
-  });
-  
-  $card.on('touchstart', function(e) {
-    $(this).addClass('hover mousedown');
-    enableCardTransitionDuration(false);
-    originalUserPosition = {
-      x: e.originalEvent.touches[0].pageX,
-      y: $(window).scrollTop()
-    };
-  });
-  
-  $responsive.on('mousedown', function() {
-    $(this).addClass('mousedown');
-  });
-  
-  // // On desktop: bug
-  // // Despite preventing default, screen actually follows link when mouseup event used instead of click
-  // $contact.on('click touchend touchcancel', function(e) {
-  //   e.preventDefault();
-    
-  //   $contact.removeClass('mousedown hover');
-    
-  //   if ($( window ).scrollTop() < fixedBuffer) {
-  //     $( window ).scrollTop(fixedBuffer);
-  //   }
-    
-  //   var userScrollEvents = 'scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove';
-    
-  //   var autoScrollStop = function() {
-  //     $('html, body').stop();
-  //     $('html, body').off(userScrollEvents, autoScrollStop);
-  //   };
-    
-  //   $('html, body').on(userScrollEvents, function() {
-  //     $('html, body').stop();
-  //     $('html, body').off(userScrollEvents, autoScrollStop);
-  //   });
-    
-  //   $('html, body').animate({scrollTop: $('#contact').offset().top}, 3000, function() {
-  //     $('html, body').off(userScrollEvents, autoScrollStop);
-  //   });
-    
-  //   // Reset card properties
-  //   enableCardTransitionDuration(true);
-  //   detentCard($contactCard);
-  //   $contactCard.removeClass('mousedown hover');
-    
-  //   return false;
-  // });
-  
-  $breadcrumb.on('mouseup touchend touchcancel', updateContent);
-  
-  $tondo.on('mouseup touchend touchcancel', function(e) {
+  responsiveEvents($tondo, function(e) {
     e.preventDefault();
     $(this).toggleClass('focus');
     sizeTondo($(this));
-  });
-  
-  $responsive.on('mouseenter', function() {
-    $(this).addClass('hover');
-  });
-  
-  $responsive.on('mouseleave', function() {
-    $(this).removeClass('hover mousedown');
-  });
-  
-  $responsive.on('touchstart', function(e) {
-    e.preventDefault();
-    $(this).addClass('hover mousedown');
   });
 });

@@ -1,5 +1,15 @@
 <section id="work">
   <div id="work-container">
+    <div id="work-cards">
+      <%= render("_/card", head: "My Work", body: "All of the source code can be found at the github link below.") %>
+      
+      <%= render("_/card", head: "AutoLisp", body: "During my time as a Controls Engineer, I programmed several time saving tools to be used with AutoCAD. I learned Lisp for all it was, good and bad. The bad parts I didn't like so much compared to the Ruby programming language so I decided to implement some of Ruby's usefulness for Lisp by creating a code interpreter that not only found and replaced some functionality, such as rest parameters, but also injected pseudo object oriented paradigms for lists to act like Ruby array objects.") %>
+      
+      <%= render("_/card", head: "Bash Automation", body: "I attempted learning Ruby on Rails four separate times, failing the first three. I wasn't (and still amn't) good at the command line which was my biggest fear and pitfall for getting started. After making several apps using Rails in the Cloud9 environment, I made a couple bash scripts to completely automate the process from creating a new workspace in C9 to a live running app in Heroku and backed up on Github.") %>
+      
+      <%= render("_/contact_card", head: "Tell me what you think", text: "CONTACT") %>
+    </div>
+    
     <div id="work-menu-toggle" class="focus">
       <i></i>
       <i></i>
@@ -19,21 +29,6 @@
         </div>
         <div class="work-menu-petal">
           <div><%= render "icons/contact" %></div>
-        </div>
-      </div>
-    </div>
-    
-    <div id="work-cards">
-      <div id="work-card-contact" class="work-card">
-        <div>
-          <div class="work-card-head">
-            <span>Maybe you feel like reaching out</span>
-          </div>
-          <div class="work-card-body">
-            <a id="work-contact" href="#contact">
-              <span>CONTACT</span>
-            </a>
-          </div>
         </div>
       </div>
     </div>

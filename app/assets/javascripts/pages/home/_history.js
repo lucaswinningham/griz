@@ -150,38 +150,15 @@ $( document ).on('turbolinks:load', function() {
     }
   };
   
-  var enableCardTransitionDuration = function(enable) {
-    var duration = (enable ? '' : '0s');
-    
-    $card.css({
-      '-webkit-transition-duration': duration,
-      '-moz-transition-duration': duration,
-      '-o-transition-duration': duration,
-      'transition-duration': duration,
-    });
-  };
-  
-  var detentCard = function($thisCard) {
-	  var cardLeftPx = parseInt($thisCard.css('left'), 10);
-	  var cardIndex = $thisCard.index();
+  cardEvents($card, function(newCardIndex, forward) {
+	  setContent(newCardIndex);
 	  
-	  // Assume 96px = 1in
-	  if (cardLeftPx < -96 && cardIndex < $card.length - 1) {
-	    cardIndex += 1;
-	  } else if (cardLeftPx > 96 && cardIndex > 0) {
-	    cardIndex -= 1;
-	  }
-	  
-	  setContent(cardIndex);
-	  
-	  sliderRatio = cardIndex * detentIncrementRatio;
+	  sliderRatio = newCardIndex * detentIncrementRatio;
 	  $slider.stop();
 	  detentSlider();
-	  
-  	$thisCard.css({left: ''});
-  };
+  });
   
-  new ContactEvents(contact, 2000, function() {
+  contactEvents($contact, 2000, function() {
     var windowScrollTop = $( window ).scrollTop();
     var sectionTop = $history.offset().top;
     var sectionSnapTop = sectionTop + fixedBuffer;
@@ -189,74 +166,9 @@ $( document ).on('turbolinks:load', function() {
       $( window ).scrollTop(sectionSnapTop);
     }
     
-    enableCardTransitionDuration(true);
-    detentCard($contactCard);
+    // enableCardTransitionDuration(true);
+    // detentCard($contactCard);
     $contactCard.removeClass('hover mousedown');
-  });
-  
-  $card.on('mousedown', function(e) {
-    $(this).addClass('mousedown');
-    enableCardTransitionDuration(false);
-    originalUserPosition = {x: e.pageX, y: e.pageY};
-  });
-  
-  $card.on('mouseup touchend touchcancel', function() {
-    enableCardTransitionDuration(true);
-    detentCard($(this));
-    $(this).removeClass('mousedown hover');
-  });
-  
-  $card.on('mousemove', function(e) {
-    // e.preventDefault();
-    var userPosition = {x: e.pageX, y: e.pageY};
-    
-  	if ($(this).hasClass('mousedown')) {
-    	$(this).css({left: userPosition.x - originalUserPosition.x});
-    }
-  });
-  
-  $card.on('touchmove', function(e) {
-    if ($(this).hasClass('mousedown')) {
-      var userPosition = {
-        x: e.originalEvent.touches[0].pageX,
-        y: $(window).scrollTop()
-      };
-      
-      var deltaPosition = {
-        x: Math.abs(userPosition.x - originalUserPosition.x),
-        y: Math.abs(userPosition.y - originalUserPosition.y)
-      };
-      
-    	if (deltaPosition.x > deltaPosition.y) {
-      	$(this).css({left: userPosition.x - originalUserPosition.x});
-      } else {
-        // Reset if user most likely scrolling
-        // Force touchend and touchstart to reenable
-        // Assume 96px = 1in
-        if (deltaPosition.y > 96) {
-          $(this).removeClass('hover mousedown');
-          enableCardTransitionDuration(true);
-          detentCard($(this));
-        }
-        
-        enableCardTransitionDuration(true);
-        detentCard($(this));
-      }
-    }
-  });
-  
-  $card.on('mouseleave', function() {
-    $card.removeClass('mousedown hover');
-    originalUserPosition = null;
-  });
-  
-  $card.on('touchstart', function(e) {
-    $(this).addClass('hover mousedown');
-    enableCardTransitionDuration(false);
-    originalUserPosition = {
-      x: e.originalEvent.touches[0].pageX,
-      y: $(window).scrollTop()
-    };
   });
   
   $mechanism.on('mousedown', function(e) {

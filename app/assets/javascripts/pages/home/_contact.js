@@ -54,7 +54,6 @@ $( document ).on('turbolinks:load', function() {
   $( window ).scroll(handleFixed);
   
   // experiment
-  
-  var burgerEvents = new BurgerEvents(container + ' div#burger-container div');
-  burgerEvents.addListeners();
+  var $burger = $(container + ' div#burger-container div');
+  burgerEvents($burger);
 });

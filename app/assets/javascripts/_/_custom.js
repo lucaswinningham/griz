@@ -1,147 +1,326 @@
 /* global $ */
 
-function BurgerEvents (selector) {
-  this.onOpening = function() {};
-  this.onOpened = function() {};
-  this.onClosing = function() {};
-  this.onClosed = function() {};
+var sectionInitialize = function($section, $container, pxBuffer) {
+  var pxBuffer = (pxBuffer === undefined ? 200 : pxBuffer);
   
-  this.msClose = 300;
-  this.msOpen = 150;
-  
-  this.selector = selector;
-  
-  this.addListeners = function() {
-    var $burger = $(this.selector);
+  var sectionFill = function() {
+    $section.css({
+      'height': (window.innerHeight + pxBuffer) + 'px',
+      'padding-bottom': pxBuffer + 'px',
+    });
     
+    $container.css({
+      'height': window.innerHeight + 'px',
+    });
+  };
+  
+  sectionFill();
+  
+  var handleFixed = function() {
+    var scrollPosition = Math.round($( document ).scrollTop());
+    var fixedTop = $section.offset().top;
+    var fixedBottom = $section.offset().top + pxBuffer;
+    
+    if (scrollPosition < fixedTop) {
+      $container.css({
+        'position': 'absolute',
+        'top': '0px',
+      });
+    } else if (scrollPosition > fixedBottom) {
+      $container.css({
+        'position': 'absolute',
+        'top': pxBuffer + 'px',
+      });
+    } else {
+      $container.css({
+        'position': 'fixed',
+        'top': '0px',
+      });
+    }
+  };
+  
+  handleFixed();
+  
+  $( window ).resize(function() {
+    sectionFill();
+    handleFixed();
+  });
+  
+  $( window ).scroll(handleFixed);
+};
+
+var responsiveEvents = function($responsive, onClick, clickEvents) {
+  onClick = (onClick === undefined ? function() {} : onClick);
+  
+  clickEvents = (clickEvents === undefined ? 'mouseup touchend touchcancel' : clickEvents);
+  
+  $responsive.on('mouseenter', function() {
+    $(this).addClass('hover');
+  });
+  
+  $responsive.on('mouseleave', function() {
+    $(this).removeClass('hover mousedown');
+  });
+  
+  $responsive.on('mousedown', function() {
+    $(this).addClass('mousedown');
+  });
+  
+  $responsive.on('touchstart', function(e) {
+    e.preventDefault();
+    $(this).addClass('mousedown');
+  });
+  
+  $responsive.on(clickEvents, function(e) {
+    if ($(this).hasClass('mousedown')) {
+      $(this).removeClass('mousedown');
+      
+      onClick.bind(this)(e);
+    }
+  });
+};
+
+var burgerEvents = function($burger, msClose, msOpen, callbacks) {
+  msClose = (msClose === undefined ? 300 : msClose);
+  msOpen = (msOpen === undefined ? 150 : msOpen);
+  
+  if (callbacks === undefined) {
+    callbacks = {
+      onOpening: function() {},
+      onOpened: function() {},
+      onClosing: function() {},
+      onClosed: function() {}
+    };
+  } else {
+    callbacks.onOpening = (callbacks.onOpening === undefined ? function() {} : callbacks.onOpening);
+    callbacks.onOpened = (callbacks.onOpened === undefined ? function() {} : callbacks.onOpened);
+    callbacks.onClosing = (callbacks.onClosing === undefined ? function() {} : callbacks.onClosing);
+    callbacks.onClosed = (callbacks.onClosed === undefined ? function() {} : callbacks.onClosed);
+  }
+  
+  if (!$burger.hasClass('opened')) {
     $burger.addClass('closed');
+  }
+  
+  responsiveEvents($burger, function() {
+    window.clearTimeout($burger.timeout);
     
-    $burger.on('mouseenter', function() {
-      $burger.addClass('hover');
-    });
-    
-    $burger.on('mouseleave', function() {
-      $burger.removeClass('hover mousedown');
-    });
-    
-    $burger.on('mousedown', function() {
-      $burger.addClass('mousedown');
-    });
-    
-    $burger.on('touchstart', function(e) {
-      e.preventDefault();
-      $burger.addClass('mousedown');
-    });
-    
-    $burger.on('mouseup touchend touchcancel', function() {
-      if ($burger.hasClass('mousedown')) {
-        $burger.removeClass('mousedown');
+    if ($burger.hasClass('opened') || $burger.hasClass('opening') ) {
+      $burger.removeClass('opening').addClass('closing');
+      
+      callbacks.onClosing();
+      
+      $burger.timeout = window.setTimeout(function() {
+        $burger.removeClass('closing opened').addClass('closed');
+        
+        callbacks.onClosed();
         
         window.clearTimeout($burger.timeout);
+      }, msClose);
+    } else  if ($burger.hasClass('closed') || $burger.hasClass('closing') ) {
+      $burger.removeClass('closing').addClass('opening');
+      
+      callbacks.onOpening();
+      
+      $burger.timeout = window.setTimeout(function() {
+        $burger.removeClass('opening closed').addClass('opened');
         
-        if ($burger.hasClass('opened') || $burger.hasClass('opening') ) {
-          $burger.removeClass('opening').addClass('closing');
-          
-          this.onClosing();
-          
-          $burger.timeout = window.setTimeout(function() {
-            $burger.removeClass('closing opened').addClass('closed');
-            
-            this.onClosed();
-            
-            window.clearTimeout($burger.timeout);
-          }.bind(this), this.msClose);
-        } else  if ($burger.hasClass('closed') || $burger.hasClass('closing') ) {
-          $burger.removeClass('closing').addClass('opening');
-          
-          this.onOpening();
-          
-          $burger.timeout = window.setTimeout(function() {
-            $burger.removeClass('opening closed').addClass('opened');
-            
-            this.onOpened();
-            
-            window.clearTimeout($burger.timeout);
-          }.bind(this), this.msOpen);
-        }
-      }
-    }.bind(this));
-  }.bind(this);
-}
+        callbacks.onOpened();
+        
+        window.clearTimeout($burger.timeout);
+      }, msOpen);
+    }
+  });
+};
 
-function ContactEvents (selector, msScroll, onClick) {
-  this.selector = (selector === undefined ? '#contact' : selector);
+var contactEvents = function($contact, msScroll, onClick) {
+  msScroll = (msScroll === undefined ? 2000 : msScroll);
   
-  this.onClick = (onClick === undefined ? function() {} : onClick);
+  onClick = (onClick === undefined ? function() {} : onClick);
   
-  this.msScroll = (msScroll === undefined ? 2000 : msScroll);
+  // On desktop: bug
+  // Despite preventing default, screen actually follows link when mouseup event used instead of click
+  responsiveEvents($contact, function(e) {
+    e.preventDefault();
+    
+    onClick();
+    
+    var userScrollEvents = 'scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove';
+    
+    var autoScrollStop = function() {
+      $('html, body').stop();
+      $('html, body').off(userScrollEvents, autoScrollStop);
+    };
+    
+    $('html, body').on(userScrollEvents, function() {
+      $('html, body').stop();
+      $('html, body').off(userScrollEvents, autoScrollStop);
+    });
+    
+    $('html, body').animate({scrollTop: $('#contact').offset().top}, msScroll, function() {
+      $('html, body').off(userScrollEvents, autoScrollStop);
+    });
+    
+    return false;
+  }, 'click touchend touchcancel');
+};
+
+var cardEvents = function($card, onChange) {
+  onChange = (onChange === undefined ? function() {} : onChange);
   
-  (function() {
-    var $contact = $(this.selector);
+  $card.each(function(i) {
+    if (i === 0) {
+      $(this).addClass('focus');
+    } else {
+      $(this).addClass('right');
+    }
+  });
+  
+  var enableCardTransitionDuration = function(enable) {
+    enable = (enable === undefined ? true : enable);
     
-    $contact.on('mouseenter', function() {
-      $contact.addClass('hover');
+    var duration = (enable ? '' : '0s');
+    
+    $card.css({
+      '-webkit-transition-duration': duration,
+      '-moz-transition-duration': duration,
+      '-o-transition-duration': duration,
+      'transition-duration': duration,
     });
+  };
+  
+  var indexCards = function(index, forward) {
+    var enterClass;
+    var exitClass;
     
-    $contact.on('mouseleave', function() {
-      $contact.removeClass('hover mousedown');
-    });
+    if (forward) {
+      enterClass = 'right';
+      exitClass = 'left';
+    } else {
+      enterClass = 'left';
+      exitClass = 'right';
+    }
     
-    $contact.on('mousedown', function() {
-      $contact.addClass('mousedown');
-    });
+    enableCardTransitionDuration(false);
     
-    $contact.on('touchstart', function(e) {
-      e.preventDefault();
-      $contact.addClass('mousedown');
-    });
-    
-    $contact.on('mouseup', function() {
-      $contact.removeClass('hover');
-    });
-    
-    // On desktop: bug
-    // Despite preventing default, screen actually follows link when mouseup event used instead of click
-    $contact.on('click touchend touchcancel', function(e) {
-      if ($contact.hasClass('mousedown')) {
-        e.preventDefault();
-        
-        $contact.removeClass('mousedown hover');
-        
-        this.onClick();
-        
-        // var windowScrollTop = $( window ).scrollTop();
-        // var sectionTop = $history.offset().top;
-        // var sectionSnapTop = sectionTop + fixedBuffer;
-        // if (windowScrollTop > sectionTop && windowScrollTop < sectionSnapTop) {
-        //   $( window ).scrollTop(sectionSnapTop);
-        // }
-        
-        var userScrollEvents = 'scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove';
-        
-        var autoScrollStop = function() {
-          $('html, body').stop();
-          $('html, body').off(userScrollEvents, autoScrollStop);
-        };
-        
-        $('html, body').on(userScrollEvents, function() {
-          $('html, body').stop();
-          $('html, body').off(userScrollEvents, autoScrollStop);
-        });
-        
-        $('html, body').animate({scrollTop: $('#contact').offset().top}, this.msScroll, function() {
-          $('html, body').off(userScrollEvents, autoScrollStop);
-        });
-        
-        this.callback();
-        
-        // // Reset card properties
-        // enableCardTransitionDuration(true);
-        // detentCard($contactCard);
-        // $contactCard.removeClass('mousedown hover');
-        
-        return false;
+    $card.each(function() {
+      if (!$(this).hasClass('focus')) {
+        $(this).removeClass(exitClass).addClass(enterClass);
       }
-    }.bind(this));
-  }.bind(this)());
-}
+    });
+    
+    enableCardTransitionDuration(true);
+    
+    $card.each(function(i) {
+      if ($(this).hasClass('focus')) {
+        $(this).removeClass('focus').addClass(exitClass);
+      } else if (i == index) {
+        $(this).removeClass(enterClass).addClass('focus');
+      }
+    });
+  };
+  
+  var detentCard = function($thisCard) {
+	  var cardLeftPx = parseInt($thisCard.css('left'), 10);
+	  var cardIndex = $thisCard.index();
+	  var newCardIndex = cardIndex;
+	  var forward;
+	  
+	  // Assume 96px = 1in
+	  if (cardLeftPx < -96) {
+	    newCardIndex  = cardIndex + 1;
+	    
+	    forward = true;
+	    
+      if (newCardIndex >= $card.length) {
+        newCardIndex = 0;
+      }
+	  } else if (cardLeftPx > 96) {
+	    newCardIndex  = cardIndex - 1;
+	    
+	    forward = false;
+	   
+	    if (newCardIndex < 0) {
+	      newCardIndex = $card.length - 1;
+	    }
+	  }
+	  
+  	$thisCard.css({left: ''});
+	  
+	  if (newCardIndex != cardIndex) {
+	    indexCards(newCardIndex, forward);
+	    
+	    onChange(newCardIndex, forward);
+	  }
+  };
+  
+  var originalUserPosition;
+  
+  $card.on('mouseenter', function() {
+    $(this).addClass('hover');
+  });
+  
+  $card.on('mouseleave', function() {
+    $(this).removeClass('hover mousedown');
+  });
+  
+  $card.on('mousedown', function(e) {
+    $(this).addClass('mousedown');
+    enableCardTransitionDuration(false);
+    originalUserPosition = {x: e.pageX, y: e.pageY};
+  });
+  
+  $card.on('touchstart', function(e) {
+    $(this).addClass('mousedown');
+    enableCardTransitionDuration(false);
+    originalUserPosition = {
+      x: e.originalEvent.touches[0].pageX,
+      y: $(window).scrollTop()
+    };
+  });
+  
+  $card.on('mousemove', function(e) {
+  	if ($(this).hasClass('mousedown')) {
+  	  var userPosition = {x: e.pageX, y: e.pageY};
+    	$(this).css({left: userPosition.x - originalUserPosition.x});
+    }
+  });
+  
+  $card.on('touchmove', function(e) {
+    if ($(this).hasClass('mousedown')) {
+      var userPosition = {
+        x: e.originalEvent.touches[0].pageX,
+        y: $(window).scrollTop()
+      };
+      
+      var deltaPosition = {
+        x: Math.abs(userPosition.x - originalUserPosition.x),
+        y: Math.abs(userPosition.y - originalUserPosition.y)
+      };
+      
+    	if (deltaPosition.x > deltaPosition.y) {
+      	$(this).css({left: userPosition.x - originalUserPosition.x});
+      } else {
+        // Reset if user most likely scrolling
+        // Force touchend and touchstart to reenable
+        // Assume 96px = 1in
+        if (deltaPosition.y > 96) {
+          $(this).removeClass('mousedown');
+        }
+        
+        enableCardTransitionDuration();
+        detentCard($(this));
+      }
+    }
+  });
+  
+  $card.on('mouseup touchend touchcancel', function() {
+    if ($(this).hasClass('mousedown')) {
+      $(this).removeClass('mousedown');
+      enableCardTransitionDuration();
+      detentCard($(this));
+    }
+  });
+  
+  return indexCards;
+};
