@@ -8,7 +8,7 @@ $( document ).on('turbolinks:load', function() {
   var about = 'section#about';
     var container = about + ' div#about-container';
       var card = container + ' div#about-cards .card';
-          var tondo = card + ' div.about-card-tondo';
+          // var tondo = card + ' div.tondo';
           var contact = card + ' .btn-contact';
       var breadcrumbs = container + ' div#about-breadcrumbs';
         var breadcrumb = breadcrumbs + ' div';
@@ -16,7 +16,7 @@ $( document ).on('turbolinks:load', function() {
   var $about = $(about);
     var $container = $(container);
       var $card = $(card);
-        var $tondo = $(tondo);
+        // var $tondo = $(tondo);
         var $contact = $(contact);
       var $breadcrumb = $(breadcrumb);
   
@@ -44,52 +44,7 @@ $( document ).on('turbolinks:load', function() {
   
   $breadcrumb.first().addClass('active');
   
-  var pxBuffer = 100;
-  
-  sectionInitialize($about, $container, pxBuffer);
-  
-  var sizeTondo = function($thisTondo) {
-    var cardHeight = $card.height();
-    var cardWidth =  $card.width();
-    var pixelGutter = 15;
-    var tondoRatio = 0.4;
-    var pixelOffsetTop;
-    var pixelOffsetLeft;
-    var tondoSide =  (cardHeight > cardWidth ? cardWidth : cardHeight);
-    
-    if ($thisTondo.hasClass('focus')) {
-      tondoSide -= pixelGutter * 2;
-      pixelOffsetTop = cardHeight / 2;
-      pixelOffsetLeft = cardWidth / 2;
-    } else {
-      tondoSide *= tondoRatio;
-      tondoSide -= pixelGutter * 2;
-      pixelOffsetTop = tondoSide / 2 + pixelGutter;
-      pixelOffsetLeft = tondoSide / 2 + pixelGutter;
-    }
-    
-    $thisTondo.css({
-      height: tondoSide,
-      width: tondoSide,
-      top: pixelOffsetTop,
-      left: pixelOffsetLeft,
-    });
-  };
-  
-  var sizeAllTondos = function() {
-    $tondo.each(function(i) {
-      sizeTondo($(this));
-    });
-  };
-  
-  sizeAllTondos();
-  
-  $( window ).resize(function() {
-    var timeout = window.setTimeout(function() {
-      sizeAllTondos();
-      window.clearTimeout(timeout);
-    }, 1100);
-  });
+  sectionInitialize($about, $container);
   
   var updateContent = function() {
     $(this).removeClass('mousedown hover');
@@ -110,17 +65,7 @@ $( document ).on('turbolinks:load', function() {
   // Disable the first card focus for dramatic intro
   $card.first().removeClass('focus');
   
-  contactEvents($contact, 3000, function() {
-    if ($( window ).scrollTop() < pxBuffer) {
-      $( window ).scrollTop(pxBuffer);
-    }
-  });
+  contactEvents($contact, 3000);
   
   responsiveEvents($breadcrumb, updateContent);
-  
-  responsiveEvents($tondo, function(e) {
-    e.preventDefault();
-    $(this).toggleClass('focus');
-    sizeTondo($(this));
-  });
 });

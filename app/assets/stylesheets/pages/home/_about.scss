@@ -72,12 +72,6 @@ section#about {
           @include respond-to(phone) { @include transform(translate(-50%,-24px)); }
         }
       }
-      
-      div#about-breadcrumb-contact {
-        padding: 12px;
-        
-        @include respond-to(phone) { padding: 9px; }
-      }
     }
   }
 }

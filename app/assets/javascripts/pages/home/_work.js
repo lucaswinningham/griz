@@ -27,10 +27,9 @@ $( document ).on('turbolinks:load', function() {
   $petal.first().addClass('active');
   
   var petalContainerDeg = 0;
-  var pxBuffer = 200;
   var menuTimeout;
   
-  sectionInitialize($work, $container, pxBuffer);
+  sectionInitialize($work, $container);
   
   var focusToggle = function(focus) {
     focus = focus || $toggle.hasClass('focus');
@@ -169,14 +168,7 @@ $( document ).on('turbolinks:load', function() {
     movePetals(newCardIndex);
   });
   
-  contactEvents($contact, 1000, function() {
-    var windowScrollTop = $( window ).scrollTop();
-    var sectionTop = $work.offset().top;
-    var sectionSnapTop = sectionTop + pxBuffer;
-    if (windowScrollTop > sectionTop && windowScrollTop < sectionSnapTop) {
-      $( window ).scrollTop(sectionSnapTop);
-    }
-  });
+  contactEvents($contact, 1000);
   
   responsiveEvents($petal, focusPetal);
   

@@ -1,17 +1,10 @@
 /* global $ */
 
-var sectionInitialize = function($section, $container, pxBuffer) {
-  var pxBuffer = (pxBuffer === undefined ? 200 : pxBuffer);
-  
+var sectionInitialize = function($section, $container) {
   var sectionFill = function() {
-    $section.css({
-      'height': (window.innerHeight + pxBuffer) + 'px',
-      'padding-bottom': pxBuffer + 'px',
-    });
-    
-    $container.css({
-      'height': window.innerHeight + 'px',
-    });
+    var windowHeight = $( window ).height();
+    $section.height(windowHeight);
+    $container.height(windowHeight);
   };
   
   sectionFill();
@@ -19,22 +12,14 @@ var sectionInitialize = function($section, $container, pxBuffer) {
   var handleFixed = function() {
     var scrollPosition = Math.round($( document ).scrollTop());
     var fixedTop = $section.offset().top;
-    var fixedBottom = $section.offset().top + pxBuffer;
     
-    if (scrollPosition < fixedTop) {
+    if (scrollPosition > fixedTop) {
       $container.css({
-        'position': 'absolute',
-        'top': '0px',
-      });
-    } else if (scrollPosition > fixedBottom) {
-      $container.css({
-        'position': 'absolute',
-        'top': pxBuffer + 'px',
+        'position': 'fixed',
       });
     } else {
       $container.css({
-        'position': 'fixed',
-        'top': '0px',
+        'position': '',
       });
     }
   };
@@ -133,17 +118,13 @@ var burgerEvents = function($burger, msClose, msOpen, callbacks) {
   });
 };
 
-var contactEvents = function($contact, msScroll, onClick) {
+var contactEvents = function($contact, msScroll) {
   msScroll = (msScroll === undefined ? 2000 : msScroll);
-  
-  onClick = (onClick === undefined ? function() {} : onClick);
   
   // On desktop: bug
   // Despite preventing default, screen actually follows link when mouseup event used instead of click
   responsiveEvents($contact, function(e) {
     e.preventDefault();
-    
-    onClick();
     
     var userScrollEvents = 'scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove';
     
@@ -167,6 +148,8 @@ var contactEvents = function($contact, msScroll, onClick) {
 
 var cardEvents = function($card, onChange) {
   onChange = (onChange === undefined ? function() {} : onChange);
+  
+  var $tondo = $card.children('.card-tondo');
   
   $card.each(function(i) {
     if (i === 0) {
@@ -194,6 +177,7 @@ var cardEvents = function($card, onChange) {
   var indexCards = function(index, forward, callback) {
     if (index != lastIndex) {
       forward = (forward === undefined ? (index > lastIndex) : forward);
+      callback = (callback === undefined ? function() {} : callback);
       
       var enter;
       var exit;
@@ -263,6 +247,51 @@ var cardEvents = function($card, onChange) {
   	  $thisCard.css({left: ''});
   	}
   };
+  
+  var sizeTondo = function($thisTondo) {
+    var cardHeight = $card.outerHeight();
+    var cardWidth =  $card.outerWidth();
+    var pxGutter = 15;
+    var tondoSide =  (cardHeight > cardWidth ? cardWidth : cardHeight) - 2 * pxGutter;
+    
+    if ($thisTondo.hasClass('focus')) {
+      $thisTondo.css({
+        height: tondoSide,
+        width: tondoSide,
+        top: cardHeight / 2 - tondoSide / 2,
+        left: cardWidth / 2 - tondoSide / 2,
+      });
+    } else {
+      $thisTondo.css({
+        height: '',
+        width: '',
+        top: '',
+        left: '',
+      });
+    }
+  };
+  
+  var sizeAllTondos = function()  {
+    $card.each(function() {
+      sizeTondo($(this).children('.card-tondo'));
+    });
+  };
+  
+  sizeAllTondos();
+  
+  // TODO: optimize this
+  $( window ).resize(function() {
+    var timeout = window.setTimeout(function() {
+      sizeAllTondos();
+      window.clearTimeout(timeout);
+    }, 500);
+  });
+  
+  responsiveEvents($card.children('.card-tondo'), function(e) {
+    e.preventDefault();
+    $(this).toggleClass('focus');
+    sizeTondo($(this));
+  });
   
   var originalUserPosition;
   

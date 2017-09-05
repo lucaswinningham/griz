@@ -4,13 +4,14 @@
 <% contact = nil if local_assigns[:contact].nil? %>
 
 <div class="card">
+  <% if tondo %>
+    <div class="card-tondo" style="background-image: url(<%= asset_path tondo %>)">
+    </div>
+  <% end %>
+  
   <div class="card-content">
-    <% if tondo %>
-      
-    <% end %>
-    
     <% if head %>
-      <div class="card-head">
+      <div class="card-head<%= tondo ? " make-space" : "" %>">
         <%= head %>
       </div>
     <% end %>

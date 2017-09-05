@@ -33,10 +33,9 @@ $( document ).on('turbolinks:load', function() {
     $(this).css({top: ((i + 1) * detentIncrementRatio * 100) + '%'});
   });
   
-  var pxBuffer = 200;
   var sliderRatio;
   
-  sectionInitialize($history, $container, pxBuffer);
+  sectionInitialize($history, $container);
   
   var detentSlider = function() {
   	var detentNumber = Math.round(sliderRatio / detentIncrementRatio);
@@ -66,14 +65,7 @@ $( document ).on('turbolinks:load', function() {
 	  detentSlider();
   });
   
-  contactEvents($contact, 2000, function() {
-    var windowScrollTop = $( window ).scrollTop();
-    var sectionTop = $history.offset().top;
-    var sectionSnapTop = sectionTop + pxBuffer;
-    if (windowScrollTop > sectionTop && windowScrollTop < sectionSnapTop) {
-      $( window ).scrollTop(sectionSnapTop);
-    }
-  });
+  contactEvents($contact, 2000);
   
   $mechanism.on('mouseenter', function() {
     $mechanism.addClass('hover');

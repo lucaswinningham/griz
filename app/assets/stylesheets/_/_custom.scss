@@ -128,8 +128,6 @@ $normal-bezier: cubic-bezier(.25,1,.5,1);
   overflow-x: hidden;
   overflow-y: hidden;
   color: white;
-  
-  @include transition(all, 1s, $normal-bezier, 0s);
 }
 
 .section-container {
@@ -137,8 +135,6 @@ $normal-bezier: cubic-bezier(.25,1,.5,1);
   top: 0;
   left: 0;
   width: 100%;
-  
-  @include transition(height, 1s, $normal-bezier, 0s);
 }
 
 @mixin card($color) {
@@ -173,6 +169,34 @@ $normal-bezier: cubic-bezier(.25,1,.5,1);
       @include cursor-grabbing;
     }
     
+    .card-tondo {
+      position: absolute;
+      height: 80px;
+      width: 80px;
+      top: 15px;
+      left: 15px;
+      background: white;
+      cursor: pointer;
+      z-index: 2;
+      
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-color: #ccc;
+      background-size: cover;
+      
+      @include border-radius(50%);
+      @include transition(all, 1s, $normal-bezier, 0s);
+      
+      @include respond-to(phone) {
+        height: 64px;
+        width: 64px;
+      }
+      
+      &.focus {
+        @include border-radius(16px);
+      }
+    }
+    
     .card-content {
       position: relative;
       width: 100%;
@@ -184,23 +208,28 @@ $normal-bezier: cubic-bezier(.25,1,.5,1);
       .card-head {
         display: inline-block;
         width: 100%;
-        font-size: 3.5em;
+        font-size: 2.25em;
         text-align: center;
         padding-bottom: 15px;
         border-bottom: 4px solid white;
         
-        @include respond-to(phone) { font-size: 2.2em; }
+        @include respond-to(phone) { font-size: 2em; }
+        
+        &.make-space {
+          // padding-right: 15%;
+          // text-align: right;
+        }
       }
       
       .card-body {
         display: inline-block;
         width: 100%;
         max-width: 960px;
-        font-size: 2em;
+        font-size: 1.5em;
         text-align: justify;
         padding-top: 15px;
         
-        @include respond-to(phone) { font-size: 1.25em; }
+        @include respond-to(phone) { font-size: 1.1em; }
       }
       
       .btn-contact {
