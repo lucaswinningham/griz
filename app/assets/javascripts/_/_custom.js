@@ -133,14 +133,18 @@ var contactEvents = function($contact, msScroll) {
       $('html, body').off(userScrollEvents, autoScrollStop);
     };
     
-    $('html, body').on(userScrollEvents, function() {
-      $('html, body').stop();
-      $('html, body').off(userScrollEvents, autoScrollStop);
-    });
+    // $('html, body').on(userScrollEvents, function() {
+    //   $('html, body').stop();
+    //   $('html, body').off(userScrollEvents, autoScrollStop);
+    // });
     
-    $('html, body').animate({scrollTop: $('#contact').offset().top}, msScroll, function() {
-      $('html, body').off(userScrollEvents, autoScrollStop);
-    });
+    // $('html, body').animate({scrollTop: $('#contact').offset().top}, msScroll, function() {
+    //   $('html, body').off(userScrollEvents, autoScrollStop);
+    // });
+    
+    $('html, body').on(userScrollEvents, autoScrollStop);
+    
+    $('html, body').animate({scrollTop: $('#contact').offset().top}, msScroll, autoScrollStop);
     
     return false;
   }, 'click touchend touchcancel');

@@ -9,8 +9,8 @@ section#work {
       position: absolute;
       height: calc(100% - 30px);
       width: calc(100% - 30px);
-      left: 15px;
-      top: 15px;
+      left: $gutter;
+      top: $gutter;
       
       @include card(darken(map-get($mex, red), 15%));
     }

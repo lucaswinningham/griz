@@ -129,7 +129,7 @@ $( document ).on('turbolinks:load', function() {
   var updateSectionPositionsTimeout = window.setTimeout(function() {
     updateSectionPositions();
     window.clearTimeout(updateSectionPositionsTimeout);
-  }, 0);
+  }, 1);
   
   var burgerTrack = function() {
     var scrollPosition = $( document ).scrollTop();
