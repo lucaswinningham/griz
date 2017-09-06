@@ -48,30 +48,31 @@ $( document ).on('turbolinks:load', function() {
       }
     });
     
-    var userScrollEvents = 'scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove';
-    var msDelay = 250;
-    
-    // Target of 250ms scroll time per section height
-    var msScroll = 500 * Math.abs(scrollPosition - sectionPositions[sectionIndex]) / window.innerHeight;
-    
-    // TODO: DRY this up with contact events
-    
-    var autoScrollStop = function() {
-      $('html, body').stop();
-      $('html, body').off(userScrollEvents, autoScrollStop);
-    };
-    
     window.clearTimeout(timeout);
     
-    timeout = window.setTimeout(function() {
-      $('html, body').on(userScrollEvents, autoScrollStop);
+    // Skip snapping to contact section such that mobile text input unaffected
+    if (sectionIndex != sectionPositions.length - 1) {
+      var userScrollEvents = 'scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove';
+      var msDelay = 250;
       
-      $('html, body').animate({scrollTop: sectionPositions[sectionIndex] + 1}, msScroll, function() {
-        $('html, body').animate({scrollTop: sectionPositions[sectionIndex] + 1}, 0, autoScrollStop);
-      });
+      // Target of 250ms scroll time per section height
+      var msScroll = 500 * Math.abs(scrollPosition - sectionPositions[sectionIndex]) / window.innerHeight;
       
-      window.clearTimeout(timeout);
-    }, msDelay);
+      // TODO: DRY this up with contact events
+      
+      var autoScrollStop = function() {
+        $('html, body').stop();
+        $('html, body').off(userScrollEvents, autoScrollStop);
+      };
+      
+      timeout = window.setTimeout(function() {
+        $('html, body').on(userScrollEvents, autoScrollStop);
+        
+        $('html, body').animate({scrollTop: sectionPositions[sectionIndex] + 1}, msScroll, autoScrollStop);
+        
+        window.clearTimeout(timeout);
+      }, msDelay);
+    }
   };
   
   $( window ).resize(updateTracking);

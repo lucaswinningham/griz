@@ -13,6 +13,8 @@
 <section id="about" class="section">
   <div id="about-container" class="section-container">
     <div id="about-cards">
+      <%= render("_/card", head: "My Life", body: "Learn a little about who I am.") %>
+      
       <%= render("_/card", tondo: "bear.jpg", head: "I'm Luke", body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.") %>
       
       <%= render("_/card", tondo: "leigh.jpg", head: "My bestfriend", body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.") %>
@@ -23,6 +25,7 @@
     </div>
     
     <div id="about-breadcrumbs">
+      <div><%= render "icons/about" %></div>
       <div><%= render "icons/beard" %></div>
       <div><%= render "icons/leigh" %></div>
       <div><%= render "icons/hound" %></div>

@@ -11,40 +11,62 @@ section#contact {
       @include transform(translateY(-50%));
       
       div#contact-anon {
-        margin-bottom: $gutter;
-        font-size: 32px;
-      }
-      
-      div#contact-toggle {
+        width: 100%;
         position: relative;
-        height: 48px;
-        width: 96px;
-        // left: 50%;
-        background: white;
         margin-bottom: $gutter;
         
-        // @include transform(translateX(-50%));
-        @include border-radius(24px);
-        
-        i {
-          position: absolute;
-          height: 36px;
-          width: 36px;
-          left: 54px;
-          top: 50%;
-          background: lighten(map-get($mex, orange), 10%);
-          
-          @include transition(all, 1s, $normal-bezier, 0s);
-          @include transform(translateY(-50%));
-          @include border-radius(50%);
-        
-          &.anonymous {
-            left: 6px;
+        &.anonymous {
+          div#contact-anon-toggle {
+            background: map-get($mex, orange);
+            border: 4px solid white;
+            
+            i {
+              left: calc(6px - 4px);
+              background: white;
+            }
           }
+          
+          div#contact-anon-status {
+            color: white;
+          }
+        }
+        
+        div#contact-anon-toggle {
+          position: relative;
+          height: 48px;
+          width: 100%;
+          background: white;
+          
+          @include border-radius(24px);
+          
+          i {
+            position: absolute;
+            height: 36px;
+            width: 36px;
+            // left: 54px; // 96 - 36 - 6
+            left: calc(100% - 36px - 6px);
+            top: 50%;
+            background: map-get($mex, orange);
+            
+            @include transition(left, 1s, $normal-bezier, 0s);
+            @include transform(translateY(-50%));
+            @include border-radius(50%);
+          }
+        }
+        
+        div#contact-anon-status {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          background: transparent;
+          color: map-get($mex, orange);
+          font-size: 32px;
+          
+          @include transform(translate(-50%,-50%));
         }
       }
       
-      input#contact-return, textarea#contact-message {
+      input#contact-response, textarea#contact-message {
         width: 100%;
         outline: none;
         background: white;
