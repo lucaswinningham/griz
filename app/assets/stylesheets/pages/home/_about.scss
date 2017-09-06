@@ -4,21 +4,22 @@ section#about {
   div#about-container {
     div#about-cards {
       position: absolute;
-      width: calc(100% - 30px);
+      width: calc(100% - 2 * #{$gutter});
       left: $gutter;
       top: $gutter;
       
-      // 100% - breadcrumb height - 30 - 15
+      // 100% - breadcrumb height - 3 gutter widths
       // TODO: play with making this 100% always
-      height: calc(100% - 109px);
-      @include respond-to(phone) { height: calc(100% - 93px); }
+      height: calc(100% - 2 * #{$gutter});
+      // height: calc(100% - 109px);
+      // @include respond-to(phone) { height: calc(100% - 93px); }
       
       @include card(darken(map-get($mex, blue), 15%));
     }
     
     div#about-breadcrumbs {
       position: absolute;
-      bottom: 0;
+      bottom: $gutter;
       left: 0;
       width: 100%;
       
@@ -31,6 +32,8 @@ section#about {
         height: 64px;
         width: 64px;
         padding: 4px;
+        // TODO: get this padding working with wrapping in div, maybe put in custom.scss
+        // padding: 17.5%;
         background: white;
         // margin-bottom: 8px;
         cursor: pointer;
@@ -46,11 +49,11 @@ section#about {
         }
         
         svg {
-          stroke: darken(map-get($mex, blue), 15%);
+          stroke: map-get($mex, blue);
         }
         
         &.hover {
-          background: darken(map-get($mex, blue), 5%);
+          background: darken(map-get($mex, blue), 15%);
           border: 1px solid white;
           
           svg {
@@ -59,7 +62,7 @@ section#about {
         }
         
         &.mousedown, &.active {
-          background: darken(map-get($mex, blue), 15%);
+          background: map-get($mex, blue);
           border: 1px solid white;
           
           svg {

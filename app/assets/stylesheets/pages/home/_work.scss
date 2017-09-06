@@ -7,8 +7,8 @@ section#work {
   div#work-container {
     div#work-cards {
       position: absolute;
-      height: calc(100% - 30px);
-      width: calc(100% - 30px);
+      height: calc(100% - 2 * #{$gutter});
+      width: calc(100% - 2 * #{$gutter});
       left: $gutter;
       top: $gutter;
       

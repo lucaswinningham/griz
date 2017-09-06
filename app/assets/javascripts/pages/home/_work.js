@@ -1,4 +1,5 @@
 /* global $ */
+/* global pxGutter */
 /* global sectionInitialize */
 /* global responsiveEvents */
 /* global cardEvents */
@@ -37,7 +38,6 @@ $( document ).on('turbolinks:load', function() {
     var containerHeight = $container.height();
     var containerWidth =  $container.width();
     var boundingLength = (containerHeight > containerWidth ? containerWidth : containerHeight);
-    var gutter = 15;
     
     // var centerRatio = 0.075;
     var toggleRatio = 0.1;
@@ -55,8 +55,8 @@ $( document ).on('turbolinks:load', function() {
       });
     } else {
       $toggle.css({
-        top: containerHeight - toggleRadius - gutter * 2,
-        left: containerWidth - toggleRadius - gutter * 2,
+        top: containerHeight - toggleRadius - pxGutter * 2,
+        left: containerWidth - toggleRadius - pxGutter * 2,
       });
     }
   };
@@ -67,25 +67,24 @@ $( document ).on('turbolinks:load', function() {
     var containerHeight = $container.height();
     var containerWidth =  $container.width();
     var boundingLength;
-    var gutter = 15;
     
     if (containerHeight > containerWidth) {
       boundingLength = containerWidth;
       
       $menu.css({
-        height: containerWidth - 2 * gutter,
-        width: containerWidth - 2 * gutter,
-        top: containerHeight / 2 - containerWidth / 2 + gutter,
-        right: gutter,
+        height: containerWidth - 2 * pxGutter,
+        width: containerWidth - 2 * pxGutter,
+        top: containerHeight / 2 - containerWidth / 2 + pxGutter,
+        right: pxGutter,
       });
     } else {
       boundingLength = containerHeight;
       
       $menu.css({
-        height: containerHeight - 2 * gutter,
-        width: containerHeight - 2 * gutter,
-        top: gutter,
-        right: containerWidth / 2 - containerHeight / 2 + gutter,
+        height: containerHeight - 2 * pxGutter,
+        width: containerHeight - 2 * pxGutter,
+        top: pxGutter,
+        right: containerWidth / 2 - containerHeight / 2 + pxGutter,
       });
     }
     

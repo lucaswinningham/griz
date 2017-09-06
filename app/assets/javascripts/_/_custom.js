@@ -1,8 +1,11 @@
 /* global $ */
 
+// Ensure this is in sync with custom.scss
+var pxGutter = 15;
+
 var sectionInitialize = function($section, $container) {
   var sectionFill = function() {
-    var windowHeight = $( window ).height();
+    var windowHeight = $( window ).height() + 1;
     $section.height(windowHeight);
     $container.height(windowHeight);
   };
@@ -133,15 +136,6 @@ var contactEvents = function($contact, msScroll) {
       $('html, body').off(userScrollEvents, autoScrollStop);
     };
     
-    // $('html, body').on(userScrollEvents, function() {
-    //   $('html, body').stop();
-    //   $('html, body').off(userScrollEvents, autoScrollStop);
-    // });
-    
-    // $('html, body').animate({scrollTop: $('#contact').offset().top}, msScroll, function() {
-    //   $('html, body').off(userScrollEvents, autoScrollStop);
-    // });
-    
     $('html, body').on(userScrollEvents, autoScrollStop);
     
     $('html, body').animate({scrollTop: $('#contact').offset().top}, msScroll, autoScrollStop);
@@ -255,7 +249,6 @@ var cardEvents = function($card, onChange) {
   var sizeTondo = function($thisTondo) {
     var cardHeight = $card.outerHeight();
     var cardWidth =  $card.outerWidth();
-    var pxGutter = 15;
     var tondoSide =  (cardHeight > cardWidth ? cardWidth : cardHeight) - 2 * pxGutter;
     
     if ($thisTondo.hasClass('focus')) {

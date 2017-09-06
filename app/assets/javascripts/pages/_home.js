@@ -16,8 +16,8 @@ $( document ).on('turbolinks:load', function() {
   var timeout;
   
   var updateSectionPositions = function() {
-    sectionPositions = [$about, $history, $work, $contact].map(function(val) {
-      return val.offset().top;
+    sectionPositions = [$about, $history, $work, $contact].map(function(section) {
+      return section.offset().top;
     });
   };
   
@@ -26,7 +26,7 @@ $( document ).on('turbolinks:load', function() {
       updateSectionPositions();
       sectionSnap();
       window.clearTimeout(timeout);
-    }, 1);
+    }, 250);
   };
   
   updateTracking();
@@ -49,8 +49,12 @@ $( document ).on('turbolinks:load', function() {
     });
     
     var userScrollEvents = 'scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove';
-    var msScroll = 500;
-    var msDelay = 500;
+    var msDelay = 250;
+    
+    // Target of 250ms scroll time per section height
+    var msScroll = 500 * Math.abs(scrollPosition - sectionPositions[sectionIndex]) / window.innerHeight;
+    
+    // TODO: DRY this up with contact events
     
     var autoScrollStop = function() {
       $('html, body').stop();
@@ -62,7 +66,9 @@ $( document ).on('turbolinks:load', function() {
     timeout = window.setTimeout(function() {
       $('html, body').on(userScrollEvents, autoScrollStop);
       
-      $('html, body').animate({scrollTop: sectionPositions[sectionIndex]}, msScroll, autoScrollStop);
+      $('html, body').animate({scrollTop: sectionPositions[sectionIndex] + 1}, msScroll, function() {
+        $('html, body').animate({scrollTop: sectionPositions[sectionIndex] + 1}, 0, autoScrollStop);
+      });
       
       window.clearTimeout(timeout);
     }, msDelay);

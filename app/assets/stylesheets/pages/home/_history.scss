@@ -4,7 +4,7 @@ section#history {
   div#history-container {
     div#history-cards {
       position: absolute;
-      height: calc(100% - 30px);
+      height: calc(100% - 2 * #{$gutter});
       // 100% - mechanism width - (mechanism width - track width) / 2
       width: calc(100% - 80px);
       // mechanism width

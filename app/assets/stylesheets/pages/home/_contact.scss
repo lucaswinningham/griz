@@ -2,14 +2,71 @@ section#contact {
   background: map-get($mex, orange);
   
   div#contact-container {
-    div#burger-container {
-      position: absolute;
-      height: 300px;
-      width: 300px;
-      left: 50%;
+    div#contact-content {
+      position: relative;
+      width: 100%;
       top: 50%;
+      padding: $gutter;
       
-      @include transform(translate(-50%,-50%));
+      @include transform(translateY(-50%));
+      
+      div#contact-anon {
+        margin-bottom: $gutter;
+        font-size: 32px;
+      }
+      
+      div#contact-toggle {
+        position: relative;
+        height: 48px;
+        width: 96px;
+        // left: 50%;
+        background: white;
+        margin-bottom: $gutter;
+        
+        // @include transform(translateX(-50%));
+        @include border-radius(24px);
+        
+        i {
+          position: absolute;
+          height: 36px;
+          width: 36px;
+          left: 54px;
+          top: 50%;
+          background: lighten(map-get($mex, orange), 10%);
+          
+          @include transition(all, 1s, $normal-bezier, 0s);
+          @include transform(translateY(-50%));
+          @include border-radius(50%);
+        
+          &.anonymous {
+            left: 6px;
+          }
+        }
+      }
+      
+      input#contact-return, textarea#contact-message {
+        width: 100%;
+        outline: none;
+        background: white;
+        color: map-get($mex, orange);
+        border: none;
+        border-bottom: 4px solid lighten(map-get($mex, orange), 10%);
+        padding: 12px 20px;
+        font-size: 16px;
+        margin-bottom: $gutter;
+        
+        @include border-radius($radius);
+      }
     }
+    
+    // div#burger-container {
+    //   position: absolute;
+    //   height: 300px;
+    //   width: 300px;
+    //   left: 50%;
+    //   top: 50%;
+      
+    //   @include transform(translate(-50%,-50%));
+    // }
   }
 }
