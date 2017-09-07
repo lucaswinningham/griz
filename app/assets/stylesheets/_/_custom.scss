@@ -14,7 +14,12 @@ $normal-bezier: cubic-bezier(.25,1,.5,1);
 
 // Ensure this is in sync with custom.js
 $gutter: 15px;
+
+// Aesthetic border radius
 $radius: 8px;
+
+// sqrt(2) / 2 plus some change
+$inscribed: 17.5%;
 
 .burger {
   position: absolute;
@@ -276,6 +281,42 @@ $radius: 8px;
           @include transform(translateY(4px));
         }
       }
+    }
+  }
+}
+
+@mixin circle-icon($base-color, $alt-color) {
+  position: absolute;
+  cursor: pointer;
+  background: white;
+  border: 2px solid $base-color;
+  
+  &.hover {
+    background: $alt-color;
+  }
+  
+  &.mousedown, &.active {
+    background: $base-color;
+  }
+  
+  &.hover, &.mousedown, &.active {
+    border: 2px solid white;
+    
+    div {
+      svg {
+        stroke: white;
+      }
+    }
+  }
+  
+  div {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    padding: $inscribed;
+    
+    svg {
+      stroke: $base-color;
     }
   }
 }

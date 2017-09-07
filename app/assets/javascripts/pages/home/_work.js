@@ -31,82 +31,47 @@ $( document ).on('turbolinks:load', function() {
   $petal.first().addClass('active');
   
   var petalContainerDeg = 0;
-  var menuTimeout;
+  var pxPetalSide = $petal.height();
+  // var menuTimeout;
   
   sectionInitialize($work, $container);
-  
-  // var focusToggle = function(focus) {
-  //   focus = focus || $toggle.hasClass('focus');
-    
-  //   var containerHeight = $container.height();
-  //   var containerWidth =  $container.width();
-  //   var boundingLength = (containerHeight > containerWidth ? containerWidth : containerHeight);
-    
-  //   // var centerRatio = 0.075;
-  //   var toggleRatio = 0.1;
-  //   var toggleRadius = boundingLength * toggleRatio;
-    
-  //   $toggle.css({
-  //     width: toggleRadius * 2,
-  //     height: toggleRadius * 2,
-  //   });
-    
-  //   if (focus) {
-  //     $toggle.css({
-  //       top: containerHeight / 2,
-  //       left: containerWidth / 2,
-  //     });
-  //   } else {
-  //     $toggle.css({
-  //       top: containerHeight - toggleRadius - pxGutter * 2,
-  //       left: containerWidth - toggleRadius - pxGutter * 2,
-  //     });
-  //   }
-  // };
-  
-  // focusToggle();
   
   var positionMenu = function() {
     var containerHeight = $container.height();
     var containerWidth =  $container.width();
-    var boundingLength;
+    var pxMenuSide = (containerHeight > containerWidth ? containerWidth : containerHeight) - 4 * pxGutter;
     
-    if (containerHeight > containerWidth) {
-      boundingLength = containerWidth;
-      
-      $menu.css({
-        height: containerWidth - 2 * pxGutter,
-        width: containerWidth - 2 * pxGutter,
-        // top: containerHeight / 2 - containerWidth / 2 + pxGutter,
-        // right: pxGutter,
-      });
-    } else {
-      boundingLength = containerHeight;
-      
-      $menu.css({
-        height: containerHeight - 2 * pxGutter,
-        width: containerHeight - 2 * pxGutter,
-        // top: pxGutter,
-        // right: containerWidth / 2 - containerHeight / 2 + pxGutter,
-      });
-    }
+    $menu.css({
+      height: pxMenuSide,
+      width: pxMenuSide,
+    });
     
-    var petalRatio = 0.1;
-    var petalRadius = boundingLength * petalRatio;
+    // var petalRatio = pxPetalSide / 2 / pxMenuSide;
+    var percentHalfPetal = 100 * pxPetalSide / pxMenuSide / 2;
+    var ratioPetal = pxPetalSide / pxMenuSide;
+    // var petalRatio = 0.1;
+    // var petalRadius = boundingLength * petalRatio;
     
     $petal.each(function(i) {
-      // var theta = (-i * 360 / $petal.length + 90) * Math.PI / 180;
       var theta = (i * 360 / $petal.length + 90) * Math.PI / 180;
-      var y = Math.sin(theta) * (1 - petalRatio * 2);
-      var x = Math.cos(theta) * (1 - petalRatio * 2);
-      var top =  100 * (0.5 - y / 2);
-      var left = 100 * (0.5 - x / 2);
+      // var y = Math.sin(theta) * (1 - petalRatio * 2);
+      // var x = Math.cos(theta) * (1 - petalRatio * 2);
+      var y = Math.sin(theta) * (1 - ratioPetal);
+      var x = Math.cos(theta) * (1 - ratioPetal);
+      // var y = Math.sin(theta);
+      // var x = Math.cos(theta);
+      // var top =  100 * (0.5 - y / 2);
+      // var left = 100 * (0.5 - x / 2);
+      var percentTop =  50 * (1 - y) - percentHalfPetal;
+      var percentLeft = 50 * (1 - x) - percentHalfPetal;
       
+      // $(this).css({
+      //   top: top + '%',
+      //   left: left + '%',
+      // });
       $(this).css({
-        top: top + '%',
-        left: left + '%',
-        width: petalRadius * 2,
-        height: petalRadius * 2,
+        top: percentTop + '%',
+        left: percentLeft + '%',
       });
     });
   };
@@ -115,7 +80,6 @@ $( document ).on('turbolinks:load', function() {
   
   $( window ).resize(function() {
     var timeout = window.setTimeout(function() {
-      // focusToggle();
       positionMenu();
       window.clearTimeout(timeout);
     }, 1100);
@@ -143,11 +107,18 @@ $( document ).on('turbolinks:load', function() {
       'transform': 'rotate(' + deg + 'deg)',
     });
     
+    // $petal.css({
+    //   '-webkit-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
+    //   '-moz-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
+    //   '-o-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
+    //   'transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
+    // });
+    
     $petal.css({
-      '-webkit-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
-      '-moz-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
-      '-o-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
-      'transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
+      '-webkit-transform': 'rotate(' + (deg * -1) + 'deg)',
+      '-moz-transform': 'rotate(' + (deg * -1) + 'deg)',
+      '-o-transform': 'rotate(' + (deg * -1) + 'deg)',
+      'transform': 'rotate(' + (deg * -1) + 'deg)',
     });
     
     return degDelta < 0;
@@ -177,7 +148,6 @@ $( document ).on('turbolinks:load', function() {
   burgerEvents($burger, 300, 150, {
     onOpening: function() {
       $toggle.addClass('focus');
-      // focusToggle(true);
     },
     
     onOpened: function() {
@@ -190,35 +160,6 @@ $( document ).on('turbolinks:load', function() {
     
     onClosed: function() {
       $toggle.removeClass('focus');
-      // focusToggle(false);
     },
   });
-  
-  // responsiveEvents($toggle, function() {
-  //   window.clearTimeout(menuTimeout);
-    
-  //   if ($menu.hasClass('opened') || $menu.hasClass('opening')) {
-  //     $menu.removeClass('closed opening opened').addClass('closing');
-  //     $toggle.addClass('focus');
-  //     focusToggle(true);
-      
-  //     menuTimeout = window.setTimeout(function() {
-  //       $menu.removeClass('closing opening opened').addClass('closed');
-  //       $toggle.removeClass('focus');
-  //       focusToggle(false);
-        
-  //       window.clearTimeout(menuTimeout);
-  //     }, 500);
-  //   } else if ($menu.hasClass('closed') || $menu.hasClass('closing')) {
-  //     $menu.removeClass('opened closing closed').addClass('opening');
-  //     $toggle.addClass('focus');
-  //     focusToggle(true);
-      
-  //     menuTimeout = window.setTimeout(function() {
-  //       $menu.removeClass('opening closing closed').addClass('opened');
-        
-  //       window.clearTimeout(menuTimeout);
-  //     }, 1000);
-  //   }
-  // });
 });

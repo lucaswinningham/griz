@@ -8,17 +8,16 @@ $( document ).on('turbolinks:load', function() {
   var about = 'section#about';
     var container = about + ' div#about-container';
       var card = container + ' div#about-cards .card';
-          // var tondo = card + ' div.tondo';
-          var contact = card + ' .btn-contact';
+        var contact = card + ' .btn-contact';
       var breadcrumbs = container + ' div#about-breadcrumbs';
-        var breadcrumb = breadcrumbs + ' div';
+        var breadcrumb = breadcrumbs + ' div.about-breadcrumb';
   
   var $about = $(about);
     var $container = $(container);
       var $card = $(card);
-        // var $tondo = $(tondo);
         var $contact = $(contact);
-      var $breadcrumb = $(breadcrumb);
+      var $breadcrumbs = $(breadcrumbs);
+        var $breadcrumb = $(breadcrumb);
   
   // Dramatic intro for first card
   (function() {
@@ -31,10 +30,13 @@ $( document ).on('turbolinks:load', function() {
   
   // Throw breadcrumbs out
   (function() {
+    var ratioBreadcrumb = $breadcrumb.width() / $breadcrumbs.width();
+    var ratioUsableWidth = 1 - ratioBreadcrumb;
+    
     var timeout = window.setTimeout(function() {
       $breadcrumb.each(function(i) {
         $(this).css({
-          left: (100 * (i + 1) / ($breadcrumb.length + 1)) + '%',
+          left: (100 * ratioUsableWidth * (i / ($breadcrumb.length - 1))) + '%',
         });
       });
       
