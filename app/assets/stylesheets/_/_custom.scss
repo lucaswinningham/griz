@@ -32,7 +32,7 @@ $radius: 8px;
     display: block;
     height: 10%;
     width: 100%;
-    background-color: white;
+    background: white;
     @include border-radius(5%/#{50%});
     @include transition(transform, 0.4s, cubic-bezier(.25,1.5,.5,1), 0s);
     

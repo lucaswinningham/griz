@@ -31,7 +31,9 @@ $( document ).on('turbolinks:load', function() {
   
   updateTracking();
   
-  var sectionSnap = function(e) {
+  var userScrollEvents = 'scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove';
+  
+  var sectionSnap = function() {
     var scrollPosition = $( document ).scrollTop();
     var sectionScrollBreakRatio = 0.5;
     var sectionIndex = 0;
@@ -50,32 +52,42 @@ $( document ).on('turbolinks:load', function() {
     
     window.clearTimeout(timeout);
     
-    // Skip snapping to contact section such that mobile text input unaffected
-    if (sectionIndex != sectionPositions.length - 1) {
-      var userScrollEvents = 'scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove';
-      var msDelay = 250;
+    var msDelay = 250;
+    
+    // Target of 250ms scroll time per section height
+    var msScroll = 500 * Math.abs(scrollPosition - sectionPositions[sectionIndex]) / window.innerHeight;
+    
+    // TODO: DRY this up with contact events
+    
+    var autoScrollStop = function() {
+      $('html, body').stop();
+      $('html, body').off(userScrollEvents, autoScrollStop);
+    };
+    
+    timeout = window.setTimeout(function() {
+      $('html, body').on(userScrollEvents, autoScrollStop);
       
-      // Target of 250ms scroll time per section height
-      var msScroll = 500 * Math.abs(scrollPosition - sectionPositions[sectionIndex]) / window.innerHeight;
+      $('html, body').animate({scrollTop: sectionPositions[sectionIndex] + 1}, msScroll, autoScrollStop);
       
-      // TODO: DRY this up with contact events
-      
-      var autoScrollStop = function() {
-        $('html, body').stop();
-        $('html, body').off(userScrollEvents, autoScrollStop);
-      };
-      
-      timeout = window.setTimeout(function() {
-        $('html, body').on(userScrollEvents, autoScrollStop);
-        
-        $('html, body').animate({scrollTop: sectionPositions[sectionIndex] + 1}, msScroll, autoScrollStop);
-        
-        window.clearTimeout(timeout);
-      }, msDelay);
-    }
+      window.clearTimeout(timeout);
+    }, msDelay);
   };
   
   $( window ).resize(updateTracking);
   
-  $( window ).scroll(sectionSnap);
+  $( window ).on(userScrollEvents, sectionSnap);
+  
+  $('html, body').on('touchstart', function() {
+    $( window ).off(userScrollEvents, sectionSnap);
+  });
+  
+  $('html, body').on('touchend', function() {
+    sectionSnap();
+    $( window ).on(userScrollEvents, sectionSnap);
+  });
+  
+  $('input, select, textarea').on('touchend', function(e) {
+    e.stopPropagation();
+    $( window ).off(userScrollEvents, sectionSnap);
+  });
 });

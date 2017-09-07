@@ -2,6 +2,7 @@
 /* global pxGutter */
 /* global sectionInitialize */
 /* global responsiveEvents */
+/* global burgerEvents */
 /* global cardEvents */
 /* global contactEvents */
 
@@ -12,6 +13,7 @@ $( document ).on('turbolinks:load', function() {
         var card = cards + ' .card';
           var contact = card + ' .btn-contact';
       var toggle = container + ' div#work-menu-toggle';
+        var burger = toggle + ' div.burger';
       var menu = container + ' div#work-menu';
         var petalContainer = menu + ' div#work-menu-petal-container';
           var petal = petalContainer + ' div.work-menu-petal';
@@ -21,6 +23,7 @@ $( document ).on('turbolinks:load', function() {
         var $card = $(card);
           var $contact = $(contact);
       var $toggle = $(toggle);
+        var $burger = $(burger);
       var $menu = $(menu);
         var $petalContainer = $(petalContainer);
           var $petal = $(petal);
@@ -32,36 +35,36 @@ $( document ).on('turbolinks:load', function() {
   
   sectionInitialize($work, $container);
   
-  var focusToggle = function(focus) {
-    focus = focus || $toggle.hasClass('focus');
+  // var focusToggle = function(focus) {
+  //   focus = focus || $toggle.hasClass('focus');
     
-    var containerHeight = $container.height();
-    var containerWidth =  $container.width();
-    var boundingLength = (containerHeight > containerWidth ? containerWidth : containerHeight);
+  //   var containerHeight = $container.height();
+  //   var containerWidth =  $container.width();
+  //   var boundingLength = (containerHeight > containerWidth ? containerWidth : containerHeight);
     
-    // var centerRatio = 0.075;
-    var toggleRatio = 0.1;
-    var toggleRadius = boundingLength * toggleRatio;
+  //   // var centerRatio = 0.075;
+  //   var toggleRatio = 0.1;
+  //   var toggleRadius = boundingLength * toggleRatio;
     
-    $toggle.css({
-      width: toggleRadius * 2,
-      height: toggleRadius * 2,
-    });
+  //   $toggle.css({
+  //     width: toggleRadius * 2,
+  //     height: toggleRadius * 2,
+  //   });
     
-    if (focus) {
-      $toggle.css({
-        top: containerHeight / 2,
-        left: containerWidth / 2,
-      });
-    } else {
-      $toggle.css({
-        top: containerHeight - toggleRadius - pxGutter * 2,
-        left: containerWidth - toggleRadius - pxGutter * 2,
-      });
-    }
-  };
+  //   if (focus) {
+  //     $toggle.css({
+  //       top: containerHeight / 2,
+  //       left: containerWidth / 2,
+  //     });
+  //   } else {
+  //     $toggle.css({
+  //       top: containerHeight - toggleRadius - pxGutter * 2,
+  //       left: containerWidth - toggleRadius - pxGutter * 2,
+  //     });
+  //   }
+  // };
   
-  focusToggle();
+  // focusToggle();
   
   var positionMenu = function() {
     var containerHeight = $container.height();
@@ -74,8 +77,8 @@ $( document ).on('turbolinks:load', function() {
       $menu.css({
         height: containerWidth - 2 * pxGutter,
         width: containerWidth - 2 * pxGutter,
-        top: containerHeight / 2 - containerWidth / 2 + pxGutter,
-        right: pxGutter,
+        // top: containerHeight / 2 - containerWidth / 2 + pxGutter,
+        // right: pxGutter,
       });
     } else {
       boundingLength = containerHeight;
@@ -83,8 +86,8 @@ $( document ).on('turbolinks:load', function() {
       $menu.css({
         height: containerHeight - 2 * pxGutter,
         width: containerHeight - 2 * pxGutter,
-        top: pxGutter,
-        right: containerWidth / 2 - containerHeight / 2 + pxGutter,
+        // top: pxGutter,
+        // right: containerWidth / 2 - containerHeight / 2 + pxGutter,
       });
     }
     
@@ -112,7 +115,7 @@ $( document ).on('turbolinks:load', function() {
   
   $( window ).resize(function() {
     var timeout = window.setTimeout(function() {
-      focusToggle();
+      // focusToggle();
       positionMenu();
       window.clearTimeout(timeout);
     }, 1100);
@@ -171,31 +174,51 @@ $( document ).on('turbolinks:load', function() {
   
   responsiveEvents($petal, focusPetal);
   
-  responsiveEvents($toggle, function() {
-    window.clearTimeout(menuTimeout);
+  burgerEvents($burger, 300, 150, {
+    onOpening: function() {
+      $toggle.addClass('focus');
+      // focusToggle(true);
+    },
     
-    if ($menu.hasClass('opened') || $menu.hasClass('opening')) {
-      $menu.removeClass('closed opening opened').addClass('closing');
-      $toggle.addClass('focus');
-      focusToggle(true);
-      
-      menuTimeout = window.setTimeout(function() {
-        $menu.removeClass('closing opening opened').addClass('closed');
-        $toggle.removeClass('focus');
-        focusToggle(false);
-        
-        window.clearTimeout(menuTimeout);
-      }, 500);
-    } else if ($menu.hasClass('closed') || $menu.hasClass('closing')) {
-      $menu.removeClass('opened closing closed').addClass('opening');
-      $toggle.addClass('focus');
-      focusToggle(true);
-      
-      menuTimeout = window.setTimeout(function() {
-        $menu.removeClass('opening closing closed').addClass('opened');
-        
-        window.clearTimeout(menuTimeout);
-      }, 1000);
-    }
+    onOpened: function() {
+      $menu.addClass('focus');
+    },
+    
+    onClosing: function() {
+      $menu.removeClass('focus');
+    },
+    
+    onClosed: function() {
+      $toggle.removeClass('focus');
+      // focusToggle(false);
+    },
   });
+  
+  // responsiveEvents($toggle, function() {
+  //   window.clearTimeout(menuTimeout);
+    
+  //   if ($menu.hasClass('opened') || $menu.hasClass('opening')) {
+  //     $menu.removeClass('closed opening opened').addClass('closing');
+  //     $toggle.addClass('focus');
+  //     focusToggle(true);
+      
+  //     menuTimeout = window.setTimeout(function() {
+  //       $menu.removeClass('closing opening opened').addClass('closed');
+  //       $toggle.removeClass('focus');
+  //       focusToggle(false);
+        
+  //       window.clearTimeout(menuTimeout);
+  //     }, 500);
+  //   } else if ($menu.hasClass('closed') || $menu.hasClass('closing')) {
+  //     $menu.removeClass('opened closing closed').addClass('opening');
+  //     $toggle.addClass('focus');
+  //     focusToggle(true);
+      
+  //     menuTimeout = window.setTimeout(function() {
+  //       $menu.removeClass('opening closing closed').addClass('opened');
+        
+  //       window.clearTimeout(menuTimeout);
+  //     }, 1000);
+  //   }
+  // });
 });
