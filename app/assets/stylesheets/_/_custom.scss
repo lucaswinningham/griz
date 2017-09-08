@@ -1,13 +1,19 @@
 // https://color.adobe.com/Mexican-Scheme-color-theme-9359348/
-$mex: (
-  blue: #42A5F5,
-  green: #75ce66,
-  orange: #da9208,
-  pink: #e41670,
-  purple: #966fd6,
-  red: #ff6666,
-  yellow: #d0c722,
-);
+$base-blue: #42A5F5;
+$base-green: #75CE66;
+$base-orange: #F7AD1E;
+$base-pink: #E41670;
+$base-purple: #966FD6;
+$base-red: #FF6666;
+$base-yellow: #D0C722;
+
+$alt-blue: darken($base-blue, 15%);
+// $alt-green: ;
+$alt-orange: darken($base-orange, 10%);
+// $alt-pink: ;
+$alt-purple: darken($base-purple, 10%);
+$alt-red: darken($base-red, 7%);
+// $alt-yellow: ;
 
 $wobble-bezier: cubic-bezier(.1,3,.75,0.5);
 $normal-bezier: cubic-bezier(.25,1,.5,1);

@@ -1,5 +1,5 @@
 section#about {
-  background: map-get($mex, blue);
+  background: $base-blue;
   
   div#about-container {
     div#about-cards {
@@ -9,7 +9,7 @@ section#about {
       top: $gutter;
       height: calc(100% - 2 * #{$gutter});
       
-      @include card(darken(map-get($mex, blue), 15%));
+      @include card($alt-blue);
     }
     
     div#about-breadcrumbs {
@@ -37,7 +37,7 @@ section#about {
           width: 56px;
         }
         
-        @include circle-icon(map-get($mex, blue), darken(map-get($mex, blue), 15%));
+        @include circle-icon($base-blue, $alt-blue);
         
         &.mousedown {
           @include transform(translateY(4px));

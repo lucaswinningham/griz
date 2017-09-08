@@ -1,5 +1,5 @@
 section#work {
-  background: map-get($mex, red);
+  background: $base-red;
   
   div#work-container {
     div#work-cards {
@@ -9,7 +9,7 @@ section#work {
       left: $gutter;
       top: $gutter;
       
-      @include card(darken(map-get($mex, red), 15%));
+      @include card($alt-red);
     }
     
     div#work-menu-toggle {
@@ -19,7 +19,7 @@ section#work {
       top: calc(100% - 2 * #{$gutter});
       left: calc(100% - 2 * #{$gutter});
       background: white;
-      border: 2px solid darken(map-get($mex, red), 30%);
+      border: 2px solid $alt-red;
       z-index: 2;
       cursor: pointer;
       
@@ -39,7 +39,7 @@ section#work {
         padding: 17.5%;
         
         i {
-          background: darken(map-get($mex, red), 15%);
+          background: $alt-red;
         }
       }
     }
@@ -75,7 +75,7 @@ section#work {
           @include transition(transform, 1s, $normal-bezier, 0s);
           @include border-radius(50%);
           
-          @include circle-icon(darken(map-get($mex, red), 10%), darken(map-get($mex, red), 20%));
+          @include circle-icon($alt-red, $alt-red);
         
           @include respond-to(tablet) {
             height: 80px;

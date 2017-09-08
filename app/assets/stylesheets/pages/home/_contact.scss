@@ -1,5 +1,5 @@
 section#contact {
-  background: map-get($mex, orange);
+  background: $base-orange;
   
   div#contact-container {
     div#contact-content {
@@ -18,7 +18,7 @@ section#contact {
         
         &.anonymous {
           div#contact-anon-toggle {
-            background: map-get($mex, orange);
+            background: $base-orange;
             border: 4px solid white;
             
             i {
@@ -47,7 +47,7 @@ section#contact {
             // left: 54px; // 96 - 36 - 6
             left: calc(100% - 36px - 6px);
             top: 50%;
-            background: map-get($mex, orange);
+            background: $base-orange;
             
             @include transition(left, 1s, $normal-bezier, 0s);
             @include transform(translateY(-50%));
@@ -60,7 +60,7 @@ section#contact {
           left: 50%;
           top: 50%;
           background: transparent;
-          color: map-get($mex, orange);
+          color: $base-orange;
           font-size: 32px;
           
           @include transform(translate(-50%,-50%));
@@ -71,9 +71,9 @@ section#contact {
         width: 100%;
         outline: none;
         background: white;
-        color: map-get($mex, orange);
+        color: $base-orange;
         border: none;
-        border-bottom: 4px solid lighten(map-get($mex, orange), 10%);
+        border-bottom: 4px solid $alt-orange;
         padding: 12px 20px;
         font-size: 16px;
         margin-bottom: $gutter;
@@ -82,7 +82,7 @@ section#contact {
       }
       
       a.btn {
-        color: map-get($mex, orange);
+        color: $base-orange;
         
         &.hover, &.mousedown {
           color: white;

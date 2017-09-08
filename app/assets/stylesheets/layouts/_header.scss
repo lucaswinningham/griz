@@ -2,7 +2,7 @@ header#navigation {
   
   nav#menu {
     position: fixed;
-    background-color: map-get($mex, yellow);
+    background-color: $base-yellow;
     padding: 10% 0;
     top: 0;
     left: 0;
