@@ -1,17 +1,16 @@
 header#navigation {
-  
   nav#menu {
     position: fixed;
     background-color: $base-yellow;
     padding: 10% 0;
-    top: 0;
+    top: -100%;
     left: 0;
     width: 100%;
     height: 100%;
     display: block;
     z-index: 3;
     
-    @include transition(transform, 1s, $normal-bezier, 0s);
+    @include transition(top, 1s, $normal-bezier, 0s);
     
     a {
       @include display-flex;
@@ -30,7 +29,15 @@ header#navigation {
       @include respond-to(tablet) { font-size: 2.75rem; }
       @include respond-to(desktop) { font-size: 3rem; }
       
-      @include transition(transform, 1s, $normal-bezier, 0s);
+      @include transition(left, 1s, $normal-bezier, 0s);
+      
+      &:nth-child(odd) {
+        left: 100%;
+      }
+      
+      &:nth-child(even) {
+        left: -100%;
+      }
       
       span {
         display: inline-block;
@@ -53,8 +60,7 @@ header#navigation {
         }
       }
       
-      &.hover {
-        background-color: rgba(255,255,255,0.1);
+      &.hover, &.mousedown, &.active {
         color: white;
         
         div {
@@ -62,172 +68,50 @@ header#navigation {
             stroke: white;
           }
         }
+      }
+      
+      &.hover {
+        background-color: rgba(255,255,255,0.1);
       }
       
       &.mousedown {
         background-color: rgba(255,255,255,0.2);
-        color: white;
-        
-        div {
-          svg {
-            stroke: white;
-          }
-        }
       }
+    }
+    
+    &.focus {
+      top: 0;
       
-      &.active {
-        color: white;
-        
-        div {
-          svg {
-            stroke: white;
-          }
-        }
+      a {
+        left: 0;
       }
     }
   }
   
-  &.closed {
-    nav#menu {
-      @include transform(translateY(-100%));
-      
-      a:nth-child(odd) {
-        @include transform(translateX(-100%));
-      }
-      
-      a:nth-child(even) {
-        @include transform(translateX( 100%));
-      }
-    }
-  }
-  
-  div#burger {
+  div#nav-burger-container {
     position: fixed;
-    cursor: pointer;
     background-color: transparent;
-    // top: 2 * $gutter;
-    top: $gutter;
+    top: 2 * $gutter;
     right: 2 * $gutter;
     z-index: 4;
-    
-    @include respond-to(phone) {
-      height: 50px;
-      width: 50px;
-      // top: -2.5px;
-      // right: 10px;
-    }
+    height: 150px;
+    width: 150px;
     
     @include respond-to(tablet) {
       height: 100px;
       width: 100px;
-      // top: -5px;
-      // right: 20px;
     }
     
-    @include respond-to(desktop) {
-      height: 150px;
-      width: 150px;
-      // top: -7.5px;
-      // right: 30px;
+    @include respond-to(phone) {
+      height: 50px;
+      width: 50px;
     }
     
-    @include user-select(none);
-    @include transition(all, 0.8s, cubic-bezier(.25,1.5,.5,1), 0s);
+    @include transform(translateY(-25%));
     
-    i {
-      display: block;
-      height: 10%;
-      width: 100%;
-      background-color: white;
-      @include border-radius(5%/#{50%});
-      @include transition(transform, 0.4s, cubic-bezier(.25,1.5,.5,1), 0s);
-      
-      &:nth-child(1) {
-        margin-top: 25%;
-        margin-bottom: 10%;
-      }
-      
-      &:nth-child(2) {
-        margin-bottom: 10%;
-      }
-      
-      &:nth-child(3) {
-        margin-bottom: 25%;
-      }
-      
-      &.track {
-        background-color: #bbbbbb;
-      }
-    }
-    
-    &.cross {
-      @include transform(rotate(90deg));
-    
-      // @include respond-to(phone) { top: 10px; }
-      // @include respond-to(tablet) { top: 20px; }
-      // @include respond-to(desktop) { top: 30px; }
-    }
-    
-    &.cross.closing, &.lines {
-      @include transform(rotate(0));
-    }
-    
-    &.lines.hover {
-      i:nth-child(1) {
-        @include transform(translateY(-50%));
-      }
-      
-      i:nth-child(3) {
-        @include transform(translateY( 50%));
-      }
-    }
-    
-    &.lines.mousedown {
-      i:nth-child(1) {
-        @include transform(translateY(-100%));
-      }
-      
-      i:nth-child(3) {
-        @include transform(translateY( 100%));
-      }
-    }
-    
-    &.cross {
-      i:nth-child(1) {
-        @include transform(translateY( 200%) rotate( 45deg));
-      }
-      i:nth-child(2) {
-        opacity: 0;
-      }
-      i:nth-child(3) {
-        @include transform(translateY(-200%) rotate(-45deg));
-      }
-    }
-    
-    &.cross.hover  {
-      i:nth-child(1) {
-        @include transform(translateY( 200%) rotate( 50deg));
-      }
-      i:nth-child(3) {
-        @include transform(translateY(-200%) rotate(-50deg));
-      }
-    }
-    
-    &.cross.mousedown  {
-      i:nth-child(1) {
-        @include transform(translateY( 200%) rotate( 55deg));
-      }
-      i:nth-child(3) {
-        @include transform(translateY(-200%) rotate(-55deg));
-      }
-    }
-    
-    &.lines.opening, &.cross.closing {
-      i:nth-child(1) {
-        @include transform(translateY( 200%));
-      }
-      i:nth-child(3) {
-        @include transform(translateY(-200%));
+    div.burger {
+      i.track {
+        background: #BBBBBB;
       }
     }
   }

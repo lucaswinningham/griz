@@ -1,8 +1,8 @@
 // https://color.adobe.com/Mexican-Scheme-color-theme-9359348/
 $base-blue: #42A5F5;
-$base-green: #75CE66;
+// $base-green: #75CE66;
 $base-orange: #F7AD1E;
-$base-pink: #E41670;
+// $base-pink: #E41670;
 $base-purple: #966FD6;
 $base-red: #FF6666;
 $base-yellow: #D0C722;
@@ -16,6 +16,7 @@ $alt-red: darken($base-red, 7%);
 // $alt-yellow: ;
 
 $wobble-bezier: cubic-bezier(.1,3,.75,0.5);
+$overshoot-bezier: cubic-bezier(.25,1.5,.5,1);
 $normal-bezier: cubic-bezier(.25,1,.5,1);
 
 // Ensure this is in sync with custom.js
@@ -37,7 +38,7 @@ $inscribed: 17.5%;
   background-color: transparent;
   
   @include user-select(none);
-  @include transition(all, 0.8s, cubic-bezier(.25,1.5,.5,1), 0s);
+  @include transition(all, 0.8s, $overshoot-bezier, 0s);
   
   i {
     display: block;
@@ -45,7 +46,7 @@ $inscribed: 17.5%;
     width: 100%;
     background: white;
     @include border-radius(5%/#{50%});
-    @include transition(transform, 0.4s, cubic-bezier(.25,1.5,.5,1), 0s);
+    @include transition(transform, 0.4s, $overshoot-bezier, 0s);
     
     &:nth-child(1) {
       margin-top: 25%;

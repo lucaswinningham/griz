@@ -1,109 +1,54 @@
 /* global $ */
+/* global responsiveEvents */
+/* global burgerEvents */
 
 $( document ).on('turbolinks:load', function() {
   var header = 'header#navigation';
-    var navbar = header + ' nav#menu';
-      var navlink = navbar + ' a';
-      var navtext = navbar + ' span';
-    var burger = header + ' div#burger';
+    var menu = header + ' nav#menu';
+      var navlink = menu + ' a';
+      // var navtext = menu + ' span';
+    var burger = header + ' div#nav-burger-container div.burger';
+    // var burger = header + ' div#burger';
       var patty = burger + ' i';
   
-  var $header = $(header);
-    var $navbar = $(navbar);
+  // var $header = $(header);
+    var $menu = $(menu);
       var $navlink = $(navlink);
-      var $navtext = $(navtext);
+      // var $navtext = $(navtext);
     var $burger = $(burger);
       var $patty = $(patty);
   
-  var $responsive = $([burger, navlink].join(', '));
-  
-  var menuTimeout;
-  
-  var toggleMenu = function() {
-    window.clearTimeout(menuTimeout);
-    $responsive.removeClass('mousedown');
-    
-    var open = function() {
-      $burger.addClass('opening');
-      $header.removeClass('closed');
-      $header.addClass('opened');
-      menuTimeout = window.setTimeout(function() {
-        $burger.removeClass('opening closing lines');
-        $burger.addClass('cross');
-        $patty.removeClass('track');
-        window.clearTimeout(menuTimeout);
-      }, 150);
-    };
-    
-    var close = function() {
-      $burger.addClass('closing');
-      $header.removeClass('opened');
-      $header.addClass('closed');
-      menuTimeout = window.setTimeout(function() {
-        $burger.removeClass('opening closing cross');
-        $burger.addClass('lines');
-        burgerTrack();
-        window.clearTimeout(menuTimeout);
-      }, 300);
-    };
-    
-    if ($burger.hasClass('opening')) {
-      $burger.removeClass('opening');
-      close();
-    } else if ($burger.hasClass('closing')) {
-      $burger.removeClass('closing');
-      open();
-    } else if ($burger.hasClass('lines')) {
-      open();
-    } else if ($burger.hasClass('cross')) {
-      close();
-    } else {
-      alert('awry');
-    }
-  };
-  
   var handleAnchor = function(e) {
-    if ($(this).hasClass('mousedown')) {
-      e.preventDefault();
-      
-      $navlink.removeClass('active');
-      $(this).addClass('active');
-      
-      var $anchor = $($(this).attr('href'));
-      var top = $anchor.offset().top;
-      var border = parseInt($anchor.css("border-top-width"));
-      $('html,body').animate({scrollTop: top + border},0);
-      
-      toggleMenu();
-      
-      return false;
-    }
+    e.preventDefault();
+    
+    $navlink.removeClass('active');
+    $(this).addClass('active');
+    
+    var $anchor = $($(this).attr('href'));
+    var top = $anchor.offset().top;
+    $('html,body').animate({scrollTop: top}, 0);
+    
+    $menu.removeClass('focus');
+    $burger.addClass('mousedown').trigger('mouseup');
+    
+    return false;
   };
   
-  $responsive.on('mousedown', function() {
-    $(this).addClass('mousedown');
-  });
+  responsiveEvents($navlink, handleAnchor, 'click touchend touchcancel');
   
-  $burger.on('mouseup touchend touchcancel', function() {
-    if ($(this).hasClass('mousedown')) {
-      toggleMenu();
-    }
-  });
-  
-  // Screen actually follows link when mouseup event used instead of click
-  $navlink.on('click touchend touchcancel', handleAnchor);
-  
-  $responsive.on('mouseenter', function() {
-    $(this).addClass('hover');
-  });
-  
-  $responsive.on('mouseleave', function() {
-    $(this).removeClass('hover mousedown');
-  });
-  
-  $responsive.on('touchstart', function(e) {
-    e.preventDefault();
-    $(this).addClass('mousedown');
+  burgerEvents($burger, 300, 150, {
+    onOpening: function() {
+      $menu.addClass('focus');
+      $patty.removeClass('track');
+    },
+    
+    onClosing: function() {
+      $menu.removeClass('focus');
+    },
+    
+    onClosed: function() {
+      burgerTrack();
+    },
   });
   
   // Scrolling reactions
@@ -148,9 +93,10 @@ $( document ).on('turbolinks:load', function() {
       }
     });
     
-    if ($burger.hasClass('lines')) {
-      $patty.removeClass('track');
-      $(patty + ':nth-child(' + sectionIndex + ')').addClass('track');
+    $patty.removeClass('track');
+    
+    if (!$menu.hasClass('focus') && sectionIndex > 0) {
+      $patty.eq(sectionIndex - 1).addClass('track');
     }
     
     $navlink.removeClass('active');
