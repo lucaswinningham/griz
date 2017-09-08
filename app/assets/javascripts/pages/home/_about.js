@@ -8,7 +8,7 @@ $( document ).on('turbolinks:load', function() {
   var about = 'section#about';
     var container = about + ' div#about-container';
       var card = container + ' div#about-cards .card';
-        var contact = card + ' .btn-contact';
+        var contact = card + ' a.btn';
       var breadcrumbs = container + ' div#about-breadcrumbs';
         var breadcrumb = breadcrumbs + ' div.about-breadcrumb';
   
@@ -32,11 +32,12 @@ $( document ).on('turbolinks:load', function() {
   (function() {
     var ratioBreadcrumb = $breadcrumb.width() / $breadcrumbs.width();
     var ratioUsableWidth = 1 - ratioBreadcrumb;
+    var percentUsableWidth = 100 * ratioUsableWidth;
     
     var timeout = window.setTimeout(function() {
       $breadcrumb.each(function(i) {
         $(this).css({
-          left: (100 * ratioUsableWidth * (i / ($breadcrumb.length - 1))) + '%',
+          left: (percentUsableWidth * (i / ($breadcrumb.length - 1))) + '%',
         });
       });
       

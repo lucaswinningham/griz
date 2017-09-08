@@ -23,13 +23,7 @@
     <% end %>
     
     <% if contact %>
-      <a class="btn-contact" href="#contact">
-        <div class="contact-text-wrapper">
-          <span class="contact-text">
-            <%= contact %>
-          </span>
-        </div>
-      </a>
+      <%= render("_/btn", text: contact, href: "#contact") %>
     <% end %>
   </div>
 </div>

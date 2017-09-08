@@ -1,7 +1,4 @@
 section#work {
-  // @include transition(height, 1s, $normal-bezier, 0s);
-  // @include transition(padding-bottom, 1s, $normal-bezier, 0s);
-  
   background: map-get($mex, red);
   
   div#work-container {
@@ -72,8 +69,8 @@ section#work {
         @include border-radius(50%);
         
         div.work-menu-petal {
-          height: 112px;
-          width: 112px;
+          height: 96px;
+          width: 96px;
           
           @include transition(transform, 1s, $normal-bezier, 0s);
           @include border-radius(50%);

@@ -8,7 +8,7 @@ $( document ).on('turbolinks:load', function() {
     var container = history + ' div#history-container';
       var cards = container + ' div#history-cards';
         var card = cards + ' .card';
-          var contact = card + ' .btn-contact';
+          var contact = card + ' a.btn';
       var mechanism = container + ' div#history-mechanism';
         var track = mechanism + ' div#history-track';
           var detents = track + ' div#history-track-detents';

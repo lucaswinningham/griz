@@ -10,6 +10,7 @@ $( document ).on('turbolinks:load', function() {
           var anonstatus = anon + ' div#contact-anon-status';
         var response = content + ' input#contact-response';
         // var message = content + ' textarea#contact-message';
+        var send = content + ' a.btn';
   
   var $contact = $(contact);
     var $container = $(container);
@@ -18,6 +19,7 @@ $( document ).on('turbolinks:load', function() {
           var $anonstatus = $(anonstatus);
         var $response = $(response);
         // var $message = $(message);
+        var $send = $(send);
   
   sectionInitialize($contact, $container);
   
@@ -31,6 +33,12 @@ $( document ).on('turbolinks:load', function() {
     $response.prop('disabled', function(i, v) { return !v; });
     $anon.toggleClass('anonymous');
   });
+  
+  responsiveEvents($send, function(e) {
+    e.preventDefault();
+    
+    return false;
+  }, 'click touchend touchcancel');
   
   // // experiment
   // var $burger = $(container + ' div#burger-container div');

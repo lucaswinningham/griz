@@ -80,6 +80,14 @@ section#contact {
         
         @include border-radius($radius);
       }
+      
+      a.btn {
+        color: map-get($mex, orange);
+        
+        &.hover, &.mousedown {
+          color: white;
+        }
+      }
     }
     
     // div#burger-container {

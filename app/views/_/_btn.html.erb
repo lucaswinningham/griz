@@ -1,0 +1,10 @@
+<% text = "" if local_assigns[:text].nil? %>
+<% href = "#" if local_assigns[:href].nil? %>
+
+<a class="btn" href="<%= href %>">
+  <div class="btn-txt-wrapper">
+    <span class="btn-txt">
+      <%= text %>
+    </span>
+  </div>
+</a>

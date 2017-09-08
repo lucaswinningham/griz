@@ -11,7 +11,7 @@ $( document ).on('turbolinks:load', function() {
     var container = work + ' div#work-container';
       var cards = container + ' div#work-cards';
         var card = cards + ' .card';
-          var contact = card + ' .btn-contact';
+          var contact = card + ' a.btn';
       var toggle = container + ' div#work-menu-toggle';
         var burger = toggle + ' div.burger';
       var menu = container + ' div#work-menu';
@@ -46,29 +46,18 @@ $( document ).on('turbolinks:load', function() {
       width: pxMenuSide,
     });
     
-    // var petalRatio = pxPetalSide / 2 / pxMenuSide;
     var percentHalfPetal = 100 * pxPetalSide / pxMenuSide / 2;
     var ratioPetal = pxPetalSide / pxMenuSide;
-    // var petalRatio = 0.1;
-    // var petalRadius = boundingLength * petalRatio;
     
     $petal.each(function(i) {
       var theta = (i * 360 / $petal.length + 90) * Math.PI / 180;
-      // var y = Math.sin(theta) * (1 - petalRatio * 2);
-      // var x = Math.cos(theta) * (1 - petalRatio * 2);
+      
       var y = Math.sin(theta) * (1 - ratioPetal);
       var x = Math.cos(theta) * (1 - ratioPetal);
-      // var y = Math.sin(theta);
-      // var x = Math.cos(theta);
-      // var top =  100 * (0.5 - y / 2);
-      // var left = 100 * (0.5 - x / 2);
+      
       var percentTop =  50 * (1 - y) - percentHalfPetal;
       var percentLeft = 50 * (1 - x) - percentHalfPetal;
       
-      // $(this).css({
-      //   top: top + '%',
-      //   left: left + '%',
-      // });
       $(this).css({
         top: percentTop + '%',
         left: percentLeft + '%',
@@ -106,13 +95,6 @@ $( document ).on('turbolinks:load', function() {
       '-o-transform': 'rotate(' + deg + 'deg)',
       'transform': 'rotate(' + deg + 'deg)',
     });
-    
-    // $petal.css({
-    //   '-webkit-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
-    //   '-moz-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
-    //   '-o-transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
-    //   'transform': 'translate(-50%,-50%) rotate(' + (deg * -1) + 'deg)',
-    // });
     
     $petal.css({
       '-webkit-transform': 'rotate(' + (deg * -1) + 'deg)',

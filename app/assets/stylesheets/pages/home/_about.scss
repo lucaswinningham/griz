@@ -7,12 +7,7 @@ section#about {
       width: calc(100% - 2 * #{$gutter});
       left: $gutter;
       top: $gutter;
-      
-      // 100% - breadcrumb height - 3 gutter widths
-      // TODO: play with making this 100% always
       height: calc(100% - 2 * #{$gutter});
-      // height: calc(100% - 109px);
-      // @include respond-to(phone) { height: calc(100% - 93px); }
       
       @include card(darken(map-get($mex, blue), 15%));
     }
