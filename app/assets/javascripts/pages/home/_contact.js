@@ -39,8 +39,4 @@ $( document ).on('turbolinks:load', function() {
     
     return false;
   }, 'click touchend touchcancel');
-  
-  // // experiment
-  // var $burger = $(container + ' div#burger-container div');
-  // burgerEvents($burger);
 });
