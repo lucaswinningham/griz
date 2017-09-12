@@ -30,7 +30,6 @@ $( document ).on('turbolinks:load', function() {
   var detentIncrementRatio = 1 / ($detent.length + 1);
   
   $detent.each(function(i) {
-    // $(this).css({top: ((i + 1) * detentIncrementRatio * 100) + '%'});
     $(this).css({left: ((i + 1) * detentIncrementRatio * 100) + '%'});
   });
   
@@ -43,29 +42,18 @@ $( document ).on('turbolinks:load', function() {
   	
     sliderRatio = detentNumber / ($detent.length + 1);
     
-    // $slider.animate({top: (sliderRatio * 100) + '%'}, 500);
     $slider.animate({left: (sliderRatio * 100) + '%'}, 500);
   };
   
   var trackSlider = function(userPosition) {
   	if ($mechanism.hasClass('mousedown')) {
-      // var sliderTopPx = userPosition - $track.offset().top;
-      
-      // if (sliderTopPx > 0 && sliderTopPx < $track.outerHeight()) {
-      //   sliderRatio = sliderTopPx / $track.outerHeight();
-        
-      // 	$slider.css({top: (sliderRatio * 100) + '%'});
-      	
-      //   indexCards(Math.round(sliderRatio / detentIncrementRatio));
-      // }
       var trackLeft = $track.offset().left;
-      var trackBorder = parseInt($track.css('border-width'), 10);
       var trackWidth = $track.innerWidth();
       
-      var sliderLeftPx = userPosition - trackLeft - trackBorder;
+      var sliderLeftPx = userPosition - trackLeft;
       
-      if (sliderLeftPx > (0 - trackBorder) && sliderLeftPx < (trackWidth + trackBorder)) {
-        sliderRatio = (sliderLeftPx + trackBorder) / (trackWidth + 2 * trackBorder);
+      if (sliderLeftPx > 0 && sliderLeftPx < trackWidth) {
+        sliderRatio = sliderLeftPx / trackWidth;
         
       	$slider.css({left: (sliderRatio * 100) + '%'});
       	
@@ -82,6 +70,26 @@ $( document ).on('turbolinks:load', function() {
   
   contactEvents($contact, 2000);
   
+  var desktopMoveHandler = function(e) {
+    e.preventDefault();
+    trackSlider(e.pageX);
+  };
+  
+  var mobileMoveHandler = function(e) {
+    e.preventDefault();
+    trackSlider(e.originalEvent.touches[0].pageX);
+  };
+  
+  var endHandler = function() {
+    $mechanism.removeClass('mousedown');
+    $slider.stop();
+    detentSlider();
+    $( window ).off('mousemove', desktopMoveHandler);
+    $( window ).off('touchmove', mobileMoveHandler);
+    $( window ).off('mouseup', endHandler);
+    $( window ).off('touchend touchcancel', endHandler);
+  };
+  
   $mechanism.on('mouseenter', function() {
     $mechanism.addClass('hover');
   });
@@ -93,31 +101,17 @@ $( document ).on('turbolinks:load', function() {
   $mechanism.on('mousedown', function(e) {
     $mechanism.addClass('mousedown');
     $slider.stop();
-    // trackSlider(e.pageY);
     trackSlider(e.pageX);
+    $( window ).on('mousemove', desktopMoveHandler);
+    $( window ).on('mouseup', endHandler);
   });
   
   $mechanism.on('touchstart', function(e) {
-    e.preventDefault();
-    $slider.stop();
+    // e.preventDefault();
     $mechanism.addClass('mousedown');
-    // trackSlider(e.originalEvent.touches[0].pageY);
+    $slider.stop();
     trackSlider(e.originalEvent.touches[0].pageX);
-  });
-  
-  $( window ).on('mousemove', function(e) {
-    e.preventDefault();
-    // trackSlider(e.pageY);
-    trackSlider(e.pageX);
-  });
-  
-  $mechanism.on('touchmove', function(e) {
-    // trackSlider(e.originalEvent.touches[0].pageY);
-    trackSlider(e.originalEvent.touches[0].pageX);
-  });
-  
-  $( window ).on('mouseup touchend touchcancel', function() {
-    $mechanism.removeClass('mousedown');
-    detentSlider();
+    $( window ).on('touchmove', mobileMoveHandler);
+    $( window ).on('touchend touchcancel', endHandler);
   });
 });

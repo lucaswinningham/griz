@@ -19,7 +19,7 @@ section#about {
       width: calc(100% - 4 * #{$gutter});
       
       div.about-breadcrumb {
-        left: calc(-64px - 2 * #{$gutter});
+        left: calc(-64px - 3 * #{$gutter});
         bottom: 0;
         height: 80px;
         width: 80px;
