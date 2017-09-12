@@ -37,6 +37,7 @@ $( document ).on('turbolinks:load', function() {
   
   sectionInitialize($history, $container);
   
+  // TODO: figure out why this snaps for first detent on mobile
   var detentSlider = function() {
   	var detentNumber = Math.round(sliderRatio / detentIncrementRatio);
   	

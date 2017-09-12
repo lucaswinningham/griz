@@ -28,8 +28,7 @@ $( document ).on('turbolinks:load', function() {
     }, 500);
   }());
   
-  // Throw breadcrumbs out
-  (function() {
+  var placeBreadcrumbs = function() {
     var ratioBreadcrumb = $breadcrumb.width() / $breadcrumbs.width();
     var ratioUsableWidth = 1 - ratioBreadcrumb;
     var percentUsableWidth = 100 * ratioUsableWidth;
@@ -42,8 +41,17 @@ $( document ).on('turbolinks:load', function() {
       });
       
       window.clearTimeout(timeout);
-    }, 1500);
-  }());
+    }, 500);
+  };
+  
+  placeBreadcrumbs();
+  
+  $( window ).resize(function() {
+    var timeout = window.setTimeout(function() {
+      placeBreadcrumbs();
+      window.clearTimeout(timeout);
+    }, 500);
+  });
   
   $breadcrumb.first().addClass('active');
   
