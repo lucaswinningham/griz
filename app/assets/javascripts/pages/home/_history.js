@@ -84,8 +84,6 @@ $( document ).on('turbolinks:load', function() {
   
   contactEvents($contact, 2000);
   
-  responsiveEvents($icon);
-  
   var desktopMoveHandler = function(e) {
     e.preventDefault();
     trackSlider(e.pageX);
@@ -98,6 +96,7 @@ $( document ).on('turbolinks:load', function() {
   
   var endHandler = function() {
     $mechanism.removeClass('mousedown');
+    $icon.removeClass('mousedown');
     $slider.stop();
     detentSlider();
     $( window ).off('mousemove', desktopMoveHandler);
@@ -108,14 +107,17 @@ $( document ).on('turbolinks:load', function() {
   
   $mechanism.on('mouseenter', function() {
     $mechanism.addClass('hover');
+    $icon.addClass('hover');
   });
   
   $mechanism.on('mouseleave', function() {
     $mechanism.removeClass('hover');
+    $icon.removeClass('hover');
   });
   
   $mechanism.on('mousedown', function(e) {
     $mechanism.addClass('mousedown');
+    $icon.addClass('mousedown');
     $slider.stop();
     trackSlider(e.pageX);
     $( window ).on('mousemove', desktopMoveHandler);
@@ -125,6 +127,7 @@ $( document ).on('turbolinks:load', function() {
   $mechanism.on('touchstart', function(e) {
     // e.preventDefault();
     $mechanism.addClass('mousedown');
+    $icon.addClass('mousedown');
     $slider.stop();
     trackSlider(e.originalEvent.touches[0].pageX);
     $( window ).on('touchmove', mobileMoveHandler);
