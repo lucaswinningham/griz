@@ -79,6 +79,23 @@ section#history {
         @include user-select(none);
         @include transform(translate(-50%, -50%));
         @include border-radius(50%);
+      
+        div.history-slider-icon {
+          display: none;
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          opacity: 0;
+          
+          @include border-radius(50%);
+          
+          @include circle-icon($base-purple, $alt-purple);
+        
+          &.focus {
+            display: inline;
+            opacity: 1;
+          }
+        }
       }
     }
   }

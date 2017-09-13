@@ -1,5 +1,6 @@
 /* global $ */
 /* global sectionInitialize */
+/* global responsiveEvents */
 /* global cardEvents */
 /* global contactEvents */
 
@@ -14,6 +15,7 @@ $( document ).on('turbolinks:load', function() {
           var detents = track + ' div#history-track-detents';
             var detent = detents + ' span';
         var slider = mechanism + ' div#history-slider';
+          var icon = slider + ' div.history-slider-icon';
   
   var $history = $(history);
     var $container = $(container);
@@ -23,6 +25,7 @@ $( document ).on('turbolinks:load', function() {
         var $track = $(track);
           var $detents = $(detents);
         var $slider = $(slider);
+          var $icon = $(icon);
   
   $detents.append('<span></span>'.repeat($card.length - 2));
   
@@ -34,6 +37,8 @@ $( document ).on('turbolinks:load', function() {
   });
   
   var sliderRatio;
+  
+  $icon.first().addClass('focus');
   
   sectionInitialize($history, $container);
   
@@ -58,18 +63,28 @@ $( document ).on('turbolinks:load', function() {
         
       	$slider.css({left: (sliderRatio * 100) + '%'});
       	
-        indexCards(Math.round(sliderRatio / detentIncrementRatio));
+      	var index = Math.round(sliderRatio / detentIncrementRatio);
+      	
+        $icon.removeClass('focus');
+        $icon.eq(index).addClass('focus');
+      	
+        indexCards(index);
       }
     }
   };
   
   var indexCards = cardEvents($card, function(newCardIndex) {
+    $icon.removeClass('focus');
+    $icon.eq(newCardIndex).addClass('focus');
+    
 	  sliderRatio = newCardIndex * detentIncrementRatio;
 	  $slider.stop();
 	  detentSlider();
   });
   
   contactEvents($contact, 2000);
+  
+  responsiveEvents($icon);
   
   var desktopMoveHandler = function(e) {
     e.preventDefault();
