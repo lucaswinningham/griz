@@ -22,7 +22,7 @@ $( document ).on('turbolinks:load', function() {
   // Dramatic intro for first card
   (function() {
     var timeout = window.setTimeout(function() {
-      $card.first().addClass('focus');
+      $card.first().removeClass('right').addClass('focus');
       
       window.clearTimeout(timeout);
     }, 500);
@@ -74,7 +74,7 @@ $( document ).on('turbolinks:load', function() {
   });
   
   // Disable the first card focus for dramatic intro
-  $card.first().removeClass('focus');
+  $card.first().removeClass('focus').addClass('right');
   
   contactEvents($contact, 3000);
   
