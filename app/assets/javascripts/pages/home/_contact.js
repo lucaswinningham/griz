@@ -59,7 +59,9 @@ $( document ).on('turbolinks:load', function() {
           url: '/emails/',
           dataType: 'JSON',
           data: {
-            message: $message.val(),
+            email: {
+              message: $message.val()
+            }
           },
           success: sendSuccess,
           error: sendError,
