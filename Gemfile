@@ -60,3 +60,6 @@ gem "react-rails"
 
 # Use JQuery for javascript
 gem 'jquery-rails'
+
+# Use Figaro for secure configuration
+gem 'figaro'
