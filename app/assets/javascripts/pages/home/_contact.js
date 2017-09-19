@@ -31,6 +31,11 @@ $( document ).on('turbolinks:load', function() {
     $confirmation.css({opacity: '1'});
   };
   
+  var sendError = function() {
+    $confirmation.html('Whoops! There was a problem. Please refresh and send again.');
+    $confirmation.css({opacity: '1'});
+  };
+  
   responsiveEvents($send, function(e) {
     e.preventDefault();
     
@@ -48,11 +53,16 @@ $( document ).on('turbolinks:load', function() {
         $sendtext.html(originalSendText);
         window.clearTimeout(pendingTimeout);
         
-        // send email
-          // success
-          sendSuccess();
-          // error
-          
+        $.ajax({
+          method: 'POST',
+          url: '/emails/',
+          dataType: 'JSON',
+          data: {
+            message: "test messsage",
+          },
+          success: sendSuccess,
+          error: sendError,
+        });
         
         $confirmation.css({opacity: '1'});
       }, msPendingDuration);
