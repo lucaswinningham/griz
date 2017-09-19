@@ -6,7 +6,7 @@ $( document ).on('turbolinks:load', function() {
   var contact = 'section#contact';
     var container = contact + ' div#contact-container';
       var content = container + ' div#contact-content';
-        // var message = content + ' textarea#contact-message';
+        var message = content + ' textarea#contact-message';
         var send = content + ' a.btn';
           var sendtext = send + ' div.btn-txt-wrapper span.btn-txt';
         var confirmation = content + ' div#contact-confirmation';
@@ -14,7 +14,7 @@ $( document ).on('turbolinks:load', function() {
   var $contact = $(contact);
     var $container = $(container);
       // var $content = $(content);
-        // var $message = $(message);
+        var $message = $(message);
         var $send = $(send);
           var $sendtext = $(sendtext);
         var $confirmation = $(confirmation);
@@ -27,6 +27,7 @@ $( document ).on('turbolinks:load', function() {
   var originalSendText = $sendtext.html();
   
   var sendSuccess = function() {
+    $message.val('');
     $confirmation.html('Thanks for reaching out! Your message has been sent');
     $confirmation.css({opacity: '1'});
   };
@@ -58,7 +59,7 @@ $( document ).on('turbolinks:load', function() {
           url: '/emails/',
           dataType: 'JSON',
           data: {
-            message: "test messsage",
+            message: $message.val(),
           },
           success: sendSuccess,
           error: sendError,
