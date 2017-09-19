@@ -125,7 +125,7 @@ $( document ).on('turbolinks:load', function() {
   });
   
   $mechanism.on('touchstart', function(e) {
-    // e.preventDefault();
+    e.preventDefault();
     $mechanism.addClass('mousedown');
     $icon.addClass('mousedown');
     $slider.stop();
