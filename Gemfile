@@ -55,14 +55,8 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Added gems
 
-# Use React for UX
-gem "react-rails"
-
 # Use JQuery for javascript
 gem 'jquery-rails'
 
 # Use Figaro for secure configuration
 gem 'figaro'
-
-# Use SendGrid for production emails
-gem 'sendgrid-ruby'
