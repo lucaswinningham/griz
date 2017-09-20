@@ -88,4 +88,9 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+  
+  # Added
+  
+  # https://stackoverflow.com/questions/24821947/do-i-need-to-provide-a-from-email-address-while-using-heroku-sendgrid
+  # config.action_mailer.default_options = { from: ENV['GMAIL_USERNAME'] }
 end
