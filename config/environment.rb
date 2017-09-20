@@ -16,3 +16,5 @@ ActionMailer::Base.smtp_settings = {
   :domain         => ENV['MY_HEROKU_DOMAIN'],
   :authentication => :plain,
 }
+
+# Be sure to add necessary key to heroku config

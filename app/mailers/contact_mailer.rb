@@ -4,6 +4,6 @@ class ContactMailer < ActionMailer::Base
   
   def contact_email body
     @body = body
-    mail(subject: 'New Contact Message from Griz')
+    mail(subject: 'New Message from Griz User')
   end
 end
