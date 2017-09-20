@@ -63,3 +63,6 @@ gem 'jquery-rails'
 
 # Use Figaro for secure configuration
 gem 'figaro'
+
+# Use SendGrid for production emails
+gem 'sendgrid-ruby'

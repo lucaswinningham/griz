@@ -92,16 +92,16 @@ Rails.application.configure do
   # Added
   
   # SMTP settings for gmail
-  config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    :address              => "smtp.gmail.com",
-    :domain               => ENV['heroku_domain'],
-    :port                 => 587,
-    :user_name            => ENV['gmail_username'],
-    :password             => ENV['gmail_password'],
-    :authentication       => "plain",
+    :user_name => ENV['SENDGRID_USERNAME'],
+    :password => ENV['SENDGRID_PASSWORD'],
+    :domain => ENV['heroku_domain'],
+    :address => 'smtp.sendgrid.net',
+    :port => 587,
+    :authentication => :plain,
     :enable_starttls_auto => true
   }
-  config.action_mailer.default_url_options = { :host => ENV['heroku_domain'] } 
-  config.action_mailer.perform_deliveries = true  
+  # config.action_mailer.default_url_options = { :host => ENV['heroku_domain'] } 
+  # config.action_mailer.perform_deliveries = true  
 end
