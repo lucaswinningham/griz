@@ -91,12 +91,12 @@ Rails.application.configure do
   
   # Added
   
-  # SMTP settings for gmail
+  # SMTP settings for sendgrid
   # config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     :user_name => ENV['SENDGRID_USERNAME'],
     :password => ENV['SENDGRID_PASSWORD'],
-    :domain => ENV['heroku_domain'],
+    :domain => 'heroku.com',
     :address => 'smtp.sendgrid.net',
     :port => 587,
     :authentication => :plain,
