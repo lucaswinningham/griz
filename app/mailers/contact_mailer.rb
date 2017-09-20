@@ -1,5 +1,5 @@
 class ContactMailer < ActionMailer::Base
-  default from: ENV['gmail_username']
+  # default from: ENV['gmail_username']
   
   def contact_email body
     @body = body
