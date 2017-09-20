@@ -1,5 +1,9 @@
 class ContactMailer < ActionMailer::Base
-  # default from: ENV['gmail_username']
+  if Rails.env.development?
+    default from: ENV['gmail_username']
+  elsif Rails.env.production?
+    default from: ENV['SENDGRID_USERNAME']
+  end
   
   def contact_email body
     @body = body
