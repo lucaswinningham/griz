@@ -92,5 +92,5 @@ Rails.application.configure do
   # Added
   
   # https://stackoverflow.com/questions/24821947/do-i-need-to-provide-a-from-email-address-while-using-heroku-sendgrid
-  # config.action_mailer.default_options = { from: ENV['GMAIL_USERNAME'] }
+  config.action_mailer.default_options = { from: ENV['GMAIL_USERNAME'] }
 end
