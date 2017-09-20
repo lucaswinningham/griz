@@ -5,25 +5,30 @@ $( document ).on('turbolinks:load', function() {
   var history = 'section#history';
   var work = 'section#work';
   var contact = 'section#contact';
+  var footer = 'footer#footer';
   
   var $about = $(about);
   var $history = $(history);
   var $work = $(work);
   var $contact = $(contact);
+  var $footer = $(footer);
   
-  var sectionPositions = [];
+  var sectionInformation = [];
   
   var timeout;
   
-  var updateSectionPositions = function() {
-    sectionPositions = [$about, $history, $work, $contact].map(function(section) {
-      return section.offset().top;
+  var updateSectionInformation = function() {
+    sectionInformation = [$about, $history, $work, $contact, $footer].map(function(section) {
+      return {
+        position: section.offset().top,
+        height: section.height()
+      };
     });
   };
   
   var updateTracking = function() {
     var timeout = window.setTimeout(function() {
-      updateSectionPositions();
+      updateSectionInformation();
       sectionSnap();
       window.clearTimeout(timeout);
     }, 250);
@@ -35,16 +40,19 @@ $( document ).on('turbolinks:load', function() {
   
   var sectionSnap = function() {
     var scrollPosition = $( document ).scrollTop();
-    var sectionScrollBreakRatio = 0.5;
+    var windowHeight = window.innerHeight;
+    var windowBottomPosition = scrollPosition + windowHeight;
+    var sectionBreakRatio = 0.5;
     var sectionIndex = 0;
     
-    sectionPositions.forEach(function(sectionPosition, i, arr) {
+    sectionInformation.forEach(function(info, i, arr) {
       if (i > 0) {
-        var lastSectionPosition = arr[i - 1];
-        var sectionRange = sectionPosition - lastSectionPosition;
-        var sectionBreak = sectionRange * sectionScrollBreakRatio + lastSectionPosition;
+        var sectionPosition = info.position;
+        var sectionHeight = info.height;
         
-        if (scrollPosition > sectionBreak) {
+        var sectionBreak = sectionPosition + sectionHeight * sectionBreakRatio;
+        
+        if (windowBottomPosition > sectionBreak) {
           sectionIndex = i;
         }
       }
@@ -54,8 +62,10 @@ $( document ).on('turbolinks:load', function() {
     
     var msDelay = 250;
     
-    // Target of 250ms scroll time per section height
-    var msScroll = 500 * Math.abs(scrollPosition - sectionPositions[sectionIndex]) / window.innerHeight;
+    var targetSection = sectionInformation[sectionIndex];
+    
+    // Target of 250ms scroll max time from break point
+    var msScroll = Math.abs(scrollPosition - targetSection.position) * (250 / (targetSection.height * sectionBreakRatio));
     
     // TODO: DRY this up with contact events
     
@@ -67,7 +77,7 @@ $( document ).on('turbolinks:load', function() {
     timeout = window.setTimeout(function() {
       $('html, body').on(userScrollEvents, autoScrollStop);
       
-      $('html, body').animate({scrollTop: sectionPositions[sectionIndex] + 1}, msScroll, autoScrollStop);
+      $('html, body').animate({scrollTop: targetSection.position + 1}, msScroll, autoScrollStop);
       
       window.clearTimeout(timeout);
     }, msDelay);

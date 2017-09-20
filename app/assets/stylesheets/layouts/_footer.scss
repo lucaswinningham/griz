@@ -1,0 +1,45 @@
+footer#footer {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  background: #555555;
+  overflow-y: hidden;
+  
+  div#footer-icons {
+    // position: absolute;
+    // width: auto;
+    // height: auto;
+    // right: 0;
+    margin: 2 * $gutter;
+    
+    div.footer-icon {
+      // left: calc(-64px - 3 * #{$gutter});
+      // bottom: 0;
+      position: relative;
+      display: inline-block;
+      height: 80px;
+      width: 80px;
+      
+      @include border-radius(50%);
+      // @include transition(left, 1.5s, $normal-bezier, 0s);
+      
+      @include respond-to(tablet) {
+        height: 64px;
+        width: 64px;
+      }
+      
+      @include respond-to(phone) {
+        height: 50px;
+        width: 50px;
+      }
+      
+      @include circle-icon(#CCCCCC, #EEEEEE);
+      
+      &.mousedown {
+        @include transform(translateY(4px));
+        
+        @include respond-to(phone) { @include transform(translateY(-24px)); }
+      }
+    }
+  }
+}
