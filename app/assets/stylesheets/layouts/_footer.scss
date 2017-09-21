@@ -1,44 +1,37 @@
 footer#footer {
-  position: relative;
-  width: 100%;
-  height: 140px;
   background: #555555;
-  overflow-y: hidden;
+  position: relative;
+  padding: $gutter;
   
   div#footer-icons {
-    // position: absolute;
-    // width: auto;
-    // height: auto;
-    // right: 0;
-    margin: 2 * $gutter;
-    
     div.footer-icon {
-      // left: calc(-64px - 3 * #{$gutter});
-      // bottom: 0;
-      position: relative;
       display: inline-block;
       height: 80px;
       width: 80px;
+      box-shadow: $gutter, $gutter, $gutter, white;
       
       @include border-radius(50%);
-      // @include transition(left, 1.5s, $normal-bezier, 0s);
+      @include transform(translateX(-50%));
       
-      @include respond-to(tablet) {
+      @include respond-to(phone) {
         height: 64px;
         width: 64px;
       }
       
-      @include respond-to(phone) {
-        height: 50px;
-        width: 50px;
-      }
-      
-      @include circle-icon(#CCCCCC, #EEEEEE);
+      @include circle-icon(#555555, #333333);
+      position: relative;
       
       &.mousedown {
-        @include transform(translateY(4px));
+        @include transform(translate(-50%,4px));
         
-        @include respond-to(phone) { @include transform(translateY(-24px)); }
+        @include respond-to(phone) { @include transform(translate(-50%,-$gutter)); }
+      }
+      
+      a {
+        z-index: 2;
+        position: absolute;
+        width: 100%;
+        height: 100%;
       }
     }
   }
