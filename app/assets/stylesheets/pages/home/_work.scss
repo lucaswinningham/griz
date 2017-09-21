@@ -22,8 +22,8 @@ section#work {
       border: 2px solid $alt-red;
       z-index: 2;
       cursor: pointer;
-      box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
       
+      @include responsive-shadow;
       @include transform(translate(-100%, -100%));
       @include transition(all, 0.8s, $normal-bezier, 0s);
       @include border-radius(50%);
@@ -41,6 +41,8 @@ section#work {
         
         i {
           background: $alt-red;
+          
+          // Undo box shadow for burger
           box-shadow: none;
         }
       }

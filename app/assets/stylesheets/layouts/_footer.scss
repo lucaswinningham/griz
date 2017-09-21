@@ -8,8 +8,8 @@ footer#footer {
       display: inline-block;
       height: 80px;
       width: 80px;
-      box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
       
+      @include responsive-shadow;
       @include border-radius(50%);
       @include transform(translateX(-50%));
       
