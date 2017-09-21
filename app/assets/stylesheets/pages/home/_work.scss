@@ -22,6 +22,7 @@ section#work {
       border: 2px solid $alt-red;
       z-index: 2;
       cursor: pointer;
+      box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
       
       @include transform(translate(-100%, -100%));
       @include transition(all, 0.8s, $normal-bezier, 0s);
@@ -40,6 +41,7 @@ section#work {
         
         i {
           background: $alt-red;
+          box-shadow: none;
         }
       }
     }

@@ -45,6 +45,8 @@ $inscribed: 17.5%;
     height: 10%;
     width: 100%;
     background: white;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+    
     @include border-radius(5%/#{50%});
     @include transition(transform, 0.4s, $overshoot-bezier, 0s);
     
@@ -159,6 +161,7 @@ a.btn {
   max-width: 400px;
   height: 64px;
   background: white;
+  box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
   
   @include border-radius($radius);
   
@@ -201,6 +204,7 @@ a.btn {
     padding: $gutter;
     opacity: 0;
     background: $color;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
     
     @include user-select(none);
     @include cursor-grab;
@@ -233,6 +237,7 @@ a.btn {
       background: white;
       cursor: pointer;
       z-index: 2;
+      box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
       
       background-repeat: no-repeat;
       background-position: center center;
@@ -302,6 +307,7 @@ a.btn {
   cursor: pointer;
   background: white;
   border: 2px solid $base-color;
+  box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
   
   &.hover {
     background: $alt-color;
