@@ -290,6 +290,7 @@ a.btn {
         font-size: 20pt;
         text-align: justify;
         padding-top: $gutter;
+        font-family: $sans-serif;
         
         // @include respond-to(phone) { font-size: 1.1em; }
         @include respond-to(phone) { font-size: 11pt; }
