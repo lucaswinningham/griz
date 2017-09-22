@@ -1,6 +1,5 @@
 /* global $ */
 /* global sectionInitialize */
-/* global responsiveEvents */
 /* global cardEvents */
 /* global contactEvents */
 
@@ -82,7 +81,7 @@ $( document ).on('turbolinks:load', function() {
 	  detentSlider();
   });
   
-  contactEvents($contact, 2000);
+  contactEvents($contact);
   
   var desktopMoveHandler = function(e) {
     e.preventDefault();

@@ -28,18 +28,16 @@ $( document ).on('turbolinks:load', function() {
   
   var sendSuccess = function() {
     $message.val('');
-    $confirmation.html('Thanks for reaching out! Your message has been sent');
+    $confirmation.html('Thanks for reaching out! Your message has been sent.');
     $confirmation.css({opacity: '1'});
   };
   
   var sendError = function() {
-    $confirmation.html('Whoops! There was a problem. Please refresh and send again.');
+    $confirmation.html('Whoops! There was a problem. Please refresh and try sending again.');
     $confirmation.css({opacity: '1'});
   };
   
-  responsiveEvents($send, function(e) {
-    e.preventDefault();
-    
+  responsiveEvents($send, function() {
     if ($send.hasClass('pending')) {
       $send.removeClass('mousedown pending');
       $sendtext.html(originalSendText);
@@ -70,7 +68,5 @@ $( document ).on('turbolinks:load', function() {
         $confirmation.css({opacity: '1'});
       }, msPendingDuration);
     }
-    
-    return false;
-  }, 'click touchend touchcancel');
+  });
 });

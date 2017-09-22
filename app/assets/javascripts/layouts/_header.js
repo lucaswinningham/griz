@@ -18,23 +18,17 @@ $( document ).on('turbolinks:load', function() {
     var $burger = $(burger);
       var $patty = $(patty);
   
-  var handleAnchor = function(e) {
-    e.preventDefault();
-    
+  responsiveEvents($navlink, function() {
     $navlink.removeClass('active');
     $(this).addClass('active');
     
-    var $anchor = $($(this).attr('href'));
-    var top = $anchor.offset().top;
-    $('html,body').animate({scrollTop: top}, 0);
+    window.location.href = $(this).attr('href');
     
     $menu.removeClass('focus');
-    $burger.addClass('mousedown').trigger('mouseup');
     
-    return false;
-  };
-  
-  responsiveEvents($navlink, handleAnchor, 'click touchend touchcancel');
+    // Give mousedown class back and trigger menu close for burger events
+    $burger.addClass('mousedown').trigger('mouseup');
+  });
   
   burgerEvents($burger, 300, 150, {
     onOpening: function() {

@@ -32,7 +32,6 @@ $( document ).on('turbolinks:load', function() {
   
   var petalContainerDeg = 0;
   var pxPetalSide = $petal.height();
-  // var menuTimeout;
   
   sectionInitialize($work, $container);
   
@@ -106,15 +105,6 @@ $( document ).on('turbolinks:load', function() {
     return degDelta < 0;
   };
   
-  var focusPetal = function() {
-    $petal.removeClass('active');
-    $(this).addClass('active');
-    
-    var clockwise = movePetals($(this).index());
-    
-    indexCards($(this).index(), clockwise);
-  };
-  
   var indexCards = cardEvents($card, function(newCardIndex, forward) {
     $petal.removeClass('active');
     
@@ -123,9 +113,16 @@ $( document ).on('turbolinks:load', function() {
     movePetals(newCardIndex);
   });
   
-  contactEvents($contact, 1000);
+  contactEvents($contact);
   
-  responsiveEvents($petal, focusPetal);
+  responsiveEvents($petal, function() {
+    $petal.removeClass('active');
+    $(this).addClass('active');
+    
+    var clockwise = movePetals($(this).index());
+    
+    indexCards($(this).index(), clockwise);
+  });
   
   burgerEvents($burger, 300, 150, {
     onOpening: function() {

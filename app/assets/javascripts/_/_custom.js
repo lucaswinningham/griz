@@ -121,27 +121,10 @@ var burgerEvents = function($burger, msClose, msOpen, callbacks) {
   });
 };
 
-var contactEvents = function($contact, msScroll) {
-  // msScroll = (msScroll === undefined ? 2000 : msScroll);
-  
-  // // On desktop: bug
-  // // Despite preventing default, screen actually follows link when mouseup event used instead of click
-  // responsiveEvents($contact, function(e) {
-  //   e.preventDefault();
-    
-  //   var userScrollEvents = 'scroll mousedown wheel DOMMouseScroll mousewheel keyup touchmove';
-    
-  //   var autoScrollStop = function() {
-  //     $('html, body').stop();
-  //     $('html, body').off(userScrollEvents, autoScrollStop);
-  //   };
-    
-  //   $('html, body').on(userScrollEvents, autoScrollStop);
-    
-  //   $('html, body').animate({scrollTop: $('#contact').offset().top}, msScroll, autoScrollStop);
-    
-  //   return false;
-  // }, 'click touchend touchcancel');
+var contactEvents = function($contact) {
+  responsiveEvents($contact, function(e) {
+    window.location.href = '#contact'; 
+  });
 };
 
 var cardEvents = function($card, onChange) {

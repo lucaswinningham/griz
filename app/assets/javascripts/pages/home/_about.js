@@ -57,16 +57,6 @@ $( document ).on('turbolinks:load', function() {
   
   sectionInitialize($about, $container);
   
-  var updateContent = function() {
-    $(this).removeClass('mousedown hover');
-    
-    if (!$(this).hasClass('active')) {
-      indexCards($(this).index());
-      $breadcrumb.removeClass('active');
-      $(this).addClass('active');
-    }
-  };
-  
   var indexCards = cardEvents($card, function(newCardIndex) {
     $breadcrumb.removeClass('active');
     
@@ -76,7 +66,15 @@ $( document ).on('turbolinks:load', function() {
   // Disable the first card focus for dramatic intro
   $card.first().removeClass('focus').addClass('right');
   
-  contactEvents($contact, 3000);
+  contactEvents($contact);
   
-  responsiveEvents($breadcrumb, updateContent);
+  responsiveEvents($breadcrumb, function() {
+    $(this).removeClass('mousedown hover');
+    
+    if (!$(this).hasClass('active')) {
+      indexCards($(this).index());
+      $breadcrumb.removeClass('active');
+      $(this).addClass('active');
+    }
+  });
 });
