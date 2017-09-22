@@ -253,8 +253,8 @@ a.btn {
       @include transition(all, 1s, $normal-bezier, 0s);
       
       @include respond-to(phone) {
-        height: 64px;
-        width: 64px;
+        height: 96px;
+        width: 96px;
       }
       
       &.focus {
