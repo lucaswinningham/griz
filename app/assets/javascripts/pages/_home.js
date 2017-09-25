@@ -60,7 +60,7 @@ $( document ).on('turbolinks:load', function() {
     
     window.clearTimeout(timeout);
     
-    var msDelay = 200;
+    var msDelay = 100;
     
     var targetSection = sectionInformation[sectionIndex];
     
