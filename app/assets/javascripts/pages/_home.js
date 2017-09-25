@@ -60,7 +60,7 @@ $( document ).on('turbolinks:load', function() {
     
     window.clearTimeout(timeout);
     
-    var msDelay = 400;
+    var msDelay = 200;
     
     var targetSection = sectionInformation[sectionIndex];
     
@@ -78,7 +78,7 @@ $( document ).on('turbolinks:load', function() {
       $('html, body').on(userScrollEvents, autoScrollStop);
       
       // $('html, body').animate({scrollTop: targetSection.position + 1}, msScroll, autoScrollStop);
-      $('html, body').animate({scrollTop: targetSection.position + 1}, 400, autoScrollStop);
+      $('html, body').animate({scrollTop: targetSection.position + 1}, 200, autoScrollStop);
       
       window.clearTimeout(timeout);
     }, msDelay);
