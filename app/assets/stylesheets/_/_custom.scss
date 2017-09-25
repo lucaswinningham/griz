@@ -51,7 +51,6 @@ $inscribed: 17.5%;
     width: 100%;
     background: white;
     
-    @include responsive-shadow;
     @include border-radius(5%/#{50%});
     @include transition(transform, 0.4s, $overshoot-bezier, 0s);
     
@@ -167,7 +166,6 @@ a.btn {
   height: 64px;
   background: white;
   
-  @include responsive-shadow;
   @include border-radius($radius);
   
   &.hover {
@@ -210,7 +208,6 @@ a.btn {
     opacity: 0;
     background: $color;
     
-    @include responsive-shadow;
     @include user-select(none);
     @include cursor-grab;
     @include transition(all, 1s, $normal-bezier, 0s);
@@ -313,8 +310,6 @@ a.btn {
   cursor: pointer;
   background: white;
   border: 2px solid $base-color;
-  
-  @include responsive-shadow;
   
   &.hover {
     background: $alt-color;
