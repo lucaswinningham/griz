@@ -1,12 +1,14 @@
 /* global $ */
 
 $( document ).on('turbolinks:load', function() {
+  var burger = 'header#navigation div#nav-burger-container div.burger';
   var about = 'section#about';
   var history = 'section#history';
   var work = 'section#work';
   var contact = 'section#contact';
   var footer = 'footer#footer';
   
+  var $burger = $(burger);
   var $about = $(about);
   var $history = $(history);
   var $work = $(work);
@@ -45,18 +47,21 @@ $( document ).on('turbolinks:load', function() {
     var sectionBreakRatio = 0.5;
     var sectionIndex = 0;
     
-    sectionInformation.forEach(function(info, i, arr) {
+    sectionInformation.forEach(function(info, i) {
       if (i > 0) {
-        var sectionPosition = info.position;
-        var sectionHeight = info.height;
+        // var sectionPosition = info.position;
+        // var sectionHeight = info.height;
         
-        var sectionBreak = sectionPosition + sectionHeight * sectionBreakRatio;
+        // var sectionBreak = sectionPosition + sectionHeight * sectionBreakRatio;
+        var sectionBreak = info.position + windowHeight * sectionBreakRatio;
         
         if (windowBottomPosition > sectionBreak) {
           sectionIndex = i;
         }
       }
     });
+    
+    $burger.trigger('track', [sectionIndex + ''])
     
     window.clearTimeout(timeout);
     
