@@ -6,9 +6,11 @@ var pxGutter = 15;
 var sectionInitialize = function($section, $container) {
   var sectionFill = function() {
     var windowHeight = $( window ).height();
-    $section.height(windowHeight + 200);
+    $section.height(windowHeight);
     $container.height(windowHeight);
-    $container.css('margin-top', (parseInt(window.innerHeight, 10) - windowHeight) / 2);
+    // $section.height(windowHeight + 200);
+    // $container.height(windowHeight);
+    // $container.css('margin-top', (parseInt(window.innerHeight, 10) - windowHeight) / 2);
   };
   
   sectionFill();

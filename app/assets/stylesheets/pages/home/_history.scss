@@ -19,18 +19,19 @@ section#history {
       z-index: 1;
       cursor: pointer;
       width: calc(100% - 4 * #{$gutter} - 64px);
-      left: calc(2 * #{$gutter} + 64px / 2);
       bottom: calc(64px / 2);
+      left: 50%;
+      max-width: 960px;
+      
+      @include transform(translateX(-50%));
       
       @include respond-to(tablet) {
         width: calc(100% - 4 * #{$gutter} - 56px);
-        left: calc(2 * #{$gutter} + 64px / 2);
         bottom: calc(64px / 2);
       }
       
       @include respond-to(phone) {
         width: calc(100% - 4 * #{$gutter} - 52px);
-        left: calc(2 * #{$gutter} + 52px / 2);
         bottom: calc(52px / 2);
       }
       

@@ -15,8 +15,11 @@ section#about {
     div#about-breadcrumbs {
       position: absolute;
       bottom: 2 * $gutter;
-      left: 2 * $gutter;
       width: calc(100% - 4 * #{$gutter});
+      left: 50%;
+      max-width: 960px;
+      
+      @include transform(translateX(-50%));
       
       div.about-breadcrumb {
         left: calc(-64px - 3 * #{$gutter});

@@ -49,11 +49,10 @@ $( document ).on('turbolinks:load', function() {
     
     sectionInformation.forEach(function(info, i) {
       if (i > 0) {
-        // var sectionPosition = info.position;
-        // var sectionHeight = info.height;
+        var sectionPosition = info.position;
+        var sectionHeight = info.height;
         
-        // var sectionBreak = sectionPosition + sectionHeight * sectionBreakRatio;
-        var sectionBreak = info.position + windowHeight * sectionBreakRatio;
+        var sectionBreak = sectionPosition + sectionHeight * sectionBreakRatio;
         
         if (windowBottomPosition > sectionBreak) {
           sectionIndex = i;
@@ -61,18 +60,13 @@ $( document ).on('turbolinks:load', function() {
       }
     });
     
-    $burger.trigger('track', [sectionIndex + ''])
+    if (sectionIndex < sectionInformation.length - 1) $burger.trigger('track', [sectionIndex + '']);
     
     window.clearTimeout(timeout);
     
     var msDelay = 100;
     
     var targetSection = sectionInformation[sectionIndex];
-    
-    // Target of 250ms scroll max time from break point
-    // var msScroll = Math.abs(scrollPosition - targetSection.position) * (250 / (targetSection.height * sectionBreakRatio));
-    
-    // TODO: DRY this up with contact events
     
     var autoScrollStop = function() {
       $('html, body').stop();
@@ -83,7 +77,7 @@ $( document ).on('turbolinks:load', function() {
       $('html, body').on(userScrollEvents, autoScrollStop);
       
       // $('html, body').animate({scrollTop: targetSection.position + 1}, msScroll, autoScrollStop);
-      $('html, body').animate({scrollTop: targetSection.position + 1}, 200, autoScrollStop);
+      $('html, body').animate({scrollTop: targetSection.position}, 200, autoScrollStop);
       
       window.clearTimeout(timeout);
     }, msDelay);
