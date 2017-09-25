@@ -6,6 +6,7 @@ $( document ).on('turbolinks:load', function() {
   var contact = 'section#contact';
     var container = contact + ' div#contact-container';
       var content = container + ' div#contact-content';
+        var address = content + ' input#contact-address';
         var message = content + ' textarea#contact-message';
         var send = content + ' a.btn';
           var sendtext = send + ' div.btn-txt-wrapper span.btn-txt';
@@ -14,6 +15,7 @@ $( document ).on('turbolinks:load', function() {
   var $contact = $(contact);
     var $container = $(container);
       // var $content = $(content);
+        var $address = $(address);
         var $message = $(message);
         var $send = $(send);
           var $sendtext = $(sendtext);
@@ -37,15 +39,67 @@ $( document ).on('turbolinks:load', function() {
     $confirmation.css({opacity: '1'});
   };
   
+  var addressError = function() {
+    $confirmation.html('Sorry! Please enter a valid email address and try sending again.');
+    $confirmation.css({opacity: '1'});
+  };
+  
+  var messageError = function() {
+    $confirmation.html('Sorry! Please enter a message and try sending again.');
+    $confirmation.css({opacity: '1'});
+  };
+  
+  // http://emailregex.com/
+  var validAddress = function() {
+    var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var valid = $address.val().match(regex);
+    
+    if (!valid) {
+      $address.on('keypress', function() {
+        resetConfirmation();
+        $address.off('keypress');
+      });
+      
+      addressError();
+    }
+    
+    return valid;
+  };
+  
+  var validMessage = function() {
+    var valid = $message.val().trim() != '';
+    
+    if (!valid) {
+      $message.on('keypress', function() {
+        resetConfirmation();
+        $message.off('keypress');
+      });
+      
+      messageError();
+    }
+    
+    return valid;
+  };
+  
+  var validForm = function() {
+    return validAddress() && validMessage();
+  };
+  
+  var resetConfirmation = function() {
+    $confirmation.html('').css({opacity: '0'});
+  };
+  
   responsiveEvents($send, function() {
     if ($send.hasClass('pending')) {
       $send.removeClass('mousedown pending');
       $sendtext.html(originalSendText);
       window.clearTimeout(pendingTimeout);
     } else {
+      if (!validForm()) return;
+      
       $send.addClass('mousedown pending');
       $sendtext.html(pendingText);
-      $confirmation.html('').css({opacity: '0'});
+      resetConfirmation();
       
       pendingTimeout = window.setTimeout(function() {
         $send.removeClass('mousedown pending');
@@ -58,14 +112,13 @@ $( document ).on('turbolinks:load', function() {
           dataType: 'JSON',
           data: {
             email: {
+              address: $address.val(),
               message: $message.val()
             }
           },
           success: sendSuccess,
           error: sendError,
         });
-        
-        $confirmation.css({opacity: '1'});
       }, msPendingDuration);
     }
   });

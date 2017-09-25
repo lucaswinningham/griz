@@ -10,10 +10,10 @@ section#contact {
       
       @include transform(translateY(-50%));
       
-      textarea#contact-message {
+      input#contact-address, textarea#contact-message {
         display: block;
         position: relative;
-        height: calc(4px + 2 * 12px + 4 * (16px + 3px));
+        height: calc(4px + 2 * 12px + 16px);
         width: 100%;
         max-width: 960px;
         left: 50%;
@@ -27,6 +27,14 @@ section#contact {
         
         @include transform(translateX(-50%));
         @include border-radius($radius);
+      }
+      
+      input#contact-address {
+        height: calc(4px + 2 * 12px + 16px);
+      }
+      
+      textarea#contact-message {
+        height: calc(4px + 2 * 12px + 4 * (16px + 3px));
       }
       
       a.btn {
