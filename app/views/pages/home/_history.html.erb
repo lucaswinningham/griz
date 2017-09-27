@@ -1,6 +1,6 @@
 <section id="history" class="section">
-  <div id="history-container" class="section-container">
-    <div id="history-cards">
+  <div class="container">
+    <div class="cards">
       <%= render("_/card", head: "My Past", body: "Learn Where I've Been.") %>
       
       <%= render("_/card", head: "2014", body: "I earned my BS in Electrical Engineering from Rose Hulman Institute of Technology in May 2014. My experiences there captivated my interest in programming which I continue to study to this day. It was there that I found my passion of programming.") %>
@@ -14,30 +14,24 @@
       <%= render("_/card", head: "Maybe You Feel Like Reaching Out", contact: "CONTACT") %>
     </div>
     
-    <div id="history-mechanism">
-      <div id="history-track">
-        <div id="history-track-detents"></div>
+    <div class="breadcrumbs">
+      <div class="icon">
+        <div><%= render "icons/history" %></div>
       </div>
-      
-      <div id="history-slider">
-        <div class="history-slider-icon">
-          <div><%= render "icons/history" %></div>
-        </div>
-        <div class="history-slider-icon">
-          <div><%= render "icons/hulman" %></div>
-        </div>
-        <div class="history-slider-icon">
-          <div class="expand"><%= render "icons/ladder" %></div>
-        </div>
-        <div class="history-slider-icon">
-          <div><%= render "icons/autocad" %></div>
-        </div>
-        <div class="history-slider-icon">
-          <div class="expand"><%= render "icons/development" %></div>
-        </div>
-        <div class="history-slider-icon">
-          <div><%= render "icons/contact" %></div>
-        </div>
+      <div class="icon">
+        <div><%= render "icons/hulman" %></div>
+      </div>
+      <div class="icon">
+        <div class="expand"><%= render "icons/ladder" %></div>
+      </div>
+      <div class="icon">
+        <div><%= render "icons/autocad" %></div>
+      </div>
+      <div class="icon">
+        <div class="expand"><%= render "icons/development" %></div>
+      </div>
+      <div class="icon">
+        <div><%= render "icons/contact" %></div>
       </div>
     </div>
   </div>

@@ -1,6 +1,6 @@
 <section id="about" class="section">
-  <div id="about-container" class="section-container">
-    <div id="about-cards">
+  <div class="container">
+    <div class="cards">
       <%= render("_/card", head: "My Life", body: "Get To Know Who I Am.") %>
       
       <%= render("_/card", tondo: "bear.jpg", head: "I'm Luke", body: "I'm a beginner web developer with a unique eye for design and detail. A practicing perfectionist and iterative development driven, I pride myself on delivering output that is outstanding from front to back, inside and out. Simple and straightforward is just better.") %>
@@ -12,20 +12,20 @@
       <%= render("_/card", head: "Find Out More By Getting In Touch", contact: "CONTACT") %>
     </div>
     
-    <div id="about-breadcrumbs">
-      <div class="about-breadcrumb">
+    <div class="breadcrumbs">
+      <div class="icon">
         <div><%= render "icons/about" %></div>
       </div>
-      <div class="about-breadcrumb">
+      <div class="icon">
         <div class="expand"><%= render "icons/beard" %></div>
       </div>
-      <div class="about-breadcrumb">
+      <div class="icon">
         <div class="expand"><%= render "icons/leigh" %></div>
       </div>
-      <div class="about-breadcrumb">
+      <div class="icon">
         <div class="expand"><%= render "icons/hound" %></div>
       </div>
-      <div class="about-breadcrumb">
+      <div class="icon">
         <div><%= render "icons/contact" %></div>
       </div>
     </div>

@@ -124,12 +124,6 @@ var burgerEvents = function($burger, msClose, msOpen, callbacks) {
   });
 };
 
-var contactEvents = function($contact) {
-  responsiveEvents($contact, function(e) {
-    window.location.href = '#contact'; 
-  });
-};
-
 var cardEvents = function($card, onChange) {
   onChange = (onChange === undefined ? function() {} : onChange);
   
@@ -346,4 +340,72 @@ var cardEvents = function($card, onChange) {
   
   // Return ability to remotely call card indexing
   return indexCards;
+};
+
+var uiEvents = function($card, $breadcrumbs, $icon) {
+  var placeIcons = function() {
+    var ratioBreadcrumb = $icon.width() / $breadcrumbs.width();
+    var ratioUsableWidth = 1 - ratioBreadcrumb;
+    var percentUsableWidth = 100 * ratioUsableWidth;
+    
+    var timeout = window.setTimeout(function() {
+      $icon.each(function(i) {
+        $(this).css({
+          left: (percentUsableWidth * (i / ($icon.length - 1))) + '%',
+        });
+      });
+      
+      window.clearTimeout(timeout);
+    }, 500);
+  };
+  
+  placeIcons();
+  
+  $( window ).resize(function() {
+    var timeout = window.setTimeout(function() {
+      placeIcons();
+      window.clearTimeout(timeout);
+    }, 500);
+  });
+  
+  $icon.first().addClass('active');
+  
+  var indexCards = cardEvents($card, function(newCardIndex) {
+    $icon.removeClass('active');
+    
+    $icon.eq(newCardIndex).addClass('active');
+  });
+  
+  responsiveEvents($icon, function() {
+    $(this).removeClass('mousedown hover');
+    
+    if (!$(this).hasClass('active')) {
+      indexCards($(this).index());
+      $icon.removeClass('active');
+      $(this).addClass('active');
+    }
+  });
+};
+
+var sectionEvents = function(section) {
+  var container = section + ' .container';
+    var card = container + ' .cards .card';
+      var contact = card + ' .btn';
+    var breadcrumbs = container + ' .breadcrumbs';
+      var icon = breadcrumbs + ' .icon';
+  
+  var $section = $(section);
+    var $container = $(container);
+      var $card = $(card);
+        var $contact = $(contact);
+      var $breadcrumbs = $(breadcrumbs);
+        var $icon = $(icon);
+        
+  sectionInitialize($section, $container);
+  
+  responsiveEvents($contact, function() {
+    window.location.href = '#contact'; 
+  });
+  
+  uiEvents($card, $breadcrumbs, $icon);
 };

@@ -2,37 +2,57 @@ footer#footer {
   background: #555555;
   position: relative;
   padding: $gutter;
+  width: 100%;
   
-  div#footer-icons {
-    div.footer-icon {
-      display: inline-block;
-      height: 80px;
-      width: 80px;
+  #footer-icons {
+    width: 100%;
+  }
+  
+  .icon {
+    display: inline-block;
+    position: relative;
+    // height: 80px;
+    // width: 80px;
+    
+    @include responsive-shadow;
+    // @include border-radius(50%);
+    // @include transform(translateX(-50%));
+    
+    // @include respond-to(phone) {
+    //   height: 64px;
+    //   width: 64px;
+    // }
+    
+    // @include circle-icon(#555555, #333333);
+    // position: relative;
+    
+    // &.mousedown {
+    //   @include transform(translate(-50%,4px));
       
-      @include responsive-shadow;
-      @include border-radius(50%);
-      @include transform(translateX(-50%));
-      
-      @include respond-to(phone) {
-        height: 64px;
-        width: 64px;
-      }
-      
-      @include circle-icon(#555555, #333333);
-      position: relative;
-      
-      &.mousedown {
-        @include transform(translate(-50%,4px));
-        
-        @include respond-to(phone) { @include transform(translate(-50%,-$gutter)); }
-      }
-      
-      a {
-        z-index: 2;
-        position: absolute;
-        width: 100%;
-        height: 100%;
+    //   @include respond-to(phone) { @include transform(translate(-50%,-$gutter)); }
+    // }
+    
+    border: 2px solid #555555;
+    
+    &.hover {
+      background: #333333;
+    }
+    
+    &.mousedown, &.active {
+      background: #555555;
+    }
+    
+    div {
+      svg {
+        stroke: #555555;
       }
     }
+  }
+  
+  a {
+    z-index: 2;
+    position: absolute;
+    width: 100%;
+    height: 100%;
   }
 }

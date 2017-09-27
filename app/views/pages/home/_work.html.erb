@@ -1,6 +1,6 @@
 <section id="work" class="section">
-  <div id="work-container" class="section-container">
-    <div id="work-cards">
+  <div class="container">
+    <div class="cards">
       <%= render("_/card", head: "My Work", body: "Find Out What I've Done.") %>
       
       <%= render("_/card", head: "AutoLisp", body: "During my time as a Controls Engineer, I programmed several time saving tools to be used with AutoCAD. I learned Lisp for all it was, good and bad. The bad parts I didn't like so much compared to the Ruby programming language so I decided to implement some of Ruby's usefulness for Lisp by creating a code interpreter that not only found and replaced some functionality, such as rest parameters, but also injected pseudo object oriented paradigms for lists to act like Ruby array objects.") %>
@@ -14,34 +14,24 @@
       <%= render("_/card", head: "Tell Me What You Think", contact: "CONTACT") %>
     </div>
     
-    <div id="work-menu-toggle">
-        <div class="burger">
-          <i></i>
-          <i></i>
-          <i></i>
-        </div>
-    </div>
-    
-    <div id="work-menu" class="opened">
-      <div id="work-menu-petal-container">
-        <div class="work-menu-petal">
-          <div><%= render "icons/work" %></div>
-        </div>
-        <div class="work-menu-petal">
-          <div class="expand"><%= render "icons/lisp" %></div>
-        </div>
-        <div class="work-menu-petal">
-          <div class="expand"><%= render "icons/bash" %></div>
-        </div>
-        <div class="work-menu-petal">
-          <div class="expand"><%= render "icons/upskill" %></div>
-        </div>
-        <div class="work-menu-petal">
-          <div><%= render "icons/briefcase" %></div>
-        </div>
-        <div class="work-menu-petal">
-          <div><%= render "icons/contact" %></div>
-        </div>
+    <div class="breadcrumbs">
+      <div class="icon">
+        <div><%= render "icons/work" %></div>
+      </div>
+      <div class="icon">
+        <div class="expand"><%= render "icons/lisp" %></div>
+      </div>
+      <div class="icon">
+        <div class="expand"><%= render "icons/bash" %></div>
+      </div>
+      <div class="icon">
+        <div class="expand"><%= render "icons/upskill" %></div>
+      </div>
+      <div class="icon">
+        <div><%= render "icons/briefcase" %></div>
+      </div>
+      <div class="icon">
+        <div><%= render "icons/contact" %></div>
       </div>
     </div>
   </div>
