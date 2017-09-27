@@ -93,30 +93,30 @@ var burgerEvents = function($burger, msClose, msOpen, callbacks) {
     $burger.addClass('closed');
   }
   
-  responsiveEvents($burger, function() {
+  responsiveEvents($burger, function(e) {
     window.clearTimeout($burger.timeout);
     
     if ($burger.hasClass('opened') || $burger.hasClass('opening') ) {
       $burger.removeClass('opening').addClass('closing');
       
-      callbacks.onClosing();
+      callbacks.onClosing.bind(this)(e);
       
       $burger.timeout = window.setTimeout(function() {
         $burger.removeClass('closing opened').addClass('closed');
         
-        callbacks.onClosed();
+        callbacks.onClosed.bind(this)(e);
         
         window.clearTimeout($burger.timeout);
       }, msClose);
     } else  if ($burger.hasClass('closed') || $burger.hasClass('closing') ) {
       $burger.removeClass('closing').addClass('opening');
       
-      callbacks.onOpening();
+      callbacks.onOpening.bind(this)(e);
       
       $burger.timeout = window.setTimeout(function() {
         $burger.removeClass('opening closed').addClass('opened');
         
-        callbacks.onOpened();
+        callbacks.onOpened.bind(this)(e);
         
         window.clearTimeout($burger.timeout);
       }, msOpen);
@@ -362,10 +362,7 @@ var uiEvents = function($card, $breadcrumbs, $icon) {
   placeIcons();
   
   $( window ).resize(function() {
-    var timeout = window.setTimeout(function() {
-      placeIcons();
-      window.clearTimeout(timeout);
-    }, 500);
+    placeIcons();
   });
   
   $icon.first().addClass('active');

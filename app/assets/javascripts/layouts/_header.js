@@ -47,8 +47,8 @@ $( document ).on('turbolinks:load', function() {
     },
   });
   
-  var burgerTrack = function(e, sectionIndex) {
-    sectionIndex = parseInt(sectionIndex, 10);
+  var burgerTrack = function(e, index) {
+    sectionIndex = parseInt(index, 10);
     
     $patty.removeClass('track');
     if (!$menu.hasClass('focus') && sectionIndex > 0) {
@@ -56,7 +56,8 @@ $( document ).on('turbolinks:load', function() {
     }
     
     $navlink.removeClass('active');
-    $(navlink + ':nth-child(' + (sectionIndex + 1) + ')').addClass('active');
+    // $(navlink + ':nth-child(' + (sectionIndex + 1) + ')').addClass('active');
+    $navlink.eq(sectionIndex).addClass('active');
   };
   
   $burger.on('track', burgerTrack);

@@ -5,20 +5,27 @@ footer#footer {
   width: 100%;
   
   #footer-icons {
+    position: relative;
     width: 100%;
+    height: 80px;
+    
+    @include respond-to(phone) {
+      height: 64px;
+    }
   }
   
   .icon {
     display: inline-block;
-    position: relative;
-    // height: 80px;
-    // width: 80px;
+    position: absolute;
+    height: 80px;
+    width: 80px;
     
-    @include responsive-shadow;
-    // @include respond-to(phone) {
-    //   height: 64px;
-    //   width: 64px;
-    // }
+    // @include responsive-shadow;
+    
+    @include respond-to(phone) {
+      height: 64px;
+      width: 64px;
+    }
     
     border: 2px solid #555555;
     

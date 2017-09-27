@@ -328,7 +328,7 @@ $inscribed: 17.5%;
   width: 80px;
   
   @include border-radius(50%);
-  @include transition(left, 1.5s, $normal-bezier, 0s);
+  // @include transition(left, 1.5s, $normal-bezier, 0s);
   
   @include respond-to(tablet) {
     height: 64px;

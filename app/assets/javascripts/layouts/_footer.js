@@ -11,25 +11,25 @@ $( document ).on('turbolinks:load', function() {
       var $icon = $(icon);
   
   var placeIcons = function() {
-    var pxSpace = $icons.width() - $icon.outerWidth() * $icon.length;
-    var pxMarginLeft = Math.floor(pxSpace / ($icon.length + 1));
+    var ratioIcon = $icon.width() / $icons.outerWidth();
+    var ratioUsableWidth = 1 - ratioIcon;
+    var percentUsableWidth = 100 * ratioUsableWidth;
     
-    $icon.css({marginLeft: pxMarginLeft});
-  };
-  
-  (function() {
     var timeout = window.setTimeout(function() {
-      placeIcons();
+      $icon.each(function(i) {
+        $(this).css({
+          left: (percentUsableWidth * ((2 * i + 1) / ($icon.length * 2))) + '%',
+        });
+      });
       
       window.clearTimeout(timeout);
-    }, 100);
-  }());
+    }, 500);
+  };
+  
+  placeIcons();
   
   $( window ).resize(function() {
-    var timeout = window.setTimeout(function() {
-      placeIcons();
-      window.clearTimeout(timeout);
-    }, 500);
+    placeIcons();
   });
   
   responsiveEvents($icon, function(e) {
