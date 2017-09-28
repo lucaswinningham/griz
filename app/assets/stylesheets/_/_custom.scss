@@ -327,6 +327,8 @@ $inscribed: 17.5%;
     width: 15%;
     right: 0;
     background: rgba(0,0,0,0.2);
+    
+    @include border-radius(0 $radius 0 $radius);
   }
   
   .card-modal-prev, .card-modal-next {
@@ -338,6 +340,8 @@ $inscribed: 17.5%;
   }
   
   .card-modal-prev {
+    @include border-radius(0 $radius $radius 0);
+    
     i {
       // x property must match height of i / 2
       @include transform-origin(2.5px 50%);
@@ -350,6 +354,8 @@ $inscribed: 17.5%;
   
   .card-modal-next {
     right: 0;
+    
+    @include border-radius($radius 0 0 $radius);
     
     i {
       // x property must match width of i - height of i / 2
