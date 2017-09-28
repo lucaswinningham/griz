@@ -264,76 +264,99 @@ $inscribed: 17.5%;
   
   .card-modal-close, .card-modal-prev, .card-modal-next {
     position: absolute;
-    height: 48px;
-    width: 48px;
     cursor: pointer;
     z-index: 2;
     
-    background: red;
-    
     i {
       position: absolute;
-      height: 6px;
-      width: 48px;
+      height: 5px;
+      width: 50px;
+      top: 50%;
+      left: 50%;
       background: white;
       
-      // @include border-radius(5%/#{50%});
+      @include border-radius(5%/#{50%});
       @include transition(transform, 0.4s, $normal-bezier, 0s);
+      
+      @include respond-to(phone) {
+        height: 2.5px;
+        width: 25px;
+      }
+      
+      &:nth-child(1) {
+        @include transform(translate(-50%,-50%) rotate(-45deg));
+      }
+      
+      &:nth-child(2) {
+        @include transform(translate(-50%,-50%) rotate( 45deg));
+      }
+    }
+    
+    &.hover {
+      background: rgba(0,0,0,0.4);
+      
+      i {
+        &:nth-child(1) {
+          @include transform(translate(-50%,-50%) rotate(-40deg));
+        }
+        
+        &:nth-child(2) {
+          @include transform(translate(-50%,-50%) rotate( 40deg));
+        }
+      }
+    }
+    
+    &.mousedown {
+      background: rgba(0,0,0,0.6);
+      
+      i {
+        &:nth-child(1) {
+          @include transform(translate(-50%,-50%) rotate(-35deg));
+        }
+        
+        &:nth-child(2) {
+          @include transform(translate(-50%,-50%) rotate( 35deg));
+        }
+      }
     }
   }
   
   .card-modal-close {
-    top: $gutter / 4;
-    right: $gutter / 4;
+    // automatic height and width are square given js setting modal to square
+    height: 15%;
+    width: 15%;
+    right: 0;
+    background: rgba(0,0,0,0.2);
+  }
+  
+  .card-modal-prev, .card-modal-next {
+    height: 50%;
+    width: 15%;
+    top: 50%;
     
-    @include transform(rotate( 45deg));
-    
-    i {
-      top: 50%;
-      
-      &:nth-child(1) {
-        @include transform(translateY(-50%) rotate(90deg));
-      }
-      
-      &:nth-child(2) {
-        @include transform(translateY(-50%));
-      }
-    }
+    @include transform(translateY(-50%));
   }
   
   .card-modal-prev {
-    top: 50%;
-    left: $gutter;
-    
-    @include transform(translateY(-50%) rotate(-45deg));
-    
     i {
-      &:nth-child(1) {
-        // top: 0;
-        // left: 0;
-      }
+      // x property must match height of i / 2
+      @include transform-origin(2.5px 50%);
       
-      &:nth-child(2) {
-        top: 50%;
-        left: -50%;
-        @include transform(translateY(-50%) rotate(90deg));
+      @include respond-to(phone) {
+        @include transform-origin(1.25px 50%);
       }
     }
   }
   
   .card-modal-next {
-    top: 50%;
-    right: $gutter;
-    
-    @include transform(translateY(-50%) rotate( 45deg));
+    right: 0;
     
     i {
-      &:nth-child(1) {
-        
-      }
+      // x property must match width of i - height of i / 2
+      @include transform-origin(47.5px 50%);
       
-      &:nth-child(2) {
-        
+      @include respond-to(phone) {
+        @include transform-origin(23.75px 50%);
       }
     }
   }

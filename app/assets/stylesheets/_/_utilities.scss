@@ -19,6 +19,13 @@
   transform: $functions;
 }
 
+@mixin transform-origin($origins) {
+  -webkit-transform-origin: $origins;
+  -moz-transform-origin: $origins;
+  -ms-transform-origin: $origins;
+  transform-origin: $origins;
+}
+
 @mixin display-flex {
   display: -webkit-box;
   display: -ms-flexbox;

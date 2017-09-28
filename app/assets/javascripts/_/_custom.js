@@ -134,7 +134,7 @@ var cardEvents = function($card, onChange) {
       $(this).addClass('right');
     }
   
-    $(this).find('.card-tondo').each(function() {
+    $(this).children('.card-tondos').children('.card-tondo').each(function() {
       $(this).css({
         'background-image': 'url(' + $(this).data('sm-pic') + ')'
       });
@@ -264,8 +264,8 @@ var cardEvents = function($card, onChange) {
   //   sizeTondo($(this));
   // });
   
-  responsiveEvents($card.find('.card-tondo'), function() {
-    var $modal = $(this).parents('.card').children('.card-modal');
+  responsiveEvents($card.children('.card-tondos').children('.card-tondo'), function() {
+    var $modal = $(this).parent('.card-tondos').parent('.card').children('.card-modal');
     
     $modal.addClass('focus').data('index', $(this).index()).css({
       'background-image': 'url(' + $(this).data('lg-pic') + ')'
@@ -274,16 +274,16 @@ var cardEvents = function($card, onChange) {
     sizeModal($modal);
   });
   
-  responsiveEvents($card.children('.card-modal-close'), function() {
+  responsiveEvents($card.children('.card-modal').children('.card-modal-close'), function() {
     var $modal = $(this).parent('.card-modal');
     $modal.removeClass('focus').data('index', '');
     sizeModal($modal);
   });
   
-  responsiveEvents($card.children('.card-modal-prev'), function() {
-    var $card = $(this).parent('.card');
-    var $modal = $card.children('.card-modal');
-    var $tondo = $card.find('.card-tondo');
+  responsiveEvents($card.children('.card-modal').children('.card-modal-prev'), function() {
+    var $modal =  $(this).parent('.card-modal');
+    var $card = $modal.parent('.card');
+    var $tondo = $card.children('.card-tondos').children('.card-tondo');
     var index = parseInt($modal.data('index'));
     
     if (index === 0) {
@@ -300,10 +300,10 @@ var cardEvents = function($card, onChange) {
   });
   
   // TODO: DRY this with above function
-  responsiveEvents($card.children('.card-modal-next'), function() {
-    var $card = $(this).parent('.card');
-    var $modal = $card.children('.card-modal');
-    var $tondo = $card.find('.card-tondo');
+  responsiveEvents($card.children('.card-modal').children('.card-modal-next'), function() {
+    var $modal =  $(this).parent('.card-modal');
+    var $card = $modal.parent('.card');
+    var $tondo = $card.children('.card-tondos').children('.card-tondo');
     var index = parseInt($modal.data('index'));
     
     if (index === $tondo.length - 1) {
