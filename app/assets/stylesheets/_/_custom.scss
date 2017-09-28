@@ -198,12 +198,18 @@ $inscribed: 17.5%;
   }
 }
 
-.card-tondo {
+.card-tondos {
   position: absolute;
+  top: $gutter / 2;
+  left: $gutter / 2;
+}
+
+.card-tondo {
+  display: inline-block;
+  position: relative;
   height: 128px;
   width: 128px;
-  top: $gutter;
-  left: $gutter;
+  margin-right: $gutter / 4;
   background: white;
   cursor: pointer;
   z-index: 2;
@@ -218,12 +224,118 @@ $inscribed: 17.5%;
   @include transition(all, 1s, $normal-bezier, 0s);
   
   @include respond-to(phone) {
-    height: 96px;
-    width: 96px;
+    height: 80px;
+    width: 80px;
+  }
+  
+  @include respond-to(phone) {
+    height: 48px;
+    width: 48px;
   }
   
   &.focus {
     @include border-radius($radius);
+  }
+}
+
+.card-modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  background: white;
+  opacity: 0;
+  z-index: -1;
+  cursor: auto;
+  
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-color: #ccc;
+  background-size: cover;
+  
+  @include responsive-shadow;
+  @include transform(translate(-50%,-50%));
+  @include transition(all, 0.5s, $normal-bezier, 0s);
+  @include border-radius($radius);
+  
+  &.focus {
+    opacity: 1;
+    z-index: 2;
+  }
+  
+  .card-modal-close, .card-modal-prev, .card-modal-next {
+    position: absolute;
+    height: 48px;
+    width: 48px;
+    cursor: pointer;
+    z-index: 2;
+    
+    background: red;
+    
+    i {
+      position: absolute;
+      height: 6px;
+      width: 48px;
+      background: white;
+      
+      // @include border-radius(5%/#{50%});
+      @include transition(transform, 0.4s, $normal-bezier, 0s);
+    }
+  }
+  
+  .card-modal-close {
+    top: $gutter / 4;
+    right: $gutter / 4;
+    
+    @include transform(rotate( 45deg));
+    
+    i {
+      top: 50%;
+      
+      &:nth-child(1) {
+        @include transform(translateY(-50%) rotate(90deg));
+      }
+      
+      &:nth-child(2) {
+        @include transform(translateY(-50%));
+      }
+    }
+  }
+  
+  .card-modal-prev {
+    top: 50%;
+    left: $gutter;
+    
+    @include transform(translateY(-50%) rotate(-45deg));
+    
+    i {
+      &:nth-child(1) {
+        // top: 0;
+        // left: 0;
+      }
+      
+      &:nth-child(2) {
+        top: 50%;
+        left: -50%;
+        @include transform(translateY(-50%) rotate(90deg));
+      }
+    }
+  }
+  
+  .card-modal-next {
+    top: 50%;
+    right: $gutter;
+    
+    @include transform(translateY(-50%) rotate( 45deg));
+    
+    i {
+      &:nth-child(1) {
+        
+      }
+      
+      &:nth-child(2) {
+        
+      }
+    }
   }
 }
 

@@ -127,14 +127,18 @@ var burgerEvents = function($burger, msClose, msOpen, callbacks) {
 var cardEvents = function($card, onChange) {
   onChange = (onChange === undefined ? function() {} : onChange);
   
-  var $tondo = $card.children('.card-tondo');
-  
   $card.each(function(i) {
     if (i === 0) {
       $(this).addClass('focus');
     } else {
       $(this).addClass('right');
     }
+  
+    $(this).find('.card-tondo').each(function() {
+      $(this).css({
+        'background-image': 'url(' + $(this).data('sm-pic') + ')'
+      });
+    });
   });
   
   var lastIndex = 0;
@@ -168,8 +172,6 @@ var cardEvents = function($card, onChange) {
         enter = 'left';
         exit = 'right';
       }
-      
-      console.log(forward)
       
       enableCardTransitionDuration(false);
       
@@ -226,49 +228,102 @@ var cardEvents = function($card, onChange) {
   	}
   };
   
-  var sizeTondo = function($thisTondo) {
+  var sizeModal = function($modal) {
     var cardHeight = $card.outerHeight();
     var cardWidth =  $card.outerWidth();
-    var tondoSide =  (cardHeight > cardWidth ? cardWidth : cardHeight) - 2 * pxGutter;
+    var modalSide =  (cardHeight > cardWidth ? cardWidth : cardHeight) - 2 * pxGutter;
     
-    if ($thisTondo.hasClass('focus')) {
-      $thisTondo.css({
-        height: tondoSide,
-        width: tondoSide,
-        top: cardHeight / 2 - tondoSide / 2,
-        left: cardWidth / 2 - tondoSide / 2,
+    if ($modal.hasClass('focus')) {
+      $modal.css({
+        height: modalSide,
+        width: modalSide,
       });
-    } else {
-      $thisTondo.css({
-        height: '',
-        width: '',
-        top: '',
-        left: '',
-      });
+    // } else {
+    //   $modal.css({
+    //     height: '',
+    //     width: '',
+    //   });
     }
   };
-  
-  var sizeAllTondos = function()  {
-    $card.each(function() {
-      sizeTondo($(this).children('.card-tondo'));
-    });
-  };
-  
-  sizeAllTondos();
   
   // TODO: optimize this
   $( window ).resize(function() {
     var timeout = window.setTimeout(function() {
-      sizeAllTondos();
+      // sizeAllTondos();
+      $card.each(function() {
+        sizeModal($(this).children('.card-modal'));
+      });
+      
       window.clearTimeout(timeout);
     }, 500);
   });
   
-  responsiveEvents($card.children('.card-tondo'), function(e) {
-    e.preventDefault();
-    $(this).toggleClass('focus');
-    sizeTondo($(this));
+  // responsiveEvents($card.children('.card-tondo'), function(e) {
+  //   e.preventDefault();
+  //   $(this).toggleClass('focus');
+  //   sizeTondo($(this));
+  // });
+  
+  responsiveEvents($card.find('.card-tondo'), function() {
+    var $modal = $(this).parents('.card').children('.card-modal');
+    
+    $modal.addClass('focus').data('index', $(this).index()).css({
+      'background-image': 'url(' + $(this).data('lg-pic') + ')'
+    });
+    
+    sizeModal($modal);
   });
+  
+  responsiveEvents($card.children('.card-modal-close'), function() {
+    var $modal = $(this).parent('.card-modal');
+    $modal.removeClass('focus').data('index', '');
+    sizeModal($modal);
+  });
+  
+  responsiveEvents($card.children('.card-modal-prev'), function() {
+    var $card = $(this).parent('.card');
+    var $modal = $card.children('.card-modal');
+    var $tondo = $card.find('.card-tondo');
+    var index = parseInt($modal.data('index'));
+    
+    if (index === 0) {
+      index = $tondo.length - 1;
+    } else {
+      index -= 1;
+    }
+    
+    var url = $tondo.eq(index).data('lg-pic');
+    
+    $modal.data('index', index).css({
+      'background-image': 'url(' + url + ')'
+    });
+  });
+  
+  // TODO: DRY this with above function
+  responsiveEvents($card.children('.card-modal-next'), function() {
+    var $card = $(this).parent('.card');
+    var $modal = $card.children('.card-modal');
+    var $tondo = $card.find('.card-tondo');
+    var index = parseInt($modal.data('index'));
+    
+    if (index === $tondo.length - 1) {
+      index = 0;
+    } else {
+      index += 1;
+    }
+    
+    var url = $tondo.eq(index).data('lg-pic');
+    
+    $modal.data('index', index).css({
+      'background-image': 'url(' + url + ')'
+    });
+  });
+  
+  // responsiveEvents($card.children('.card-modal'), function() {
+  //   var $modal = $(this);
+  //   $modal.removeClass('focus');
+  //   sizeModal($modal);
+  // });
   
   var originalUserPosition;
   

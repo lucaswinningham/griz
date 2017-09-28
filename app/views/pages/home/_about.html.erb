@@ -1,13 +1,13 @@
 <section id="about" class="section">
   <div class="container">
     <div class="cards">
-      <%= render("_/card", head: "My Life", body: "Get To Know Who I Am.") %>
+      <%= render("_/card", head: "Hello! Welcome To My Site.", body: "Take a look around and get to know me.") %>
       
-      <%= render("_/card", tondo: "bear.jpg", head: "I'm Luke", body: "I'm a beginner web developer with a unique eye for design and detail. A practicing perfectionist and iterative development driven, I pride myself on delivering output that is outstanding from front to back, inside and out. Simple and straightforward is just better.") %>
+      <%= render("_/card", pics: ["luke.jpg", "leigh.jpg", "millie.jpg"], head: "I'm Luke.", body: "I am a junior web developer with a passion for unique design, an exacting eye for detail, and a commitment to thorough execution. Driven by my personal standards for high quality and the iterative development process, I pride myself on delivering products that set themselves apart. Simple and straightforward is always better.") %>
       
-      <%= render("_/card", tondo: "leigh.jpg", head: "My Best Friend", body: "I am the luckiest guy to have Leigh for over 7 years. I love spending everyday with her and she is my core and foundation. Currently, she is busy pursuing her dream of becoming a nurse and has only received incredible feedback. I'm proud of her accomplishments, excited for our life together, and I can't imagine being without her.") %>
+      <%= render("_/card", pics: ["leigh.jpg"], head: "My Best Friend", body: "For over seven years, Leigh has been my core and foundation. I am so lucky to spend every day with her. She is currently pursuing her dream of becoming a nurse and excelling in both the classroom and the clinical setting. I cannot imagine being without her and I am excited for our future.") %>
       
-      <%= render("_/card", tondo: "millie.jpg", head: "Millie The Pup", body: "Rescued and sassy, she loves chewing on bones and howling at the neighbors. Don't let her cuteness deceive you, she is just as rowdy and rambunctious when she demands to play tug of war. At the end of the day when she's all tuckered out though, she loves cuddling and falling asleep at the end of the bed.") %>
+      <%= render("_/card", pics: ["millie.jpg"], head: "Millie The Pup", body: "Rescued and sassy, she loves chewing on bones and howling at the neighbors. Her cuteness is deceptive - she becomes rowdy and rambunctious when she decides it is time to play tug-of-war. After a busy day, she wants nothing more than to cuddle and fall asleep at the end of the bed.") %>
       
       <%= render("_/card", head: "Find Out More By Getting In Touch", contact: "CONTACT") %>
     </div>

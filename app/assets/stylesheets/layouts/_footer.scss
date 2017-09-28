@@ -20,7 +20,7 @@ footer#footer {
     height: 80px;
     width: 80px;
     
-    // @include responsive-shadow;
+    @include responsive-shadow;
     
     @include respond-to(phone) {
       height: 64px;

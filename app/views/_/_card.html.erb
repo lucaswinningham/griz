@@ -1,29 +1,45 @@
-<% tondo = nil if local_assigns[:tondo].nil? %>
+<% pics = nil if local_assigns[:pics].nil? %>
 <% head = nil if local_assigns[:head].nil? %>
 <% body = nil if local_assigns[:body].nil? %>
 <% contact = nil if local_assigns[:contact].nil? %>
 
 <div class="card">
-  <% if tondo %>
-    <div class="card-tondo" style="background-image: url(<%= asset_path tondo %>)">
-    </div>
-  <% end %>
-  
   <div class="card-content">
     <% if head %>
-      <div class="card-head<%= tondo ? " make-space" : "" %>">
-        <%= head %>
-      </div>
+      <div class="card-head"><%= head %></div>
     <% end %>
     
     <% if body %>
-      <div class="card-body">
-        <%= body %>
-      </div>
+      <div class="card-body"><%= body %></div>
     <% end %>
     
     <% if contact %>
       <%= render("_/btn", text: contact, href: "#contact") %>
     <% end %>
   </div>
+  
+  <% if pics %>
+    <div class="card-tondos">
+      <% pics.each do |pic| %>
+        <div class="card-tondo" data-sm-pic="<%= asset_path '_sm_' + pic %>" data-lg-pic="<%= asset_path pic %>"></div>
+      <% end %>
+    </div>
+    
+    <div class="card-modal">
+      <div class="card-modal-close">
+        <i></i>
+        <i></i>
+      </div>
+      
+      <div class="card-modal-prev">
+        <i></i>
+        <i></i>
+      </div>
+      
+      <div class="card-modal-next">
+        <i></i>
+        <i></i>
+      </div>
+    </div>
+  <% end %>
 </div>
