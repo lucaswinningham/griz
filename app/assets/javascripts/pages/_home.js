@@ -76,7 +76,6 @@ $( document ).on('turbolinks:load', function() {
     timeout = window.setTimeout(function() {
       $('html, body').on(userScrollEvents, autoScrollStop);
       
-      // $('html, body').animate({scrollTop: targetSection.position + 1}, msScroll, autoScrollStop);
       $('html, body').animate({scrollTop: targetSection.position}, 200, autoScrollStop);
       
       window.clearTimeout(timeout);

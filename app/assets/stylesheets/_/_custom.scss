@@ -463,13 +463,13 @@ $inscribed: 17.5%;
   position: absolute;
   cursor: pointer;
   background: white;
-  // left: calc(-64px - 3 * #{$gutter});
+  left: 0;
   bottom: 0;
   height: 80px;
   width: 80px;
   
   @include border-radius(50%);
-  // @include transition(left, 1.5s, $normal-bezier, 0s);
+  @include transition(left, 1.5s, linear, 0s);
   
   @include respond-to(tablet) {
     height: 64px;

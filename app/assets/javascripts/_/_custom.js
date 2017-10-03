@@ -127,19 +127,22 @@ var burgerEvents = function($burger, msClose, msOpen, callbacks) {
 var cardEvents = function($card, onChange) {
   onChange = (onChange === undefined ? function() {} : onChange);
   
-  $card.each(function(i) {
-    if (i === 0) {
-      $(this).addClass('focus');
-    } else {
-      $(this).addClass('right');
-    }
-  
+  $card.addClass('right').each(function(i) {
     $(this).children('.card-tondos').children('.card-tondo').each(function() {
       $(this).css({
         'background-image': 'url(' + $(this).data('sm-pic') + ')'
       });
     });
   });
+  
+  // Dramatic intro for first card
+  (function() {
+    var timeout = window.setTimeout(function() {
+      $card.first().removeClass('right').addClass('focus');
+      
+      window.clearTimeout(timeout);
+    }, 500);
+  }());
   
   var lastIndex = 0;
   
@@ -238,11 +241,6 @@ var cardEvents = function($card, onChange) {
         height: modalSide,
         width: modalSide,
       });
-    // } else {
-    //   $modal.css({
-    //     height: '',
-    //     width: '',
-    //   });
     }
   };
   
@@ -257,12 +255,6 @@ var cardEvents = function($card, onChange) {
       window.clearTimeout(timeout);
     }, 500);
   });
-  
-  // responsiveEvents($card.children('.card-tondo'), function(e) {
-  //   e.preventDefault();
-  //   $(this).toggleClass('focus');
-  //   sizeTondo($(this));
-  // });
   
   responsiveEvents($card.children('.card-tondos').children('.card-tondo'), function() {
     var $modal = $(this).parent('.card-tondos').parent('.card').children('.card-modal');
@@ -318,12 +310,6 @@ var cardEvents = function($card, onChange) {
       'background-image': 'url(' + url + ')'
     });
   });
-  
-  // responsiveEvents($card.children('.card-modal'), function() {
-  //   var $modal = $(this);
-  //   $modal.removeClass('focus');
-  //   sizeModal($modal);
-  // });
   
   var originalUserPosition;
   
@@ -405,13 +391,19 @@ var uiEvents = function($card, $breadcrumbs, $icon) {
     
     var timeout = window.setTimeout(function() {
       $icon.each(function(i) {
+        var duration = (i * 1.25 / $icon.length) + 's';
+        
         $(this).css({
-          left: (percentUsableWidth * (i / ($icon.length - 1))) + '%',
+          'left': (percentUsableWidth * (i / ($icon.length - 1))) + '%',
+          '-webkit-transition-duration': duration,
+          '-moz-transition-duration': duration,
+          '-o-transition-duration': duration,
+          'transition-duration': duration,
         });
       });
       
       window.clearTimeout(timeout);
-    }, 500);
+    }, 750);
   };
   
   placeIcons();
