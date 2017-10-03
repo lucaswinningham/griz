@@ -94,12 +94,12 @@ header#navigation {
     top: 2 * $gutter;
     right: 2 * $gutter;
     z-index: 4;
-    height: 150px;
-    width: 150px;
+    height: 100px;
+    width: 100px;
     
     @include respond-to(tablet) {
-      height: 100px;
-      width: 100px;
+      height: 75px;
+      width: 75px;
     }
     
     @include respond-to(phone) {
